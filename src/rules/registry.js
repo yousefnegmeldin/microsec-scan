@@ -118,6 +118,28 @@ export const RULES = {
     severity: "medium",
     description: "NestJS app missing global ValidationPipe",
   },
+
+  // Egress/Output Rules
+  EGRESS_INSECURE_HTTP: {
+    id: "EGRESS_INSECURE_HTTP",
+    severity: "high",
+    description: "Outbound HTTP call without TLS encryption",
+  },
+  EGRESS_INSECURE_RABBITMQ: {
+    id: "EGRESS_INSECURE_RABBITMQ",
+    severity: "high",
+    description: "RabbitMQ connection without TLS (amqp:// instead of amqps://)",
+  },
+  EGRESS_UNENCRYPTED_EXTERNAL_API: {
+    id: "EGRESS_UNENCRYPTED_EXTERNAL_API",
+    severity: "critical",
+    description: "External API call over unencrypted HTTP",
+  },
+  EGRESS_OK: {
+    id: "EGRESS_OK",
+    severity: "info",
+    description: "Secure outbound connection",
+  },
 };
 
 /**

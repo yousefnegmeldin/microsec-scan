@@ -28,11 +28,12 @@ program
   .option("-o, --output <file>", "Optional report output file", "")
   .option("-v, --verbose", "Enable detailed logs", false)
   .option("-r, --show-routes", "Display route analysis table", false)
+  .option("-e, --show-egress", "Display egress/output connections", false)
 
   .action(async (opts) => {
-    const { path, format, output, verbose, showRoutes } = opts;
+    const { path, format, output, verbose, showRoutes, showEgress } = opts;
     console.log(chalk.cyan.bold(`🚀 Scanning ${path} ...`));
-    await runScanner({ path, format, output, verbose, showRoutes });
+    await runScanner({ path, format, output, verbose, showRoutes, showEgress });
   });
 
 program.parse(process.argv);

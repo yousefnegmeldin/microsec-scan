@@ -5,11 +5,12 @@ import { glob } from "glob";
 import { analyzeSource } from "./parsers/ASTCodeParser.js";
 import { analyzeCompose } from "./parsers/composeParser.js";
 import { analyzeMicroservice } from "./parsers/microserviceParser.js";
+import { EgressReporter } from "./egress/EgressReporter.js";
 
 /**
  * Main scanner function that orchestrates the security scanning process.
  */
-export async function runScanner({ path: baseDir, format, output, verbose, showRoutes }) {
+export async function runScanner({ path: baseDir, format, output, verbose, showRoutes, showEgress }) {
   const findings = [];
 
   console.log(chalk.gray(`📂 Scanning directory: ${baseDir}`));
@@ -50,7 +51,7 @@ export async function runScanner({ path: baseDir, format, output, verbose, showR
   for (const serviceDir of serviceDirs) {
     try {
       if (verbose) console.log(chalk.gray(`  Analyzing microservice: ${serviceDir}`));
-      const results = analyzeMicroservice(serviceDir, verbose, showRoutes);
+      const results = analyzeMicroservice(serviceDir, verbose, showRoutes, showEgress);
       if (results.length > 0 && verbose) {
         console.log(chalk.gray(`    Found ${results.length} issues`));
       }

@@ -8,6 +8,7 @@ A fast, AST-based security scanner for microservices architectures. Detects vuln
 - 🚀 **Framework Support** - Express, NestJS, Fastify
 - 🛡️ **Security Checks** - 25+ security rules
 - 📊 **Route Analysis** - Detect unprotected endpoints
+- 📡 **Egress Analysis** - Track outbound connections (RabbitMQ, HTTP/HTTPS)
 - 🐳 **Docker Support** - Analyze docker-compose.yml
 - 📍 **Precise Reporting** - Exact line numbers from AST
 
@@ -40,9 +41,14 @@ microsec-scan -p /path/to/project
 microsec-scan -p /path/to/project --show-routes
 ```
 
-**Verbose output:**
+**With egress analysis:**
 ```bash
-microsec-scan -p /path/to/project --verbose --show-routes
+microsec-scan -p /path/to/project --show-egress
+```
+
+**Full analysis (routes + egress):**
+```bash
+microsec-scan -p /path/to/project --show-routes --show-egress
 ```
 
 **JSON output:**
@@ -68,6 +74,12 @@ microsec-scan -p /path/to/project --format json --output report.json
 - ❌ Root containers
 - ❌ Missing health checks
 - ❌ Plaintext connections
+
+### Egress/Output Tracking
+- 📡 RabbitMQ operations (publish, consume, sendToQueue)
+- 📡 HTTP/HTTPS calls to external APIs
+- 📡 Internal service-to-service communication
+- 🔒 Insecure outbound connections
 
 ## 📊 Example Output
 
@@ -99,6 +111,7 @@ microsec-scan -p /path/to/project --format json --output report.json
 
 - [System Architecture](./docs/SYSTEM_ARCHITECTURE.md) - Complete system overview
 - [AST Parsing Guide](./docs/AST_PARSING_GUIDE.md) - Learn about AST concepts
+- [Egress Analysis](./docs/EGRESS_ANALYSIS.md) - Track outbound connections
 
 ## 🛠️ CLI Options
 
@@ -106,6 +119,7 @@ microsec-scan -p /path/to/project --format json --output report.json
 Options:
   -p, --path <path>        Path to scan (required)
   --show-routes            Display route analysis table
+  --show-egress            Display egress/output connections
   --verbose                Show detailed output
   --format <type>          Output format: text or json (default: text)
   --output <file>          Save report to file

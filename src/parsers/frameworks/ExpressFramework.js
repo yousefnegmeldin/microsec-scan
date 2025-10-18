@@ -9,6 +9,7 @@ import {
   checkBodySizeLimitAST,
   checkExposedEndpointsAST,
 } from "./ASTFrameworkChecker.js";
+import { ASTEgressAnalyzer } from "../../egress/ASTEgressAnalyzer.js";
 
 /**
  * Express.js framework analyzer.
@@ -17,6 +18,7 @@ export class ExpressFramework extends BaseFramework {
   constructor(serviceDir) {
     super(serviceDir);
     this.routes = null; // Will be populated during analysis
+    this.egress = null; // Will be populated during analysis
   }
 
   detect() {
@@ -38,6 +40,14 @@ export class ExpressFramework extends BaseFramework {
     );
     this.routes = parser.parse();
 
+    // Analyze egress/output connections
+    const egressAnalyzer = new ASTEgressAnalyzer(
+      this.serviceDir,
+      this.findJsFiles.bind(this),
+      this.readFile.bind(this)
+    );
+    this.egress = egressAnalyzer.analyze();
+
     // Run traditional checks
     findings.push(...this.checkHelmet());
     findings.push(...this.checkRateLimiting());
@@ -53,6 +63,9 @@ export class ExpressFramework extends BaseFramework {
       if (this.routes) {
         console.log(`    Routes detected: ${this.routes.getAll().length}`);
       }
+      if (this.egress) {
+        console.log(`    Egress connections: ${this.egress.getAll().length}`);
+      }
     }
 
     return findings;
@@ -63,6 +76,13 @@ export class ExpressFramework extends BaseFramework {
    */
   getRoutes() {
     return this.routes;
+  }
+
+  /**
+   * Get egress connections (for reporting).
+   */
+  getEgress() {
+    return this.egress;
   }
 
   checkHelmet() {
