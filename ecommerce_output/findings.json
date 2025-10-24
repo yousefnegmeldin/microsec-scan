@@ -1,0 +1,424 @@
+[
+  {
+    "rule": "MISSING_HELMET",
+    "severity": "high",
+    "message": "App missing helmet middleware for security headers",
+    "file": "/home/yousef/dev/E-commerce/services/Users"
+  },
+  {
+    "rule": "MISSING_RATE_LIMITING",
+    "severity": "high",
+    "message": "App missing rate limiting middleware",
+    "file": "/home/yousef/dev/E-commerce/services/Users"
+  },
+  {
+    "rule": "PERMISSIVE_CORS",
+    "severity": "medium",
+    "message": "CORS configured with overly permissive origin (allows all domains)",
+    "file": "/home/yousef/dev/E-commerce/services/Users/src/app.js",
+    "line": 11
+  },
+  {
+    "rule": "MISSING_BODY_SIZE_LIMIT",
+    "severity": "medium",
+    "message": "Body parser missing size limit (vulnerable to large payload attacks)",
+    "file": "/home/yousef/dev/E-commerce/services/Users"
+  },
+  {
+    "rule": "UNPROTECTED_ROUTE",
+    "severity": "high",
+    "message": "Sensitive route GET /users/me lacks authentication",
+    "file": "/home/yousef/dev/E-commerce/services/Users/src/app.js",
+    "line": 98
+  },
+  {
+    "rule": "UNPROTECTED_ROUTE",
+    "severity": "high",
+    "message": "Sensitive route PATCH /users/me/edit lacks authentication",
+    "file": "/home/yousef/dev/E-commerce/services/Users/src/app.js",
+    "line": 131
+  },
+  {
+    "rule": "UNPROTECTED_ROUTE",
+    "severity": "high",
+    "message": "Sensitive route GET /users/by-keycloak-id/:keycloakUserId lacks authentication",
+    "file": "/home/yousef/dev/E-commerce/services/Users/src/app.js",
+    "line": 168
+  },
+  {
+    "rule": "MISSING_AUTHENTICATION",
+    "severity": "high",
+    "message": "No authentication middleware detected",
+    "file": "/home/yousef/dev/E-commerce/services/Users"
+  },
+  {
+    "rule": "MISSING_HELMET",
+    "severity": "high",
+    "message": "App missing helmet middleware for security headers",
+    "file": "/home/yousef/dev/E-commerce/services/Shipping"
+  },
+  {
+    "rule": "MISSING_RATE_LIMITING",
+    "severity": "high",
+    "message": "App missing rate limiting middleware",
+    "file": "/home/yousef/dev/E-commerce/services/Shipping"
+  },
+  {
+    "rule": "MISSING_BODY_SIZE_LIMIT",
+    "severity": "medium",
+    "message": "Body parser missing size limit (vulnerable to large payload attacks)",
+    "file": "/home/yousef/dev/E-commerce/services/Shipping"
+  },
+  {
+    "rule": "UNPROTECTED_ROUTE",
+    "severity": "high",
+    "message": "Sensitive route POST /create lacks authentication",
+    "file": "/home/yousef/dev/E-commerce/services/Shipping/src/routes/shipping.js",
+    "line": 21
+  },
+  {
+    "rule": "MISSING_AUTHENTICATION",
+    "severity": "high",
+    "message": "No authentication middleware detected",
+    "file": "/home/yousef/dev/E-commerce/services/Shipping"
+  },
+  {
+    "rule": "MISSING_HELMET",
+    "severity": "high",
+    "message": "App missing helmet middleware for security headers",
+    "file": "/home/yousef/dev/E-commerce/services/Payment"
+  },
+  {
+    "rule": "MISSING_RATE_LIMITING",
+    "severity": "high",
+    "message": "App missing rate limiting middleware",
+    "file": "/home/yousef/dev/E-commerce/services/Payment"
+  },
+  {
+    "rule": "MISSING_BODY_SIZE_LIMIT",
+    "severity": "medium",
+    "message": "Body parser missing size limit (vulnerable to large payload attacks)",
+    "file": "/home/yousef/dev/E-commerce/services/Payment"
+  },
+  {
+    "rule": "UNPROTECTED_ROUTE",
+    "severity": "high",
+    "message": "Sensitive route USE /payments lacks authentication",
+    "file": "/home/yousef/dev/E-commerce/services/Payment/src/app.js",
+    "line": 11
+  },
+  {
+    "rule": "MISSING_AUTHENTICATION",
+    "severity": "high",
+    "message": "No authentication middleware detected",
+    "file": "/home/yousef/dev/E-commerce/services/Payment"
+  },
+  {
+    "rule": "MISSING_HELMET",
+    "severity": "high",
+    "message": "App missing helmet middleware for security headers",
+    "file": "/home/yousef/dev/E-commerce/services/Notifications"
+  },
+  {
+    "rule": "MISSING_RATE_LIMITING",
+    "severity": "high",
+    "message": "App missing rate limiting middleware",
+    "file": "/home/yousef/dev/E-commerce/services/Notifications"
+  },
+  {
+    "rule": "MISSING_BODY_SIZE_LIMIT",
+    "severity": "medium",
+    "message": "Body parser missing size limit (vulnerable to large payload attacks)",
+    "file": "/home/yousef/dev/E-commerce/services/Notifications"
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_ENDPOINT",
+    "severity": "high",
+    "message": "Potentially exposed debug/internal endpoint detected",
+    "file": "/home/yousef/dev/E-commerce/services/Notifications/src/routes/notifications.js",
+    "line": 48
+  },
+  {
+    "rule": "UNPROTECTED_ROUTE",
+    "severity": "high",
+    "message": "Sensitive route POST /test/payment lacks authentication",
+    "file": "/home/yousef/dev/E-commerce/services/Notifications/src/routes/notifications.js",
+    "line": 48
+  },
+  {
+    "rule": "MISSING_AUTHENTICATION",
+    "severity": "high",
+    "message": "No authentication middleware detected",
+    "file": "/home/yousef/dev/E-commerce/services/Notifications"
+  },
+  {
+    "rule": "MISSING_HELMET",
+    "severity": "high",
+    "message": "App missing helmet middleware for security headers",
+    "file": "/home/yousef/dev/E-commerce/services/Auth"
+  },
+  {
+    "rule": "MISSING_RATE_LIMITING",
+    "severity": "high",
+    "message": "App missing rate limiting middleware",
+    "file": "/home/yousef/dev/E-commerce/services/Auth"
+  },
+  {
+    "rule": "PERMISSIVE_CORS",
+    "severity": "medium",
+    "message": "CORS configured with overly permissive origin (allows all domains)",
+    "file": "/home/yousef/dev/E-commerce/services/Auth/src/app.js",
+    "line": 12
+  },
+  {
+    "rule": "MISSING_BODY_SIZE_LIMIT",
+    "severity": "medium",
+    "message": "Body parser missing size limit (vulnerable to large payload attacks)",
+    "file": "/home/yousef/dev/E-commerce/services/Auth"
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_ENDPOINT",
+    "severity": "high",
+    "message": "Potentially exposed debug/internal endpoint detected",
+    "file": "/home/yousef/dev/E-commerce/services/Auth/src/routes/auth.routes.js",
+    "line": 20
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_ENDPOINT",
+    "severity": "high",
+    "message": "Potentially exposed debug/internal endpoint detected",
+    "file": "/home/yousef/dev/E-commerce/services/Auth/src/routes/auth.routes.js",
+    "line": 112
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_ENDPOINT",
+    "severity": "high",
+    "message": "Potentially exposed debug/internal endpoint detected",
+    "file": "/home/yousef/dev/E-commerce/services/Auth/src/routes/auth.routes.js",
+    "line": 145
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "rabbitmq container runs as root",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 5
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "keycloak container runs as root",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 23
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "auth container runs as root",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 46
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "auth-mongo container runs as root",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 56
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "payment container runs as root",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 95
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "payment-mongo container runs as root",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 103
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "notifications container runs as root",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 141
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "notifications-mongo container runs as root",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 149
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "shipping container runs as root",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 193
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "shipping-mongo container runs as root",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 201
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "users container runs as root",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 151
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "users-mongo container runs as root",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 247
+  },
+  {
+    "rule": "DEFAULT_CREDENTIALS",
+    "severity": "high",
+    "message": "auth uses default credentials (amqp://guest:guest@rabbitmq:5672)",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 68
+  },
+  {
+    "rule": "DEFAULT_CREDENTIALS",
+    "severity": "high",
+    "message": "payment uses default credentials (amqp://guest:guest@rabbitmq:5672)",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 112
+  },
+  {
+    "rule": "DEFAULT_CREDENTIALS",
+    "severity": "high",
+    "message": "notifications uses default credentials (amqp://guest:guest@rabbitmq:5672)",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 160
+  },
+  {
+    "rule": "DEFAULT_CREDENTIALS",
+    "severity": "high",
+    "message": "shipping uses default credentials (amqp://guest:guest@rabbitmq:5672)",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 210
+  },
+  {
+    "rule": "DEFAULT_CREDENTIALS",
+    "severity": "high",
+    "message": "users uses default credentials (amqp://guest:guest@rabbitmq:5672)",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 160
+  },
+  {
+    "rule": "PLAINTEXT_BROKER",
+    "severity": "high",
+    "message": "auth connects to RabbitMQ without TLS",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 68
+  },
+  {
+    "rule": "PLAINTEXT_BROKER",
+    "severity": "high",
+    "message": "payment connects to RabbitMQ without TLS",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 112
+  },
+  {
+    "rule": "PLAINTEXT_BROKER",
+    "severity": "high",
+    "message": "notifications connects to RabbitMQ without TLS",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 160
+  },
+  {
+    "rule": "PLAINTEXT_BROKER",
+    "severity": "high",
+    "message": "shipping connects to RabbitMQ without TLS",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 210
+  },
+  {
+    "rule": "PLAINTEXT_BROKER",
+    "severity": "high",
+    "message": "users connects to RabbitMQ without TLS",
+    "file": "/home/yousef/dev/E-commerce/docker-compose.yml",
+    "line": 160
+  },
+  {
+    "rule": "PLAINTEXT_BROKER",
+    "severity": "high",
+    "message": "RabbitMQ uses non-TLS amqp:// connection",
+    "file": "/home/yousef/dev/E-commerce/services/Users/src/rmq.js",
+    "line": 8
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/home/yousef/dev/E-commerce/services/Users/src/app.js",
+    "line": 14
+  },
+  {
+    "rule": "PLAINTEXT_BROKER",
+    "severity": "high",
+    "message": "RabbitMQ uses non-TLS amqp:// connection",
+    "file": "/home/yousef/dev/E-commerce/services/Shipping/src/config.js",
+    "line": 18
+  },
+  {
+    "rule": "PLAINTEXT_BROKER",
+    "severity": "high",
+    "message": "RabbitMQ uses non-TLS amqp:// connection",
+    "file": "/home/yousef/dev/E-commerce/services/Shipping/src/broker.js",
+    "line": 16
+  },
+  {
+    "rule": "PLAINTEXT_BROKER",
+    "severity": "high",
+    "message": "RabbitMQ uses non-TLS amqp:// connection",
+    "file": "/home/yousef/dev/E-commerce/services/Payment/src/config.js",
+    "line": 14
+  },
+  {
+    "rule": "PLAINTEXT_BROKER",
+    "severity": "high",
+    "message": "RabbitMQ uses non-TLS amqp:// connection",
+    "file": "/home/yousef/dev/E-commerce/services/Payment/src/broker.js",
+    "line": 22
+  },
+  {
+    "rule": "PLAINTEXT_BROKER",
+    "severity": "high",
+    "message": "RabbitMQ uses non-TLS amqp:// connection",
+    "file": "/home/yousef/dev/E-commerce/services/Notifications/src/config.js",
+    "line": 13
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/home/yousef/dev/E-commerce/services/Notifications/src/config.js",
+    "line": 20
+  },
+  {
+    "rule": "PLAINTEXT_BROKER",
+    "severity": "high",
+    "message": "RabbitMQ uses non-TLS amqp:// connection",
+    "file": "/home/yousef/dev/E-commerce/services/Auth/src/config.js",
+    "line": 40
+  },
+  {
+    "rule": "HARDCODED_SECRET",
+    "severity": "high",
+    "message": "Potential hardcoded secret in property 'token_type'",
+    "file": "/home/yousef/dev/E-commerce/services/Auth/src/routes/auth.routes.js",
+    "line": 138
+  }
+]

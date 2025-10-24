@@ -1,9 +1,10 @@
 # MicroSec-Scan 🔒
 
-A fast, AST-based security scanner for microservices architectures. Detects vulnerabilities in Express.js, NestJS, and Fastify applications.
+A fast, AST-based security scanner for microservices architectures with **LLM-assisted refactoring**. Detects vulnerabilities and automatically generates fixes for Express.js, NestJS, and Fastify applications.
 
 ## ✨ Features
 
+### Core Scanning
 - 🔍 **AST-Based Analysis** - Accurate code parsing, no regex patterns
 - 🚀 **Framework Support** - Express, NestJS, Fastify
 - 🛡️ **Security Checks** - 25+ security rules
@@ -11,6 +12,14 @@ A fast, AST-based security scanner for microservices architectures. Detects vuln
 - 📡 **Egress Analysis** - Track outbound connections (RabbitMQ, HTTP/HTTPS)
 - 🐳 **Docker Support** - Analyze docker-compose.yml
 - 📍 **Precise Reporting** - Exact line numbers from AST
+
+### 🆕 LLM Prompt Generation
+- 🤖 **Smart Prompts** - Generates LLM-ready prompts with full context
+- 📄 **Minimal Output** - Just 1 JSON + 1 PDF (no file mess)
+- 🎯 **Grouped by File** - All vulnerabilities organized per file
+- 📋 **Complete Context** - Includes full code or relevant sections
+- 🔍 **Rule-Aware** - Uses security rule metadata for better prompts
+- 📊 **Clean PDF** - Simple, organized format for easy copying
 
 ## 🚀 Quick Start
 
@@ -36,24 +45,27 @@ npm link
 microsec-scan -p /path/to/project
 ```
 
-**With route analysis:**
-```bash
-microsec-scan -p /path/to/project --show-routes
-```
-
-**With egress analysis:**
-```bash
-microsec-scan -p /path/to/project --show-egress
-```
-
-**Full analysis (routes + egress):**
+**With route and egress analysis:**
 ```bash
 microsec-scan -p /path/to/project --show-routes --show-egress
 ```
 
-**JSON output:**
+**JSON output (for baseline):**
 ```bash
-microsec-scan -p /path/to/project --format json --output report.json
+microsec-scan -p /path/to/project --format json --output baseline.json
+```
+
+**🆕 Generate LLM prompts:**
+```bash
+# Generate prompts with full context
+microsec-scan refactor -p /path/to/project
+
+# Outputs: prompts.json + prompts.pdf
+```
+
+**🆕 Compare before/after:**
+```bash
+microsec-scan compare -b baseline.json -c current.json
 ```
 
 ## 📋 What It Detects
@@ -113,17 +125,43 @@ microsec-scan -p /path/to/project --format json --output report.json
 - [AST Parsing Guide](./docs/AST_PARSING_GUIDE.md) - Learn about AST concepts
 - [Egress Analysis](./docs/EGRESS_ANALYSIS.md) - Track outbound connections
 
-## 🛠️ CLI Options
+## 🛠️ CLI Commands
 
-```
+### `microsec-scan` - Main Scan
+```bash
+microsec-scan [options]
+
 Options:
-  -p, --path <path>        Path to scan (required)
-  --show-routes            Display route analysis table
-  --show-egress            Display egress/output connections
-  --verbose                Show detailed output
-  --format <type>          Output format: text or json (default: text)
-  --output <file>          Save report to file
-  -h, --help               Display help
+  -p, --path <dir>         Project directory to scan (default: ".")
+  -f, --format <type>      Output format: json|console (default: "console")
+  -o, --output <file>      Save report to file
+  -v, --verbose            Enable detailed logs
+  -r, --show-routes        Display route analysis table
+  -e, --show-egress        Display egress connections
+```
+
+### `microsec-scan refactor` - Generate LLM Prompts
+```bash
+microsec-scan refactor [options]
+
+Options:
+  -p, --path <dir>         Project directory to scan (default: ".")
+  -o, --output <dir>       Output directory (default: "./refactor_output")
+  -v, --verbose            Enable detailed logs
+
+Output:
+  prompts.json            JSON file with all prompts
+  prompts.pdf             PDF with formatted prompts for LLM
+```
+
+### `microsec-scan compare` - Metrics Comparison
+```bash
+microsec-scan compare [options]
+
+Options:
+  -b, --baseline <file>    Baseline scan results (required)
+  -c, --current <file>     Current scan results (required)
+  -o, --output <dir>       Output directory (default: "./metrics")
 ```
 
 ## 🔧 Supported Frameworks
@@ -136,6 +174,8 @@ Options:
 
 - Node.js >= 18
 - npm >= 8
+
+For LLM prompts: Any LLM (ChatGPT, Claude, Gemini, etc.)
 
 ## 🤝 Contributing
 

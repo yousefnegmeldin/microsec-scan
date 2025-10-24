@@ -93,6 +93,8 @@ export async function runScanner({ path: baseDir, format, output, verbose, showR
   console.log(
     chalk.cyan.bold(`✅ Scan complete: ${findings.length} issues found.\n`)
   );
+  
+  return findings;
 }
 
 /**

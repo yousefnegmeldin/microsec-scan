@@ -1,18 +1,31 @@
 {
   "name": "microsec-scan",
   "version": "1.0.0",
-  "description": "",
+  "description": "AST-based security scanner for Node.js microservices with LLM-assisted refactoring",
   "main": "src/scanner.js",
   "bin": {
     "microsec-scan": "./bin/microsec-scan.js"
   },
   "scripts": {
-    "start": "node bin/microsec-scan.js"
+    "start": "node bin/microsec-scan.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "security",
+    "scanner",
+    "microservices",
+    "ast",
+    "refactoring",
+    "llm",
+    "express",
+    "nestjs",
+    "fastify",
+    "devops",
+    "devsecops"
+  ],
+  "author": "Yousef Negmeldin",
+  "license": "MIT",
   "engines": {
     "node": ">=18.0.0"
   },
