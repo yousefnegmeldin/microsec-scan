@@ -15,7 +15,7 @@ if (majorVersion < REQUIRED_NODE_VERSION) {
 import { program } from "commander";
 import chalk from "chalk";
 import { runScanner } from "../src/scanner.js";
-import { runRefactorMode, compareMetrics } from "../src/refactorMode.js";
+import { runRefactorMode, compareMetrics, runAutoFix } from "../src/refactorMode.js";
 
 program
   .name("microsec-scan")
@@ -57,6 +57,35 @@ program
   .option("-o, --output <dir>", "Output directory", "./metrics")
   .action(async (options) => {
     await compareMetrics(options);
+  });
+
+// Fix command (LLM-based auto-fix)
+program
+  .command("fix")
+  .description("Generate automated fixes using LLM")
+  .requiredOption("-p, --path <dir>", "Project directory to scan")
+  .option("-o, --output <dir>", "Output directory for patches", "./fixes")
+  .option("--provider <name>", "LLM provider: groq, openrouter, together, openai", "groq")
+  .option("--api-key <key>", "API key (or set LLM_API_KEY/GROQ_API_KEY env var)")
+  .option("--model <name>", "LLM model to use (provider-specific)")
+  .option("-i, --interactive", "Select files interactively", true)
+  .option("--all", "Process all files without prompting", false)
+  .option("-v, --verbose", "Enable detailed logs", false)
+  .option("--rate-limit-ms <ms>", "Delay between API calls (ms)", "1000")
+  .action(async (options) => {
+    // Use env var if API key not provided
+    if (!options.apiKey) {
+      options.apiKey = process.env.LLM_API_KEY || 
+                      process.env.GROQ_API_KEY ||
+                      process.env.OPENROUTER_API_KEY ||
+                      process.env.TOGETHER_API_KEY ||
+                      process.env.OPENAI_API_KEY;
+    }
+    // If --all is specified, disable interactive
+    if (options.all) {
+      options.interactive = false;
+    }
+    await runAutoFix(options);
   });
 
 program.parse(process.argv);
