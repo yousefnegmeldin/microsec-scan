@@ -16,13 +16,13 @@ export async function runRefactorMode(options) {
   console.log(chalk.cyan.bold('\n🔧 MicroSec-Scan Refactor Mode\n'));
   
   // Step 1: Run scan to get findings
-  console.log(chalk.cyan('Step 1/2: Scanning for vulnerabilities...'));
+  console.log(chalk.cyan('Step 1/2: Scanning for vulnerabilities...\n'));
   
   const scanResults = await runScanner({
     path: options.path,
-    format: 'json',
+    format: 'console',
     output: '',
-    verbose: options.verbose,
+    verbose: false, // Don't spam verbose logs
     showRoutes: false,
     showEgress: false
   });
@@ -147,13 +147,13 @@ export async function runAutoFix(options) {
   }
   
   // Step 1: Run scan to get findings
-  console.log(chalk.cyan('Step 1/3: Scanning for vulnerabilities...'));
+  console.log(chalk.cyan('Step 1/3: Scanning for vulnerabilities...\n'));
   
   const scanResults = await runScanner({
     path: options.path,
-    format: 'json',
+    format: 'console', // Use console format, not JSON
     output: '',
-    verbose: options.verbose,
+    verbose: false, // Don't pass verbose to avoid spam
     showRoutes: false,
     showEgress: false
   });
@@ -166,9 +166,20 @@ export async function runAutoFix(options) {
   console.log(chalk.yellow(`   Found ${scanResults.length} issues\n`));
   
   // Save baseline
-  const outputDir = path.resolve(options.output);
+  // If output is the default "./fixes", put it inside the project directory
+  let outputDir;
+  if (options.output === './fixes') {
+    outputDir = path.join(path.resolve(options.path), 'fixes');
+  } else {
+    outputDir = path.resolve(options.output);
+  }
+  
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
+  }
+  
+  if (options.verbose) {
+    console.log(chalk.gray(`   Output directory: ${outputDir}`));
   }
   
   const baselinePath = path.join(outputDir, 'baseline.json');
@@ -232,6 +243,11 @@ export async function runAutoFix(options) {
   console.log(`  3. Test your app`);
   console.log(`  4. Re-scan:      ${chalk.cyan(`microsec-scan scan -p ${options.path}`)}`);
   console.log(`  5. If needed:    ${chalk.cyan(`cd ${outputDir} && ./rollback.sh`)}\n`);
+  
+  // Force exit to prevent hanging
+  setTimeout(() => {
+    process.exit(0);
+  }, 100);
   
   return result;
 }

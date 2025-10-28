@@ -36,7 +36,7 @@ export async function runScanner({ path: baseDir, format, output, verbose, showR
   });
 
   if (verbose) {
-    console.log(chalk.gray(`Found ${filteredFiles.length} files (after filtering)`));
+    console.log(chalk.gray(`📁 Found ${filteredFiles.length} files to analyze\n`));
   }
 
   // Detect microservice directories (directories with package.json)
@@ -50,36 +50,43 @@ export async function runScanner({ path: baseDir, format, output, verbose, showR
   // Analyze each microservice directory
   for (const serviceDir of serviceDirs) {
     try {
-      if (verbose) console.log(chalk.gray(`  Analyzing microservice: ${serviceDir}`));
+      const serviceName = path.basename(serviceDir);
+      if (verbose) console.log(chalk.cyan(`\n🔍 Analyzing service: ${serviceName}`));
       const results = analyzeMicroservice(serviceDir, verbose, showRoutes, showEgress);
-      if (results.length > 0 && verbose) {
-        console.log(chalk.gray(`    Found ${results.length} issues`));
+      if (results.length > 0) {
+        console.log(chalk.yellow(`   ⚠️  Found ${results.length} security issues`));
+      } else if (verbose) {
+        console.log(chalk.green(`   ✓ No issues found`));
       }
       findings.push(...results);
     } catch (err) {
       if (verbose)
-        console.error(chalk.red(`Error analyzing microservice ${serviceDir}: ${err.message}`));
+        console.error(chalk.red(`   ✗ Error: ${err.message}`));
     }
   }
 
-  // Analyze individual files
+  // Analyze individual files (only show in verbose mode, no per-file output)
+  let jsFilesAnalyzed = 0;
+  let composeFilesAnalyzed = 0;
+  
   for (const file of filteredFiles) {
     try {
       if (file.endsWith(".js") || file.endsWith(".ts")) {
-        if (verbose) console.log(chalk.gray(`  Analyzing JS/TS: ${file}`));
-        const results = analyzeSource(file, verbose);
-        if (results.length > 0 && verbose) {
-          console.log(chalk.gray(`    Found ${results.length} issues`));
-        }
+        jsFilesAnalyzed++;
+        const results = analyzeSource(file, false); // Don't pass verbose to avoid spam
         findings.push(...results);
       } else if (file.includes("docker-compose")) {
-        if (verbose) console.log(chalk.gray(`  Analyzing Docker Compose: ${file}`));
-        findings.push(...analyzeCompose(file, verbose));
+        composeFilesAnalyzed++;
+        findings.push(...analyzeCompose(file, false)); // Don't pass verbose
       }
     } catch (err) {
       if (verbose)
-        console.error(chalk.red(`Error parsing ${file}: ${err.message}`));
+        console.error(chalk.red(`   ✗ Error parsing ${path.basename(file)}: ${err.message}`));
     }
+  }
+  
+  if (verbose && (jsFilesAnalyzed > 0 || composeFilesAnalyzed > 0)) {
+    console.log(chalk.gray(`\n📊 Analyzed ${jsFilesAnalyzed} JS/TS files and ${composeFilesAnalyzed} Docker Compose files`));
   }
 
   if (format === "json") {

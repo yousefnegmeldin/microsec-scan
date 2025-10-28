@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { ExpressFramework } from "./frameworks/ExpressFramework.js";
 import { FastifyFramework } from "./frameworks/FastifyFramework.js";
 import { NestJSFramework } from "./frameworks/NestJSFramework.js";
@@ -23,7 +24,7 @@ export function analyzeMicroservice(serviceDir, verbose = false, showRoutes = fa
 
   if (detectedFrameworks.length === 0) {
     if (verbose) {
-      console.log(`    No supported framework detected`);
+      console.log(chalk.gray(`   ℹ️  No supported framework detected`));
     }
     return findings;
   }
@@ -31,10 +32,10 @@ export function analyzeMicroservice(serviceDir, verbose = false, showRoutes = fa
   // Run analysis for each detected framework
   for (const framework of detectedFrameworks) {
     if (verbose) {
-      console.log(`    ${framework.getName()} detected`);
+      console.log(chalk.gray(`   Framework: ${framework.getName()}`));
     }
 
-    const frameworkFindings = framework.analyze(verbose, showRoutes);
+    const frameworkFindings = framework.analyze(false, showRoutes); // Don't pass verbose to framework
     findings.push(...frameworkFindings);
 
     // Display route analysis if requested and available

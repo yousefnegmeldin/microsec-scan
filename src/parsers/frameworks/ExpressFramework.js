@@ -47,6 +47,9 @@ export class ExpressFramework extends BaseFramework {
       this.readFile.bind(this)
     );
     this.egress = egressAnalyzer.analyze();
+    
+    // Add inter-service security findings from egress analyzer
+    findings.push(...egressAnalyzer.getFindings());
 
     // Run traditional checks
     findings.push(...this.checkHelmet());
@@ -57,16 +60,6 @@ export class ExpressFramework extends BaseFramework {
 
     // Run route-level authentication checks
     findings.push(...this.checkRouteAuthentication());
-
-    if (verbose) {
-      console.log(`    Express checks: ${findings.length} issues found`);
-      if (this.routes) {
-        console.log(`    Routes detected: ${this.routes.getAll().length}`);
-      }
-      if (this.egress) {
-        console.log(`    Egress connections: ${this.egress.getAll().length}`);
-      }
-    }
 
     return findings;
   }

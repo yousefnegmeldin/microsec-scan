@@ -93,6 +93,91 @@ function checkPlaintextBroker(file, rawContent, doc) {
 }
 
 /**
+ * Checks for services with excessive network access (violates least privilege).
+ */
+function checkExcessiveNetworkAccess(file, rawContent, doc) {
+  const findings = [];
+  
+  for (const [svc, cfg] of Object.entries(doc.services || {})) {
+    const serviceLine = findLineNumber(rawContent, `${svc}:`);
+    
+    if (cfg.networks) {
+      const networks = Array.isArray(cfg.networks) 
+        ? cfg.networks 
+        : Object.keys(cfg.networks);
+      
+      if (networks.length > 2) {
+        findings.push(createFinding(
+          "EXCESSIVE_SERVICE_TRUST",
+          file,
+          serviceLine,
+          `${svc} has access to ${networks.length} networks (${networks.join(', ')}). Consider least privilege principle.`
+        ));
+      }
+    }
+  }
+  
+  return findings;
+}
+
+/**
+ * Checks for shared RabbitMQ credentials across services.
+ */
+function checkSharedBrokerCredentials(file, rawContent, doc) {
+  const findings = [];
+  const credentialMap = new Map();
+  
+  // Build map of credentials to services
+  for (const [svc, cfg] of Object.entries(doc.services || {})) {
+    if (cfg.environment) {
+      let rabbitUser = null;
+      
+      // Check for explicit user env var
+      rabbitUser = cfg.environment.RABBITMQ_USER || cfg.environment.RABBITMQ_USERNAME;
+      
+      // If not found, parse from connection string
+      if (!rabbitUser) {
+        const connectionString = cfg.environment.RABBITMQ_URL || 
+                                cfg.environment.RABBITMQ_URI || 
+                                cfg.environment.AMQP_URL;
+        
+        if (connectionString && typeof connectionString === 'string') {
+          // Parse amqp://user:pass@host:port format
+          const match = connectionString.match(/amqps?:\/\/([^:]+):[^@]+@/);
+          if (match) {
+            rabbitUser = match[1];
+          }
+        }
+      }
+      
+      if (rabbitUser && typeof rabbitUser === 'string') {
+        if (!credentialMap.has(rabbitUser)) {
+          credentialMap.set(rabbitUser, []);
+        }
+        credentialMap.get(rabbitUser).push(svc);
+      }
+    }
+  }
+  
+  // Flag credentials shared by multiple services
+  for (const [user, services] of credentialMap.entries()) {
+    if (services.length > 1) {
+      for (const svc of services) {
+        const serviceLine = findLineNumber(rawContent, `${svc}:`);
+        findings.push(createFinding(
+          "SHARED_BROKER_CREDENTIALS",
+          file,
+          serviceLine,
+          `${svc} shares RabbitMQ credentials '${user}' with ${services.length - 1} other service(s): ${services.filter(s => s !== svc).join(', ')}`
+        ));
+      }
+    }
+  }
+  
+  return findings;
+}
+
+/**
  * Analyzes docker-compose.yml for security issues.
  */
 export function analyzeCompose(file, verbose = false) {
@@ -105,14 +190,14 @@ export function analyzeCompose(file, verbose = false) {
     const rootContainerFindings = checkRootContainers(file, rawContent, doc);
     const defaultCredFindings = checkDefaultCredentials(file, rawContent, doc);
     const plaintextBrokerFindings = checkPlaintextBroker(file, rawContent, doc);
-    
-    if (verbose) {
-      console.log(`    RootContainers: ${rootContainerFindings.length}, DefaultCreds: ${defaultCredFindings.length}, PlaintextBroker: ${plaintextBrokerFindings.length}`);
-    }
+    const excessiveNetworkFindings = checkExcessiveNetworkAccess(file, rawContent, doc);
+    const sharedCredsFindings = checkSharedBrokerCredentials(file, rawContent, doc);
     
     findings.push(...rootContainerFindings);
     findings.push(...defaultCredFindings);
     findings.push(...plaintextBrokerFindings);
+    findings.push(...excessiveNetworkFindings);
+    findings.push(...sharedCredsFindings);
   } catch (err) {
     if (verbose) {
       console.error(`Error analyzing compose file: ${err.message}`);

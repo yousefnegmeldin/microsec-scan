@@ -140,6 +140,38 @@ export const RULES = {
     severity: "info",
     description: "Secure outbound connection",
   },
+
+  // Inter-Service Security Rules (Phase 2)
+  MISSING_SERVICE_AUTH: {
+    id: "MISSING_SERVICE_AUTH",
+    severity: "critical",
+    description: "Service-to-service call without authentication (no JWT, mTLS, or API key header)",
+  },
+  MISSING_MESSAGE_VALIDATION: {
+    id: "MISSING_MESSAGE_VALIDATION",
+    severity: "medium",
+    description: "RabbitMQ message lacks schema validation (no JSON Schema, Avro, or Protobuf)",
+  },
+  EXCESSIVE_SERVICE_TRUST: {
+    id: "EXCESSIVE_SERVICE_TRUST",
+    severity: "high",
+    description: "Service has unnecessary network access to other services (violates least privilege)",
+  },
+  MISSING_MUTUAL_TLS: {
+    id: "MISSING_MUTUAL_TLS",
+    severity: "high",
+    description: "Service-to-service communication without mutual TLS (mTLS)",
+  },
+  SHARED_BROKER_CREDENTIALS: {
+    id: "SHARED_BROKER_CREDENTIALS",
+    severity: "high",
+    description: "Multiple services sharing same RabbitMQ credentials (violates isolation)",
+  },
+  MISSING_CIRCUIT_BREAKER: {
+    id: "MISSING_CIRCUIT_BREAKER",
+    severity: "medium",
+    description: "Service-to-service call without circuit breaker pattern (resilience risk)",
+  },
 };
 
 /**

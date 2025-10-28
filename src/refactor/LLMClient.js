@@ -33,17 +33,27 @@ export class LLMClient {
         break;
         
       case 'openrouter':
+        // OpenRouter requires specific headers for API key validation
+        // Note: You must add your site URL at https://openrouter.ai/settings/limits
+        
         this.client = new OpenAI({ 
           apiKey,
           baseURL: 'https://openrouter.ai/api/v1',
           defaultHeaders: {
-            'HTTP-Referer': 'https://github.com/yousef/microsec-scan',
-            'X-Title': 'MicroSec-Scan Security Fixer'
-          }
+            'HTTP-Referer': options.siteUrl || 'https://github.com/yousefnegmeldin/microservices-security-scanner',
+            'X-Title': 'MicroSec-Scan Security Fixer',
+          },
+          dangerouslyAllowBrowser: false
         });
         // Use paid version - much faster! (~$0.59/1M tokens, same as Groq)
         this.model = options.model || 'meta-llama/llama-3.3-70b-instruct';
         this.costPer1M = 0.59;
+        
+        console.log(chalk.cyan(`\n🔧 LLM Provider: OpenRouter`));
+        console.log(chalk.gray(`   Model: ${this.model}`));
+        console.log(chalk.gray(`   API Key: ${apiKey.substring(0, 20)}...`));
+        console.log(chalk.gray(`   Base URL: https://openrouter.ai/api/v1`));
+        console.log(chalk.gray(`   HTTP-Referer: ${options.siteUrl || 'https://github.com/yousefnegmeldin/microservices-security-scanner'}\n`));
         break;
         
       case 'together':
@@ -72,9 +82,7 @@ export class LLMClient {
   async generateBatchFixes(findings, codeContext) {
     const fileName = path.basename(codeContext.filePath);
     
-    if (this.verbose) {
-      console.log(chalk.gray(`  🤖 Generating ${findings.length} fixes for ${fileName}...`));
-    }
+    console.log(chalk.gray(`  🤖 Generating ${findings.length} fixes for ${fileName}...`));
 
     const prompt = this.buildBatchPrompt(findings, codeContext);
     const systemPrompt = this.getSystemPrompt();
@@ -83,14 +91,20 @@ export class LLMClient {
     const estimatedInputTokens = Math.ceil((systemPrompt.length + prompt.length) / 4);
     
     if (this.verbose) {
-      console.log(chalk.gray(`     📤 API Call → ${this.model}`));
-      console.log(chalk.gray(`     📊 Est. input: ~${estimatedInputTokens.toLocaleString()} tokens`));
+      console.log(chalk.gray(`     Model: ${this.model}`));
+      console.log(chalk.gray(`     Input: ~${estimatedInputTokens.toLocaleString()} tokens`));
     }
     
     const startTime = Date.now();
     
     try {
-      const response = await this.client.chat.completions.create({
+      // Add timeout to prevent hanging
+      const timeoutMs = 120000; // 2 minutes
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error(`API call timed out after ${timeoutMs/1000}s`)), timeoutMs)
+      );
+      
+      const apiPromise = this.client.chat.completions.create({
         model: this.model,
         messages: [
           { role: 'system', content: systemPrompt },
@@ -99,19 +113,16 @@ export class LLMClient {
         temperature: this.temperature,
         max_tokens: this.maxTokens,
       });
+      
+      const response = await Promise.race([apiPromise, timeoutPromise]);
 
       const result = this.parseBatchResponse(response.choices[0].message.content, findings, codeContext);
       
-      const duration = ((Date.now() - startTime) / 1000).toFixed(2);
+      const duration = ((Date.now() - startTime) / 1000).toFixed(1);
       const usage = response.usage;
       const cost = this.calculateCost(usage?.total_tokens || 0);
       
-      if (this.verbose) {
-        console.log(chalk.green(`  ✓ Generated ${result.length} fixes`));
-        console.log(chalk.gray(`     ⏱️  Duration: ${duration}s`));
-        console.log(chalk.gray(`     📊 Tokens: ${usage?.prompt_tokens || 0} in + ${usage?.completion_tokens || 0} out = ${usage?.total_tokens || 0} total`));
-        console.log(chalk.gray(`     💰 Cost: $${cost}`));
-      }
+      console.log(chalk.green(`     ✓ Generated ${result.length} fixes in ${duration}s (${usage?.total_tokens || 0} tokens, $${cost})`));
 
       return {
         fixes: result,
@@ -119,6 +130,27 @@ export class LLMClient {
       };
     } catch (error) {
       console.error(chalk.red(`  ✗ Failed to generate batch fixes: ${error.message}`));
+      
+      // Provide helpful debugging for common errors
+      if (error.message.includes('401') || error.message.includes('Invalid API Key')) {
+        console.error(chalk.yellow(`\n  ℹ️  Troubleshooting tips for ${this.provider}:`));
+        
+        if (this.provider === 'openrouter') {
+          console.error(chalk.yellow(`     1. ✅ API Key format is correct: ${this.apiKey.substring(0, 10)}...`));
+          console.error(chalk.red(`     2. ❌ REQUIRED: Add your site URL in OpenRouter dashboard`));
+          console.error(chalk.cyan(`        → Go to: https://openrouter.ai/settings/limits`));
+          console.error(chalk.cyan(`        → Add URL: https://github.com/yousefnegmeldin/microservices-security-scanner`));
+          console.error(chalk.cyan(`        → Save and wait ~1 minute for it to activate`));
+          console.error(chalk.yellow(`     3. Check your account has credits: https://openrouter.ai/credits`));
+          console.error(chalk.gray(`\n     Alternative: Use Groq instead (no site URL required)`));
+          console.error(chalk.gray(`        export GROQ_API_KEY=your_key`));
+          console.error(chalk.gray(`        microsec-scan fix --provider groq ...`));
+        } else {
+          console.error(chalk.yellow(`     1. Verify API key format: ${this.apiKey.substring(0, 10)}...`));
+          console.error(chalk.yellow(`     2. Check account has credits/quota`));
+        }
+      }
+      
       throw error;
     }
   }
@@ -168,14 +200,31 @@ export class LLMClient {
    */
   getSystemPrompt() {
     return `You are a security expert specializing in Node.js microservices.
-Your task is to fix security vulnerabilities while:
-1. Preserving existing functionality
-2. Following the framework's idioms (Express/NestJS/Fastify)
-3. Adding minimal code changes
-4. Including necessary imports at the top
-5. Maintaining existing code style and formatting
 
-Output ONLY the fixed code block in markdown format without additional explanations.
+CRITICAL RULES - YOU MUST FOLLOW THESE EXACTLY:
+1. Make ONLY the minimal security changes required - nothing else
+2. DO NOT rename variables, functions, or change code structure
+3. DO NOT change environment variable names (e.g., keep RABBITMQ_URI as RABBITMQ_URI)
+4. DO NOT remove comments or documentation
+5. DO NOT change formatting, indentation, or code style
+6. DO NOT add new features or "improvements" beyond security
+7. ONLY fix the specific security vulnerability mentioned
+
+ALLOWED CHANGES:
+- Change insecure protocols (http → https, amqp → amqps)
+- Add missing security headers/middleware
+- Add authentication/authorization checks
+- Fix hardcoded secrets
+- Add input validation
+
+FORBIDDEN CHANGES:
+- Renaming variables or functions
+- Changing environment variable names
+- Removing comments
+- Restructuring code
+- Adding "helpful" features
+
+Output ONLY the fixed code block in markdown format without explanations.
 Use \`\`\`javascript for JavaScript/TypeScript code.`;
   }
 
@@ -207,9 +256,15 @@ ${context.fullFile || context.code}
     });
 
     prompt += `
-Provide the complete fixed file that addresses ALL issues above.
-Include all necessary imports and dependencies.
-Maintain the existing code structure and style.
+IMPORTANT INSTRUCTIONS:
+- Fix ONLY the security issues listed above
+- DO NOT rename any variables, functions, or environment variable names
+- DO NOT remove any comments or documentation
+- DO NOT change code structure or formatting
+- Keep ALL existing variable names exactly as they are (e.g., RABBITMQ_URI stays RABBITMQ_URI, not RABBITMQ_URL)
+- Make the MINIMAL changes required to fix the security issues
+
+Provide the complete fixed file with ONLY security changes applied.
 Return ONLY the complete fixed code in a single code block.`;
 
     return prompt;
@@ -277,9 +332,10 @@ Maintain the same code structure and style.`;
 - Example: const secret = process.env.JWT_SECRET`,
 
       'PLAINTEXT_BROKER': `Enable TLS for RabbitMQ connections.
-- Replace amqp:// with amqps://
-- Use environment variable for connection string
-- Example: const url = process.env.RABBITMQ_URL || 'amqps://...'`,
+- ONLY change amqp:// to amqps:// in the connection string
+- DO NOT rename environment variables (keep RABBITMQ_URI as RABBITMQ_URI, not RABBITMQ_URL)
+- DO NOT rename local variables
+- Example: Change 'amqp://guest:guest@rabbitmq:5672' to 'amqps://guest:guest@rabbitmq:5672'`,
 
       'INSECURE_HTTP': `Use HTTPS instead of HTTP for external connections.
 - Replace http:// with https://
