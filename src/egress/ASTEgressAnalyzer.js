@@ -94,7 +94,20 @@ export class ASTEgressAnalyzer {
       const method = callee.property.name;
       const rabbitMQMethods = ['publish', 'sendToQueue', 'send', 'assertQueue', 'consume', 'assertExchange', 'bindQueue'];
       
-      if (rabbitMQMethods.includes(method)) {
+      // Only flag if it's likely a RabbitMQ channel (not Express res, WebSocket, etc.)
+      const objectName = callee.object.name;
+      const isLikelyRabbitMQ = objectName && (
+        objectName.includes('channel') || 
+        objectName.includes('queue') || 
+        objectName.includes('rabbit') ||
+        objectName.includes('amqp')
+      );
+      
+      // For 'send' method, be extra strict since it's common in Express/WebSocket
+      const isSendMethod = method === 'send';
+      const shouldCheck = isSendMethod ? isLikelyRabbitMQ : rabbitMQMethods.includes(method);
+      
+      if (shouldCheck && rabbitMQMethods.includes(method)) {
         // Extract queue/exchange name from first argument
         const firstArg = path.node.arguments[0];
         let target = '';
