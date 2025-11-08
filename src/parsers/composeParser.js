@@ -178,6 +178,134 @@ function checkSharedBrokerCredentials(file, rawContent, doc) {
 }
 
 /**
+ * Checks for exposed internal ports (0.0.0.0 binding).
+ */
+function checkExposedInternalPorts(file, rawContent, doc) {
+  const findings = [];
+  
+  for (const [svc, cfg] of Object.entries(doc.services || {})) {
+    const serviceLine = findLineNumber(rawContent, `${svc}:`);
+    
+    if (cfg.ports) {
+      for (const portMapping of cfg.ports) {
+        const portStr = String(portMapping);
+        
+        // Check for 0.0.0.0 binding or ports without host restriction
+        // Format: "0.0.0.0:8080:8080" or "8080:8080" (which defaults to 0.0.0.0)
+        if (portStr.includes('0.0.0.0') || /^\d+:\d+$/.test(portStr)) {
+          const line = findLineNumber(rawContent, portStr, serviceLine ? serviceLine - 1 : 0);
+          findings.push(createFinding(
+            "EXPOSED_INTERNAL_PORT",
+            file,
+            line,
+            `${svc} exposes port ${portStr} to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.`
+          ));
+        }
+      }
+    }
+  }
+  
+  return findings;
+}
+
+/**
+ * Checks for service registry (Consul/Eureka) without authentication.
+ */
+function checkServiceRegistrySecurity(file, rawContent, doc) {
+  const findings = [];
+  
+  for (const [svc, cfg] of Object.entries(doc.services || {})) {
+    const serviceLine = findLineNumber(rawContent, `${svc}:`);
+    
+    // Check if this is a Consul or Eureka service
+    const isConsul = cfg.image && cfg.image.includes('consul');
+    const isEureka = cfg.image && cfg.image.includes('eureka') || 
+                     (cfg.environment && JSON.stringify(cfg.environment).includes('eureka'));
+    
+    if (isConsul || isEureka) {
+      const registryType = isConsul ? 'Consul' : 'Eureka';
+      let hasAuth = false;
+      
+      // Check for authentication configuration
+      if (cfg.environment) {
+        const envVars = JSON.stringify(cfg.environment).toLowerCase();
+        hasAuth = envVars.includes('acl') || 
+                  envVars.includes('token') || 
+                  envVars.includes('auth') ||
+                  envVars.includes('security');
+      }
+      
+      // Check command args for ACL configuration
+      if (cfg.command) {
+        const cmdStr = String(cfg.command).toLowerCase();
+        hasAuth = hasAuth || cmdStr.includes('acl') || cmdStr.includes('auth');
+      }
+      
+      if (!hasAuth) {
+        findings.push(createFinding(
+          "SERVICE_REGISTRY_POISONING",
+          file,
+          serviceLine,
+          `${svc} (${registryType}) lacks authentication/ACL configuration - vulnerable to registry poisoning attacks`
+        ));
+      }
+    }
+  }
+  
+  return findings;
+}
+
+/**
+ * Checks for service mesh (Istio/Linkerd) without TLS enforcement.
+ */
+function checkServiceMeshEncryption(file, rawContent, doc) {
+  const findings = [];
+  
+  // Check if Istio or Linkerd is configured
+  const docStr = JSON.stringify(doc).toLowerCase();
+  const hasIstio = docStr.includes('istio') || docStr.includes('istiod');
+  const hasLinkerd = docStr.includes('linkerd');
+  
+  if (hasIstio || hasLinkerd) {
+    const meshType = hasIstio ? 'Istio' : 'Linkerd';
+    let hasMTLS = false;
+    
+    // Check for mTLS configuration in services
+    for (const [svc, cfg] of Object.entries(doc.services || {})) {
+      if (cfg.environment) {
+        const envVars = JSON.stringify(cfg.environment).toLowerCase();
+        if (envVars.includes('mtls') || 
+            envVars.includes('mutual_tls') ||
+            envVars.includes('tls_mode') ||
+            envVars.includes('peer_authentication')) {
+          hasMTLS = true;
+          break;
+        }
+      }
+      
+      if (cfg.labels) {
+        const labels = JSON.stringify(cfg.labels).toLowerCase();
+        if (labels.includes('mtls') || labels.includes('security.istio.io')) {
+          hasMTLS = true;
+          break;
+        }
+      }
+    }
+    
+    if (!hasMTLS) {
+      findings.push(createFinding(
+        "UNENCRYPTED_SERVICE_MESH",
+        file,
+        1,
+        `${meshType} service mesh detected but mTLS/TLS enforcement not configured - traffic between services is unencrypted`
+      ));
+    }
+  }
+  
+  return findings;
+}
+
+/**
  * Analyzes docker-compose.yml for security issues.
  */
 export function analyzeCompose(file, verbose = false) {
@@ -192,12 +320,18 @@ export function analyzeCompose(file, verbose = false) {
     const plaintextBrokerFindings = checkPlaintextBroker(file, rawContent, doc);
     const excessiveNetworkFindings = checkExcessiveNetworkAccess(file, rawContent, doc);
     const sharedCredsFindings = checkSharedBrokerCredentials(file, rawContent, doc);
+    const exposedPortFindings = checkExposedInternalPorts(file, rawContent, doc);
+    const registrySecurityFindings = checkServiceRegistrySecurity(file, rawContent, doc);
+    const meshEncryptionFindings = checkServiceMeshEncryption(file, rawContent, doc);
     
     findings.push(...rootContainerFindings);
     findings.push(...defaultCredFindings);
     findings.push(...plaintextBrokerFindings);
     findings.push(...excessiveNetworkFindings);
     findings.push(...sharedCredsFindings);
+    findings.push(...exposedPortFindings);
+    findings.push(...registrySecurityFindings);
+    findings.push(...meshEncryptionFindings);
   } catch (err) {
     if (verbose) {
       console.error(`Error analyzing compose file: ${err.message}`);

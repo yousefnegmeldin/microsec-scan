@@ -125,20 +125,139 @@ export async function compareMetrics(options) {
 }
 
 /**
+ * Prompt user to select LLM provider
+ */
+async function promptForProvider() {
+  const readline = await import('readline');
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  const question = (query) => new Promise(resolve => rl.question(query, resolve));
+
+  console.log(chalk.cyan.bold('🤖 Select LLM Provider\n'));
+  console.log(chalk.gray('═'.repeat(60)));
+  
+  const providers = [
+    { value: 'groq', name: 'Groq', model: 'llama-3.1-70b-versatile', cost: 'FREE (rate limited)', speed: '⚡ Very Fast' },
+    { value: 'openrouter', name: 'OpenRouter', model: 'meta-llama/llama-3.1-70b-instruct', cost: '$0.52/1M tokens', speed: '⚡ Fast' },
+    { value: 'together', name: 'Together AI', model: 'meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo', cost: '$0.88/1M tokens', speed: '⚡ Fast' },
+    { value: 'openai', name: 'OpenAI', model: 'gpt-4o-mini', cost: '$0.15/1M tokens', speed: '🐢 Slower but high quality' }
+  ];
+  
+  providers.forEach((p, idx) => {
+    console.log(`\n${chalk.bold.white(idx + 1 + '.')} ${chalk.cyan(p.name)}`);
+    console.log(chalk.gray(`   Model: ${p.model}`));
+    console.log(chalk.gray(`   Cost: ${p.cost}`));
+    console.log(chalk.gray(`   Speed: ${p.speed}`));
+  });
+  
+  console.log(chalk.gray('\n' + '═'.repeat(60)));
+  console.log(chalk.bold('\n💡 Recommendation:'));
+  console.log(chalk.gray('  • Start with Groq (free, very fast)'));
+  console.log(chalk.gray('  • Use OpenAI for best quality\n'));
+
+  const answer = await question(chalk.cyan('❯ Select provider (1-4): '));
+  rl.close();
+
+  const num = parseInt(answer);
+  if (num >= 1 && num <= 4) {
+    const selected = providers[num - 1];
+    console.log(chalk.green(`\n✓ Selected: ${selected.name}\n`));
+    return selected.value;
+  }
+
+  console.log(chalk.yellow('\nInvalid selection, defaulting to Groq\n'));
+  return 'groq';
+}
+
+/**
+ * Prompt user for API key
+ */
+async function promptForApiKey(provider) {
+  const readline = await import('readline');
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  const question = (query) => new Promise(resolve => rl.question(query, resolve));
+
+  const providerNames = {
+    'groq': 'Groq',
+    'openrouter': 'OpenRouter',
+    'together': 'Together AI',
+    'openai': 'OpenAI'
+  };
+
+  const signupUrls = {
+    'groq': 'https://console.groq.com/keys',
+    'openrouter': 'https://openrouter.ai/keys',
+    'together': 'https://api.together.xyz/settings/api-keys',
+    'openai': 'https://platform.openai.com/api-keys'
+  };
+
+  const keyPrefixes = {
+    'groq': 'gsk_',
+    'openrouter': 'sk-or-v1-',
+    'together': '',
+    'openai': 'sk-'
+  };
+
+  console.log(chalk.yellow.bold(`\n🔑 API Key Required for ${providerNames[provider]}\n`));
+  console.log(chalk.gray('Get your API key from:'));
+  console.log(chalk.cyan(`   ${signupUrls[provider]}\n`));
+
+  const apiKey = await question(chalk.cyan('❯ Enter your API key: '));
+  rl.close();
+
+  if (!apiKey || apiKey.trim().length === 0) {
+    console.log(chalk.red('\n❌ API key cannot be empty\n'));
+    process.exit(1);
+  }
+
+  // Basic validation
+  const trimmedKey = apiKey.trim();
+  const expectedPrefix = keyPrefixes[provider];
+  
+  if (expectedPrefix && !trimmedKey.startsWith(expectedPrefix)) {
+    console.log(chalk.yellow(`\n⚠️  Warning: API key doesn't start with expected prefix "${expectedPrefix}"`));
+    console.log(chalk.yellow('   The key might be invalid, but proceeding anyway...\n'));
+  } else {
+    console.log(chalk.green('\n✓ API key received\n'));
+  }
+
+  return trimmedKey;
+}
+
+/**
  * Run LLM-based auto-fix mode
  */
 export async function runAutoFix(options) {
   console.log(chalk.cyan.bold('\n🤖 MicroSec-Scan Auto-Fix Mode\n'));
   
-  // Validate API key
+  // If provider not specified via CLI, prompt user
+  if (!options.provider) {
+    options.provider = await promptForProvider();
+  }
+  
+  // Detect API key from environment based on provider
   if (!options.apiKey) {
-    console.error(chalk.red('❌ Error: API key required'));
-    console.log(chalk.gray(`\nProvider: ${options.provider || 'groq'}`));
-    console.log(chalk.gray('\nSet your API key:'));
-    console.log(chalk.gray('  export OPENROUTER_API_KEY="sk-or-v1-..."  (for OpenRouter)'));
-    console.log(chalk.gray('  export GROQ_API_KEY="gsk_..."  (for Groq)'));
-    console.log(chalk.gray('  or use: --api-key your-key-here\n'));
-    process.exit(1);
+    const envVars = {
+      'groq': 'GROQ_API_KEY',
+      'openrouter': 'OPENROUTER_API_KEY',
+      'together': 'TOGETHER_API_KEY',
+      'openai': 'OPENAI_API_KEY'
+    };
+    
+    const envVar = envVars[options.provider];
+    options.apiKey = process.env[envVar];
+  }
+  
+  // If still no API key, prompt user
+  if (!options.apiKey) {
+    options.apiKey = await promptForApiKey(options.provider);
   }
   
   if (options.verbose) {

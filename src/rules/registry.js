@@ -172,6 +172,37 @@ export const RULES = {
     severity: "medium",
     description: "Service-to-service call without circuit breaker pattern (resilience risk)",
   },
+
+  MISSING_REQUEST_SIGNING: {
+    id: "MISSING_REQUEST_SIGNING",
+    severity: "high",
+    description: "HTTP requests not signed with HMAC/signature (vulnerable to tampering)",
+  },
+  SERVICE_REGISTRY_POISONING: {
+    id: "SERVICE_REGISTRY_POISONING",
+    severity: "critical",
+    description: "Service registry (Consul/Eureka) lacks authentication/validation (poisoning risk)",
+  },
+  MISSING_QUEUE_AUTHORIZATION: {
+    id: "MISSING_QUEUE_AUTHORIZATION",
+    severity: "high",
+    description: "RabbitMQ queue lacks ACL permissions (any service can access any queue)",
+  },
+  MISSING_MESSAGE_ENCRYPTION: {
+    id: "MISSING_MESSAGE_ENCRYPTION",
+    severity: "high",
+    description: "Message broker messages not encrypted at rest (sensitive data exposure)",
+  },
+  EXPOSED_INTERNAL_PORT: {
+    id: "EXPOSED_INTERNAL_PORT",
+    severity: "critical",
+    description: "Internal service port exposed to public internet (attack surface expansion)",
+  },
+  UNENCRYPTED_SERVICE_MESH: {
+    id: "UNENCRYPTED_SERVICE_MESH",
+    severity: "high",
+    description: "Service mesh (Istio/Linkerd) not enforcing TLS encryption between services",
+  },
 };
 
 /**

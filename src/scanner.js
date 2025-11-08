@@ -138,12 +138,15 @@ function printFindings(findings) {
       );
 
       for (const f of issues) {
+        // Industry-standard severity color scheme
         const color =
-          f.severity === "high"
-            ? chalk.redBright
+          f.severity === "critical"
+            ? chalk.red.bold        // Critical: Bold Red
+            : f.severity === "high"
+            ? chalk.red              // High: Red
             : f.severity === "medium"
-            ? chalk.yellowBright
-            : chalk.greenBright;
+            ? chalk.yellow           // Medium: Yellow
+            : chalk.gray;            // Low: Gray
 
         const lineInfo = f.line ? ` (line ${f.line})` : "";
         console.log(
@@ -155,5 +158,71 @@ function printFindings(findings) {
     }
   }
 
-  console.log(chalk.cyan.bold(`\n✅ Total issues: ${findings.length}\n`));
+  console.log(chalk.cyan.bold(`\n✅ Total issues: ${findings.length}`));
+  
+  // Inter-service security summary
+  printInterServiceSummary(findings);
+  console.log(); // Extra newline
+}
+
+/**
+ * Print inter-service communication vulnerability summary
+ */
+function printInterServiceSummary(findings) {
+  // Define inter-service communication rules
+  const interServiceRules = [
+    'MISSING_SERVICE_AUTH',
+    'MISSING_MESSAGE_VALIDATION',
+    'EXCESSIVE_SERVICE_TRUST',
+    'MISSING_MUTUAL_TLS',
+    'SHARED_BROKER_CREDENTIALS',
+    'MISSING_CIRCUIT_BREAKER',
+    'MISSING_REQUEST_SIGNING',
+    'SERVICE_REGISTRY_POISONING',
+    'MISSING_QUEUE_AUTHORIZATION',
+    'MISSING_MESSAGE_ENCRYPTION',
+    'EXPOSED_INTERNAL_PORT',
+    'UNENCRYPTED_SERVICE_MESH',
+    'EGRESS_INSECURE_HTTP',
+    'EGRESS_INSECURE_RABBITMQ',
+    'PLAINTEXT_BROKER'
+  ];
+  
+  // Filter inter-service findings
+  const interServiceFindings = findings.filter(f => interServiceRules.includes(f.rule));
+  
+  if (interServiceFindings.length === 0) {
+    return; // No inter-service issues
+  }
+  
+  // Group by rule and count
+  const byRule = interServiceFindings.reduce((acc, f) => {
+    acc[f.rule] = (acc[f.rule] || 0) + 1;
+    return acc;
+  }, {});
+  
+  // Sort by count (descending)
+  const sortedRules = Object.entries(byRule).sort((a, b) => b[1] - a[1]);
+  
+  console.log(chalk.yellow.bold('\n📊 Inter-Service Security Summary:'));
+  console.log(chalk.yellow(`   Total Inter-Service Issues: ${interServiceFindings.length}`));
+  console.log(chalk.gray('   ─'.repeat(40)));
+  
+  sortedRules.forEach(([rule, count]) => {
+    const finding = findings.find(f => f.rule === rule);
+    const severity = finding?.severity || 'unknown';
+    
+    // Industry-standard color scheme
+    const severityColor = severity === 'critical' ? chalk.red.bold :
+                          severity === 'high' ? chalk.red :
+                          severity === 'medium' ? chalk.yellow : 
+                          severity === 'low' ? chalk.gray : chalk.gray;
+    
+    const severityBadge = severity === 'critical' ? '🔴' :
+                          severity === 'high' ? '🟠' :
+                          severity === 'medium' ? '🟡' : 
+                          severity === 'low' ? '⚪' : '⚪';
+    
+    console.log(`   ${severityBadge} ${severityColor(rule)}: ${chalk.white(count)}`);
+  });
 }

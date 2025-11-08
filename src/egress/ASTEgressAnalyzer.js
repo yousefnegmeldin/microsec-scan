@@ -150,6 +150,26 @@ export class ASTEgressAnalyzer {
               `RabbitMQ ${method}() without schema validation (consider JSON Schema, Avro, or Protobuf)`
             ));
           }
+
+          // Check for missing message encryption
+          if (!this.hasMessageEncryption(path, file)) {
+            this.findings.push(createFinding(
+              'MISSING_MESSAGE_ENCRYPTION',
+              file,
+              path.node.loc?.start.line || null,
+              `RabbitMQ ${method}() without message encryption (data at rest vulnerability)`
+            ));
+          }
+        }
+
+        // Check for missing queue authorization on all operations
+        if (!this.hasQueueAuthorization(file)) {
+          this.findings.push(createFinding(
+            'MISSING_QUEUE_AUTHORIZATION',
+            file,
+            path.node.loc?.start.line || null,
+            `RabbitMQ ${method}() without queue-level ACL permissions configured`
+          ));
         }
       }
     }
@@ -246,6 +266,16 @@ export class ASTEgressAnalyzer {
                   `Service-to-service call to ${url} without circuit breaker pattern`
                 ));
               }
+
+              // Check for missing request signing (HMAC)
+              if (!this.hasRequestSigning(path)) {
+                this.findings.push(createFinding(
+                  'MISSING_REQUEST_SIGNING',
+                  file,
+                  path.node.loc?.start.line || null,
+                  `Service-to-service call to ${url} without request signing (HMAC/signature)`
+                ));
+              }
             }
           }
         }
@@ -314,6 +344,15 @@ export class ASTEgressAnalyzer {
                 file,
                 path.node.loc?.start.line || null,
                 `Service-to-service fetch() to ${url} without circuit breaker pattern`
+              ));
+            }
+
+            if (!this.hasRequestSigning(path)) {
+              this.findings.push(createFinding(
+                'MISSING_REQUEST_SIGNING',
+                file,
+                path.node.loc?.start.line || null,
+                `Service-to-service fetch() to ${url} without request signing`
               ));
             }
           }
@@ -683,5 +722,103 @@ export class ASTEgressAnalyzer {
     });
     
     return hasValidation;
+  }
+
+  /**
+   * Check if request has HMAC or signature-based authentication.
+   */
+  hasRequestSigning(path) {
+    const args = path.node.arguments;
+    
+    // Check for signature/HMAC in headers
+    const configArg = args[1] || args[2];
+    if (configArg && configArg.type === 'ObjectExpression') {
+      for (const prop of configArg.properties) {
+        if (prop.key && (prop.key.name === 'headers' || prop.key.value === 'headers')) {
+          if (prop.value.type === 'ObjectExpression') {
+            // Look for signature headers (X-Signature, X-HMAC, etc.)
+            const hasSignature = prop.value.properties.some(p => {
+              const keyName = (p.key && (p.key.name || p.key.value || '')).toLowerCase();
+              return keyName.includes('signature') || 
+                     keyName.includes('hmac') || 
+                     keyName.includes('sign') ||
+                     keyName.includes('digest');
+            });
+            if (hasSignature) return true;
+          }
+        }
+      }
+    }
+    
+    return false;
+  }
+
+  /**
+   * Check if RabbitMQ queue has ACL permissions configured.
+   */
+  hasQueueAuthorization(file) {
+    // Check if RabbitMQ connection includes user permissions setup
+    const fileContent = this.readFile(file);
+    if (!fileContent) return false;
+    
+    // Look for permission-related configuration
+    const permissionPatterns = [
+      /setPermissions/i,
+      /permissions\s*:/i,
+      /vhost/i,
+      /RABBITMQ.*PERMISSIONS/i,
+      /queue.*acl/i,
+      /access.*control/i,
+    ];
+    
+    return permissionPatterns.some(pattern => pattern.test(fileContent));
+  }
+
+  /**
+   * Check if messages are encrypted before publishing.
+   */
+  hasMessageEncryption(path, file) {
+    // Look for encryption calls before message publish
+    let current = path.parentPath;
+    
+    // Find the containing function
+    while (current && current.node.type !== 'FunctionDeclaration' && 
+           current.node.type !== 'FunctionExpression' && 
+           current.node.type !== 'ArrowFunctionExpression') {
+      current = current.parentPath;
+    }
+    
+    if (!current) return false;
+    
+    // Check if function body contains encryption calls
+    let hasEncryption = false;
+    
+    current.traverse({
+      CallExpression(encryptPath) {
+        const callee = encryptPath.node.callee;
+        
+        // Check for common encryption libraries/methods
+        if (callee.type === 'MemberExpression') {
+          const method = callee.property && callee.property.name;
+          const object = callee.object && callee.object.name;
+          
+          // crypto.encrypt, cipher.encrypt, etc.
+          if (method && (method === 'encrypt' || method === 'cipher' || method === 'createCipheriv')) {
+            hasEncryption = true;
+          }
+          
+          if (object && (object === 'crypto' || object === 'cipher')) {
+            hasEncryption = true;
+          }
+        }
+        
+        if (callee.type === 'Identifier' && 
+            (callee.name === 'encrypt' || callee.name === 'encryptMessage')) {
+          hasEncryption = true;
+        }
+      }
+    });
+    
+    return hasEncryption;
   }
 }

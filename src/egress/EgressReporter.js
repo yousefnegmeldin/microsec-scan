@@ -39,11 +39,16 @@ export class EgressReporter {
       const method = (conn.method || 'N/A').padEnd(12);
       const rule = conn.rule.padEnd(35);
       const severity = conn.getSeverity();
+      // Industry-standard severity colors
       const severityFormatted = severity === 'OK' 
-        ? chalk.green(severity.padEnd(10))
+        ? chalk.green(severity.padEnd(10))           // OK: Green
         : severity === 'CRITICAL'
-        ? chalk.red.bold(severity.padEnd(10))
-        : chalk.yellow(severity.padEnd(10));
+        ? chalk.red.bold(severity.padEnd(10))        // Critical: Bold Red
+        : severity === 'HIGH'
+        ? chalk.red(severity.padEnd(10))             // High: Red
+        : severity === 'MEDIUM'
+        ? chalk.yellow(severity.padEnd(10))          // Medium: Yellow
+        : chalk.gray(severity.padEnd(10));           // Low/Other: Gray
       const target = chalk.gray(this.truncate(conn.target, 40).padEnd(40));
 
       console.log(`   ${type} ${method} ${rule} ${severityFormatted} ${target}`);

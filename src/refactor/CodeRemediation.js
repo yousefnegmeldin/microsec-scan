@@ -120,7 +120,54 @@ export class CodeRemediation {
   }
 
   /**
-   * Interactive file selection
+   * Calculate fix difficulty based on vulnerability types
+   */
+  calculateFixDifficulty(findings) {
+    const easyRules = ['MISSING_HELMET', 'MISSING_RATE_LIMITING', 'PERMISSIVE_CORS', 'NESTJS_MISSING_HELMET', 'FASTIFY_MISSING_HELMET'];
+    const hardRules = ['HARDCODED_SECRET', 'EXPOSED_INTERNAL_ENDPOINT', 'SERVICE_REGISTRY_POISONING', 'UNENCRYPTED_SERVICE_MESH'];
+    
+    const ruleIds = findings.map(f => f.rule);
+    const easyCount = ruleIds.filter(r => easyRules.includes(r)).length;
+    const hardCount = ruleIds.filter(r => hardRules.includes(r)).length;
+    
+    if (hardCount > findings.length * 0.5) return 'HARD';
+    if (easyCount > findings.length * 0.6) return 'EASY';
+    return 'MEDIUM';
+  }
+
+  /**
+   * Get vulnerability classes (categories)
+   */
+  getVulnerabilityClasses(findings) {
+    const classes = new Set();
+    const classMap = {
+      'MISSING_HELMET': 'Security Headers',
+      'MISSING_RATE_LIMITING': 'Rate Limiting',
+      'MISSING_AUTHENTICATION': 'Authentication',
+      'PERMISSIVE_CORS': 'CORS',
+      'HARDCODED_SECRET': 'Secrets Management',
+      'INSECURE_RANDOM': 'Cryptography',
+      'EGRESS_INSECURE_HTTP': 'Network Security',
+      'EGRESS_INSECURE_RABBITMQ': 'Message Broker',
+      'MISSING_SERVICE_AUTH': 'Service-to-Service Auth',
+      'MISSING_REQUEST_SIGNING': 'Request Integrity',
+      'MISSING_QUEUE_AUTHORIZATION': 'Queue Permissions',
+      'MISSING_MESSAGE_ENCRYPTION': 'Data Encryption',
+      'EXPOSED_INTERNAL_PORT': 'Network Exposure',
+      'SERVICE_REGISTRY_POISONING': 'Service Discovery',
+      'UNENCRYPTED_SERVICE_MESH': 'Service Mesh'
+    };
+    
+    findings.forEach(f => {
+      const cls = classMap[f.rule] || 'Other';
+      classes.add(cls);
+    });
+    
+    return Array.from(classes).slice(0, 3); // Top 3 classes
+  }
+
+  /**
+   * Interactive file selection with better UI
    */
   async selectFilesToFix(byFile, projectPath) {
     const files = Object.entries(byFile);
@@ -138,37 +185,86 @@ export class CodeRemediation {
 
     const question = (query) => new Promise(resolve => rl.question(query, resolve));
 
-    console.log(chalk.cyan.bold('📋 Files with security issues:\n'));
-    files.forEach(([filePath, findings], index) => {
+    console.log(chalk.cyan.bold('\n📋 Files with Security Issues\n'));
+    console.log(chalk.gray('═'.repeat(80)));
+    
+    // Prepare file info with metadata
+    const fileInfo = files.map(([filePath, findings], index) => {
       const relative = path.relative(projectPath, filePath);
       const severity = {
+        critical: findings.filter(f => f.severity === 'critical').length,
         high: findings.filter(f => f.severity === 'high').length,
         medium: findings.filter(f => f.severity === 'medium').length,
         low: findings.filter(f => f.severity === 'low').length
       };
+      const difficulty = this.calculateFixDifficulty(findings);
+      const classes = this.getVulnerabilityClasses(findings);
       
-      console.log(chalk.gray(`  ${index + 1}. ${chalk.white(relative)}`));
-      console.log(chalk.gray(`     Issues: ${findings.length} (${chalk.red(severity.high + ' high')}, ${chalk.yellow(severity.medium + ' medium')})`));
+      return { index: index + 1, filePath, relative, findings, severity, difficulty, classes };
+    });
+    
+    // Display each file with rich information
+    fileInfo.forEach(info => {
+      const difficultyColor = info.difficulty === 'EASY' ? chalk.green : 
+                              info.difficulty === 'MEDIUM' ? chalk.yellow : chalk.red;
+      
+      console.log(`\n${chalk.bold.white(info.index + '.')} ${chalk.cyan(info.relative)}`);
+      
+      // Issues breakdown
+      const issuesParts = [];
+      if (info.severity.critical > 0) issuesParts.push(chalk.red.bold(`${info.severity.critical} critical`));
+      if (info.severity.high > 0) issuesParts.push(chalk.red(`${info.severity.high} high`));
+      if (info.severity.medium > 0) issuesParts.push(chalk.yellow(`${info.severity.medium} medium`));
+      if (info.severity.low > 0) issuesParts.push(chalk.gray(`${info.severity.low} low`));
+      
+      console.log(chalk.gray(`   Issues: ${info.findings.length} (${issuesParts.join(', ')})`))
+      console.log(chalk.gray(`   Classes: ${info.classes.join(', ')}`))
+      console.log(chalk.gray(`   Fix Difficulty: ${difficultyColor(info.difficulty)}`));
     });
 
+    console.log(chalk.gray('\n' + '═'.repeat(80)));
+    console.log(chalk.bold('\n📝 Selection Options:'));
+    console.log(chalk.gray('  • Numbers:   "1,3,5" or "1-5" (select specific files)'));
+    console.log(chalk.gray('  • Keywords:  "easy" (only EASY files), "hard" (only HARD files)'));
+    console.log(chalk.gray('  • Severity:  "critical" or "high" (files with these severities)'));
+    console.log(chalk.gray('  • Special:   "all" (all files), "none" (skip)'));
     console.log();
-    console.log(chalk.gray('Options:'));
-    console.log(chalk.gray('  • Enter file numbers (e.g., "1,3,5" or "1-5")'));
-    console.log(chalk.gray('  • Type "all" to select all files'));
-    console.log(chalk.gray('  • Type "none" or press Ctrl+C to skip\n'));
 
-    const answer = await question(chalk.cyan('Select files to fix: '));
+    const answer = await question(chalk.cyan('❯ Select files to fix: '));
     rl.close();
 
     if (!answer || answer.toLowerCase() === 'none') {
       return [];
     }
 
-    if (answer.toLowerCase() === 'all') {
+    const answerLower = answer.toLowerCase().trim();
+
+    // Handle special keywords
+    if (answerLower === 'all') {
       return files.map(([filePath]) => filePath);
     }
+    
+    if (answerLower === 'easy') {
+      return fileInfo.filter(f => f.difficulty === 'EASY').map(f => f.filePath);
+    }
+    
+    if (answerLower === 'medium') {
+      return fileInfo.filter(f => f.difficulty === 'MEDIUM').map(f => f.filePath);
+    }
+    
+    if (answerLower === 'hard') {
+      return fileInfo.filter(f => f.difficulty === 'HARD').map(f => f.filePath);
+    }
+    
+    if (answerLower === 'critical') {
+      return fileInfo.filter(f => f.severity.critical > 0).map(f => f.filePath);
+    }
+    
+    if (answerLower === 'high') {
+      return fileInfo.filter(f => f.severity.high > 0 || f.severity.critical > 0).map(f => f.filePath);
+    }
 
-    // Parse selection (e.g., "1,3,5" or "1-5")
+    // Parse numeric selection (e.g., "1,3,5" or "1-5")
     const selected = [];
     const parts = answer.split(',').map(s => s.trim());
     
