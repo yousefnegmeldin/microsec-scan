@@ -20,6 +20,16 @@ export const RULES = {
     severity: "high",
     description: "Message broker connection not encrypted (no TLS)",
   },
+  KAFKA_PLAINTEXT: {
+    id: "KAFKA_PLAINTEXT",
+    severity: "high",
+    description: "Kafka connection without SSL/TLS encryption (PLAINTEXT protocol)",
+  },
+  KAFKA_MISSING_SASL: {
+    id: "KAFKA_MISSING_SASL",
+    severity: "high",
+    description: "Kafka connection without SASL authentication",
+  },
 
   // Code-level Rules
   INSECURE_HTTP: {
@@ -130,6 +140,11 @@ export const RULES = {
     severity: "high",
     description: "RabbitMQ connection without TLS (amqp:// instead of amqps://)",
   },
+  EGRESS_INSECURE_KAFKA: {
+    id: "EGRESS_INSECURE_KAFKA",
+    severity: "high",
+    description: "Kafka connection without SSL/TLS encryption",
+  },
   EGRESS_UNENCRYPTED_EXTERNAL_API: {
     id: "EGRESS_UNENCRYPTED_EXTERNAL_API",
     severity: "critical",
@@ -151,6 +166,11 @@ export const RULES = {
     id: "MISSING_MESSAGE_VALIDATION",
     severity: "medium",
     description: "RabbitMQ message lacks schema validation (no JSON Schema, Avro, or Protobuf)",
+  },
+  KAFKA_MISSING_SCHEMA_VALIDATION: {
+    id: "KAFKA_MISSING_SCHEMA_VALIDATION",
+    severity: "medium",
+    description: "Kafka message lacks schema validation (no Avro, Protobuf, or Schema Registry)",
   },
   EXCESSIVE_SERVICE_TRUST: {
     id: "EXCESSIVE_SERVICE_TRUST",

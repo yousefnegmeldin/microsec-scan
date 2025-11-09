@@ -19,7 +19,7 @@ export class EgressReporter {
     const stats = egress.getStats();
     
     console.log(chalk.cyan(`\n📡 Egress Analysis: ${serviceName}`));
-    console.log(chalk.gray(`   Total: ${stats.total} | RabbitMQ: ${stats.rabbitmq} | HTTP: ${stats.http} | Insecure: ${stats.insecure} | External: ${stats.external}\n`));
+    console.log(chalk.gray(`   Total: ${stats.total} | RabbitMQ: ${stats.rabbitmq} | Kafka: ${stats.kafka} | HTTP: ${stats.http} | Insecure: ${stats.insecure} | External: ${stats.external}\n`));
 
     // Print table header
     const header = [

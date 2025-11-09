@@ -8,8 +8,8 @@
  */
 export class EgressConnection {
   constructor({ type, target, method, file, line, context }) {
-    this.type = type;           // 'rabbitmq', 'http', 'https', 'grpc', etc.
-    this.target = target;       // URL, queue name, or endpoint
+    this.type = type;           // 'rabbitmq', 'kafka', 'http', 'https', 'grpc', etc.
+    this.target = target;       // URL, queue name, topic, or endpoint
     this.method = method;       // HTTP method, 'publish', 'send', etc.
     this.file = file;           // Source file
     this.line = line;           // Line number
@@ -37,6 +37,11 @@ export class EgressConnection {
       return true;
     }
     
+    // For Kafka, operations are neutral - security depends on client config
+    if (this.type === 'kafka') {
+      return true;
+    }
+    
     return true;
   }
 
@@ -49,6 +54,7 @@ export class EgressConnection {
       /127\.0\.0\.1/,
       /0\.0\.0\.0/,
       /rabbitmq/,
+      /kafka/,
       /mongodb/,
       /postgres/,
       /redis/,
@@ -62,7 +68,8 @@ export class EgressConnection {
    * Get connection category.
    */
   getCategory() {
-    if (this.type === 'rabbitmq') return 'Message Broker';
+    if (this.type === 'rabbitmq') return 'Message Broker (RabbitMQ)';
+    if (this.type === 'kafka') return 'Message Broker (Kafka)';
     if (this.type === 'http' || this.type === 'https') {
       return this.isExternal() ? 'External API' : 'Internal Service';
     }
@@ -88,6 +95,11 @@ export class EgressConnection {
       }
     }
 
+    // Kafka connections - rule is set by config checker
+    if (this.type === 'kafka') {
+      return 'EGRESS_OK'; // Default to OK, actual issues flagged by config checker
+    }
+
     // Everything else is OK
     return 'EGRESS_OK';
   }
@@ -100,6 +112,7 @@ export class EgressConnection {
       'EGRESS_UNENCRYPTED_EXTERNAL_API': 'CRITICAL',
       'EGRESS_INSECURE_HTTP': 'HIGH',
       'EGRESS_INSECURE_RABBITMQ': 'HIGH',
+      'EGRESS_INSECURE_KAFKA': 'HIGH',
       'EGRESS_OK': 'OK',
     };
     return severityMap[this.rule] || 'INFO';
@@ -140,6 +153,13 @@ export class EgressCollection {
    */
   getRabbitMQ() {
     return this.connections.filter(c => c.type === 'rabbitmq');
+  }
+
+  /**
+   * Get Kafka connections.
+   */
+  getKafka() {
+    return this.connections.filter(c => c.type === 'kafka');
   }
 
   /**
@@ -206,6 +226,7 @@ export class EgressCollection {
     return {
       total: this.connections.length,
       rabbitmq: this.getRabbitMQ().length,
+      kafka: this.getKafka().length,
       http: this.getHTTP().length,
       insecure: this.getInsecure().length,
       external: this.getExternal().length,

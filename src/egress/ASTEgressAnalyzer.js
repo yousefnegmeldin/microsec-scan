@@ -65,9 +65,10 @@ export class ASTEgressAnalyzer {
         }
       },
 
-      // Detect RabbitMQ connections
+      // Detect RabbitMQ and Kafka connections
       CallExpression: (path) => {
         this.detectRabbitMQ(path, file, variableContext);
+        this.detectKafka(path, file, variableContext);
         this.detectHTTPCalls(path, file, variableContext);
       },
 
@@ -200,6 +201,159 @@ export class ASTEgressAnalyzer {
           }));
         }
       }
+    }
+  }
+
+  /**
+   * Detect Kafka operations (producer.send, consumer.subscribe, etc.)
+   */
+  detectKafka(path, file, context) {
+    const callee = path.node.callee;
+    
+    // producer.send(), producer.sendBatch()
+    // consumer.subscribe(), consumer.run()
+    if (callee.type === 'MemberExpression') {
+      const method = callee.property.name;
+      const kafkaMethods = ['send', 'sendBatch', 'subscribe', 'run', 'connect', 'disconnect'];
+      
+      // Only flag if it's likely a Kafka producer/consumer (not Express res, WebSocket, etc.)
+      const objectName = callee.object.name;
+      const isLikelyKafka = objectName && (
+        objectName.includes('producer') || 
+        objectName.includes('consumer') || 
+        objectName.includes('kafka') ||
+        objectName.includes('client')
+      );
+      
+      // For 'send' and 'run' methods, be extra strict since they're common
+      const isAmbiguousMethod = method === 'send' || method === 'run' || method === 'connect';
+      const shouldCheck = isAmbiguousMethod ? isLikelyKafka : kafkaMethods.includes(method);
+      
+      if (shouldCheck && kafkaMethods.includes(method)) {
+        // Extract topic name from arguments
+        const firstArg = path.node.arguments[0];
+        let target = '';
+        
+        if (firstArg) {
+          // For send(): { topic: 'topic-name', messages: [...] }
+          if (firstArg.type === 'ObjectExpression') {
+            const topicProp = firstArg.properties.find(p => 
+              p.key && (p.key.name === 'topic' || p.key.value === 'topic')
+            );
+            if (topicProp && topicProp.value) {
+              if (topicProp.value.type === 'StringLiteral') {
+                target = `topic:${topicProp.value.value}`;
+              } else if (topicProp.value.type === 'Identifier') {
+                target = `topic:variable:${topicProp.value.name}`;
+              }
+            }
+          }
+          // For subscribe(): { topic: 'topic-name' } or just 'topic-name'
+          else if (firstArg.type === 'StringLiteral') {
+            target = `topic:${firstArg.value}`;
+          } else if (firstArg.type === 'Identifier') {
+            target = `topic:variable:${firstArg.name}`;
+          } else if (firstArg.type === 'MemberExpression') {
+            const objName = firstArg.object.name || firstArg.object.type;
+            const propName = firstArg.property.name;
+            target = `topic:variable:${objName}.${propName}`;
+          }
+        } else {
+          target = '(no argument)';
+        }
+
+        this.egress.add(new EgressConnection({
+          type: 'kafka',
+          target: target || '(unknown topic)',
+          method: method,
+          file: file,
+          line: path.node.loc?.start.line || null,
+          context: `${objectName}.${method}()`,
+        }));
+
+        // Check for schema validation on send operations
+        if (['send', 'sendBatch'].includes(method)) {
+          if (!this.hasKafkaSchemaValidation(path, file)) {
+            this.findings.push(createFinding(
+              'KAFKA_MISSING_SCHEMA_VALIDATION',
+              file,
+              path.node.loc?.start.line || null,
+              `Kafka ${method}() without schema validation (consider Avro, Protobuf, or Schema Registry)`
+            ));
+          }
+        }
+      }
+    }
+
+    // Kafka() constructor or kafka.producer()/consumer()
+    // new Kafka({ brokers: [...], ssl: true, sasl: {...} })
+    if (callee.type === 'Identifier' && callee.name === 'Kafka') {
+      const configArg = path.node.arguments[0];
+      if (configArg && configArg.type === 'ObjectExpression') {
+        this.checkKafkaConfig(configArg, file, path.node.loc?.start.line);
+      }
+    }
+  }
+
+  /**
+   * Check Kafka configuration for security issues
+   */
+  checkKafkaConfig(configNode, file, line) {
+    let hasSsl = false;
+    let hasSasl = false;
+    let brokers = [];
+
+    for (const prop of configNode.properties) {
+      if (prop.key) {
+        // Check for SSL configuration
+        if (prop.key.name === 'ssl' || prop.key.value === 'ssl') {
+          if (prop.value.type === 'BooleanLiteral' && prop.value.value === true) {
+            hasSsl = true;
+          } else if (prop.value.type === 'ObjectExpression') {
+            hasSsl = true; // Has SSL config object
+          }
+        }
+        
+        // Check for SASL authentication
+        if (prop.key.name === 'sasl' || prop.key.value === 'sasl') {
+          hasSasl = true;
+        }
+
+        // Extract brokers
+        if (prop.key.name === 'brokers' || prop.key.value === 'brokers') {
+          if (prop.value.type === 'ArrayExpression') {
+            brokers = prop.value.elements.map(el => {
+              if (el.type === 'StringLiteral') return el.value;
+              return 'variable';
+            });
+          }
+        }
+      }
+    }
+
+    // Report findings
+    if (!hasSsl) {
+      this.findings.push(createFinding(
+        'KAFKA_PLAINTEXT',
+        file,
+        line,
+        `Kafka client configured without SSL/TLS encryption (brokers: ${brokers.join(', ') || 'unknown'})`
+      ));
+      this.findings.push(createFinding(
+        'EGRESS_INSECURE_KAFKA',
+        file,
+        line,
+        `Kafka connection to ${brokers.join(', ') || 'brokers'} without encryption`
+      ));
+    }
+
+    if (!hasSasl) {
+      this.findings.push(createFinding(
+        'KAFKA_MISSING_SASL',
+        file,
+        line,
+        `Kafka client configured without SASL authentication (brokers: ${brokers.join(', ') || 'unknown'})`
+      ));
     }
   }
 
@@ -375,6 +529,52 @@ export class ASTEgressAnalyzer {
             line: path.node.loc?.start.line || null,
             context: 'axios()',
           }));
+
+          // Inter-service security checks for axios() direct calls
+          if (this.isInternalService(url)) {
+            // Check for missing authentication
+            if (!this.hasAuthHeader(path)) {
+              this.findings.push(createFinding(
+                'MISSING_SERVICE_AUTH',
+                file,
+                path.node.loc?.start.line || null,
+                `Service-to-service call to ${url} without authentication header`
+              ));
+            }
+
+            // Check for missing mTLS
+            const isHttps = url.startsWith('https://') || url.includes('HTTPS') || url.includes('https');
+            const isTemplateOrVar = url.includes('${') || url.startsWith('variable:');
+            
+            if ((isHttps || isTemplateOrVar) && !this.hasMutualTLS(path)) {
+              this.findings.push(createFinding(
+                'MISSING_MUTUAL_TLS',
+                file,
+                path.node.loc?.start.line || null,
+                `Internal service call to ${url} without mutual TLS configuration`
+              ));
+            }
+
+            // Check for missing circuit breaker
+            if (!this.hasCircuitBreaker(path)) {
+              this.findings.push(createFinding(
+                'MISSING_CIRCUIT_BREAKER',
+                file,
+                path.node.loc?.start.line || null,
+                `Service-to-service call to ${url} without circuit breaker pattern`
+              ));
+            }
+
+            // Check for missing request signing
+            if (!this.hasRequestSigning(path)) {
+              this.findings.push(createFinding(
+                'MISSING_REQUEST_SIGNING',
+                file,
+                path.node.loc?.start.line || null,
+                `Service-to-service call to ${url} without request signing (HMAC/signature)`
+              ));
+            }
+          }
         }
       }
     }
@@ -553,12 +753,15 @@ export class ASTEgressAnalyzer {
     }
     
     // Internal services typically have:
+    // - localhost or 127.0.0.1
     // - Port numbers (e.g., :3000, :8080)
     // - Service names without TLD (e.g., payment-service, user-service, auth:3001)
     // - Internal IPs (10.x, 192.168.x, 172.x)
     // - Template literals with variables (${AUTH_URL}, ${baseUrl})
     const internalPatterns = [
-      /:\d{4,5}(?:\/|$)/, // Has port number
+      /localhost/i, // localhost URLs
+      /127\.0\.0\.1/, // Loopback IP
+      /:\d{3,5}(?:\/|$)/, // Has port number (3-5 digits)
       /^https?:\/\/[a-z-]+(?::\d+)?(?:\/|$)/i, // Service name (no dots)
       /^https?:\/\/(?:10\.|192\.168\.|172\.(?:1[6-9]|2\d|3[01])\.)/,  // Private IPs
       /\$\{[^}]+\}/, // Template literal variables
@@ -717,6 +920,75 @@ export class ASTEgressAnalyzer {
         
         if (callee.type === 'Identifier' && callee.name === 'validate') {
           hasValidation = true;
+        }
+      }
+    });
+    
+    return hasValidation;
+  }
+
+  /**
+   * Check if Kafka message has schema validation (Avro, Protobuf, Schema Registry).
+   */
+  hasKafkaSchemaValidation(path, file) {
+    // Look backwards in the same function scope for validation calls
+    let current = path.parentPath;
+    
+    // Find the containing function
+    while (current && current.node.type !== 'FunctionDeclaration' && 
+           current.node.type !== 'FunctionExpression' && 
+           current.node.type !== 'ArrowFunctionExpression') {
+      current = current.parentPath;
+    }
+    
+    if (!current) return false;
+    
+    // Check if function body contains schema validation
+    let hasValidation = false;
+    
+    current.traverse({
+      CallExpression(validationPath) {
+        const callee = validationPath.node.callee;
+        
+        // Check for Kafka schema validation patterns:
+        // - schemaRegistry.encode()
+        // - avro.encode(), avroType.toBuffer()
+        // - protobuf.encode()
+        if (callee.type === 'MemberExpression') {
+          const method = callee.property && callee.property.name;
+          const object = callee.object && callee.object.name;
+          
+          if (method === 'encode' || method === 'decode' || method === 'toBuffer' || method === 'fromBuffer') {
+            hasValidation = true;
+          }
+          
+          if (object && (object.includes('schema') || object.includes('avro') || 
+                        object.includes('protobuf') || object.includes('registry'))) {
+            hasValidation = true;
+          }
+        }
+      },
+      
+      // Check for imports of schema libraries
+      ImportDeclaration(importPath) {
+        const source = importPath.node.source.value;
+        if (source && (source.includes('avro') || source.includes('protobuf') || 
+                      source.includes('schema-registry') || source.includes('@kafkajs/confluent-schema-registry'))) {
+          hasValidation = true;
+        }
+      },
+      
+      // Check for require() of schema libraries
+      VariableDeclarator(varPath) {
+        if (varPath.node.init && varPath.node.init.type === 'CallExpression') {
+          const callee = varPath.node.init.callee;
+          if (callee.name === 'require' && varPath.node.init.arguments[0]) {
+            const moduleName = varPath.node.init.arguments[0].value;
+            if (moduleName && (moduleName.includes('avro') || moduleName.includes('protobuf') || 
+                              moduleName.includes('schema-registry'))) {
+              hasValidation = true;
+            }
+          }
         }
       }
     });

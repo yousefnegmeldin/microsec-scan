@@ -173,6 +173,7 @@ function printInterServiceSummary(findings) {
   const interServiceRules = [
     'MISSING_SERVICE_AUTH',
     'MISSING_MESSAGE_VALIDATION',
+    'KAFKA_MISSING_SCHEMA_VALIDATION',
     'EXCESSIVE_SERVICE_TRUST',
     'MISSING_MUTUAL_TLS',
     'SHARED_BROKER_CREDENTIALS',
@@ -185,7 +186,10 @@ function printInterServiceSummary(findings) {
     'UNENCRYPTED_SERVICE_MESH',
     'EGRESS_INSECURE_HTTP',
     'EGRESS_INSECURE_RABBITMQ',
-    'PLAINTEXT_BROKER'
+    'EGRESS_INSECURE_KAFKA',
+    'PLAINTEXT_BROKER',
+    'KAFKA_PLAINTEXT',
+    'KAFKA_MISSING_SASL'
   ];
   
   // Filter inter-service findings
