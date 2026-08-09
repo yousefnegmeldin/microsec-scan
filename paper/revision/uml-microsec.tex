@@ -1,0 +1,195 @@
+% =====================================================================
+% NEW FIGURES for the MicroSec-Scan implementation subsection.
+%
+% Addresses Reviewer #4: "Reading sequence of interactions or flow of
+% steps from a diagram is easier than reading text ... authors could
+% consider different UML diagrams to represent static, dynamic and
+% deployment views of the system to improve the paper readability."
+%
+% Figure 1 = static (component) view
+% Figure 2 = dynamic (sequence) view
+% Figure 3 = deployment view
+%
+% Component names are the actual modules under src/; the diagrams are
+% intended to REPLACE prose in the implementation subsection, not
+% supplement it.
+% Requires only packages already in the preamble (tikz with
+% arrows.meta, positioning, fit, backgrounds, calc).
+% =====================================================================
+
+% ---------------------------------------------------------------------
+% STATIC VIEW
+% ---------------------------------------------------------------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  font=\scriptsize,
+  comp/.style={draw, rounded corners=2pt, fill=gray!8, align=center,
+               minimum height=0.55cm, inner sep=3pt, font=\scriptsize},
+  abstract/.style={comp, fill=white, draw, dashed},
+  layer/.style={draw=black, rounded corners=4pt, inner sep=6pt, line width=0.7pt},
+  lbl/.style={font=\scriptsize\bfseries, anchor=west},
+  dep/.style={-{Stealth[length=1.5mm]}, thick, gray!60}
+]
+
+% ---- Layer 1: input
+\node[comp] (mp)  at (0,0)     {microserviceParser\\\tiny service discovery};
+\node[comp, right=0.3cm of mp] (acp) {ASTCodeParser\\\tiny @babel/parser};
+\node[comp, right=0.3cm of acp] (cp)  {composeParser\\\tiny js-yaml};
+\node[layer, fit=(mp)(acp)(cp)] (L1) {};
+\node[lbl, above=1pt of L1.north west, anchor=south west] {Input layer};
+
+% ---- Layer 2: framework adapters
+\node[abstract, below=1.15cm of mp.south west, anchor=north west] (base)
+  {\textit{$\ll$abstract$\gg$}\\BaseFramework};
+\node[comp, right=0.3cm of base] (expr) {Express\\Framework};
+\node[comp, right=0.2cm of expr] (fast) {Fastify\\Framework};
+\node[comp, right=0.2cm of fast] (nest) {NestJS\\Framework};
+\node[abstract, right=0.2cm of nest] (future) {\textit{future}\\\textit{adapters}};
+\node[comp, below=0.25cm of expr, xshift=0.6cm, minimum width=4.2cm] (rp)
+  {ASTExpress / ASTFastify / ASTNestJS RouteParser,\\ASTFrameworkChecker, RouteAnalyzer};
+\node[layer, fit=(base)(expr)(fast)(nest)(future)(rp)] (L2) {};
+\node[lbl, above=1pt of L2.north west, anchor=south west] {Framework adapter layer};
+
+% ---- Layer 3: analysis
+\node[comp, below=1.15cm of base.south west, anchor=north west, minimum width=2.6cm] (reg)
+  {rules/registry\\\tiny RULES, createFinding};
+\node[comp, right=0.35cm of reg, minimum width=2.9cm] (egr)
+  {ASTEgressAnalyzer\\\tiny + EgressModels};
+\node[layer, fit=(reg)(egr)] (L3) {};
+\node[lbl, above=1pt of L3.north west, anchor=south west] {Analysis layer};
+
+% ---- Layer 4: refactor
+\node[comp, below=1.15cm of reg.south west, anchor=north west] (pg) {Prompt\\Generator};
+\node[comp, right=0.2cm of pg] (llm) {LLMClient\\\tiny Groq | OpenRouter\\\tiny Together | OpenAI};
+\node[comp, right=0.2cm of llm] (cr) {Code\\Remediation};
+\node[comp, right=0.2cm of cr] (fa) {FixApplicator\\\tiny DirectFileReplacer};
+\node[layer, fit=(pg)(llm)(cr)(fa)] (L4) {};
+\node[lbl, above=1pt of L4.north west, anchor=south west] {LLM refactor layer};
+
+% ---- Layer 5: output
+\node[comp, below=1.15cm of pg.south west, anchor=north west] (rr) {routeReporter};
+\node[comp, right=0.25cm of rr] (er) {EgressReporter};
+\node[comp, right=0.25cm of er] (jr) {jsonReporter\\\tiny JSON | Markdown};
+\node[layer, fit=(rr)(er)(jr)] (L5) {};
+\node[lbl, above=1pt of L5.north west, anchor=south west] {Output layer};
+
+% ---- dependencies
+\draw[dep] (L1.south) -- (L2.north);
+\draw[dep] (L2.south) -- (L3.north);
+\draw[dep] (L3.south) -- (L4.north);
+\draw[dep] (L4.south) -- (L5.north);
+\draw[dep] (L3.east) -- ++(0.45,0) |- (L5.east);
+
+\end{tikzpicture}
+\caption{\new{Static (component) view of MicroSec-Scan. Concrete framework
+adapters realize the common \texttt{BaseFramework} interface; the dashed
+element marks the extension point at which additional language or framework
+adapters are registered without changes to the analysis, refactor, or output
+layers. The right-hand edge shows that analysis results reach the output layer
+directly when no refactoring is requested.}}
+\label{fig:microsec_static}
+\end{figure}
+
+% ---------------------------------------------------------------------
+% DYNAMIC VIEW
+% ---------------------------------------------------------------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  scale=0.78, transform shape,
+  font=\scriptsize,
+  actor/.style={draw, fill=gray!8, rounded corners=2pt, minimum height=0.75cm,
+                minimum width=2.0cm, align=center, font=\scriptsize\bfseries},
+  life/.style={dashed, gray},
+  msg/.style={-{Stealth[length=1.6mm]}, thick},
+  ret/.style={-{Stealth[length=1.6mm]}, thick, dashed},
+  selfl/.style={-{Stealth[length=1.4mm]}, thick},
+  note/.style={align=left, font=\tiny, text width=2.7cm}
+]
+\def\ylast{-11.6}
+
+\foreach \x/\n/\l in {0/dev/{Developer},
+                      2.7/cli/{CLI},
+                      5.4/scan/{Scanner},
+                      8.1/fw/{Framework\\adapter},
+                      10.8/an/{Egress +\\registry},
+                      13.5/llm/{LLMClient},
+                      16.2/out/{Reporter /\\FixApplicator}}
+{
+  \node[actor] (\n) at (\x,0) {\l};
+  \draw[life] (\x,-0.48) -- (\x,\ylast);
+}
+
+% scan phase
+\draw[msg] (0,-1.0)   -- node[above]{\tiny scan -p} (2.7,-1.0);
+\draw[msg] (2.7,-1.7) -- node[above]{\tiny runScanner} (5.4,-1.7);
+\draw[selfl] (5.4,-2.4) -- ++(0.7,0) -- ++(0,-0.5) -- ++(-0.7,0);
+\node[note, anchor=west] at (6.2,-2.65) {glob files, discover services by package.json};
+\draw[msg] (5.4,-3.7) -- node[above]{\tiny analyze} (8.1,-3.7);
+\draw[selfl] (8.1,-4.4) -- ++(0.7,0) -- ++(0,-0.5) -- ++(-0.7,0);
+\node[note, anchor=west] at (8.9,-4.65) {detect framework, parse routes to AST};
+\draw[msg] (8.1,-5.7) -- node[above]{\tiny rules} (10.8,-5.7);
+\draw[selfl] (10.8,-6.4) -- ++(0.7,0) -- ++(0,-0.5) -- ++(-0.7,0);
+\node[note, anchor=west] at (11.6,-6.65) {bind rule variables, emit findings};
+\draw[ret] (10.8,-7.5) -- node[above]{\tiny findings} (5.4,-7.5);
+\draw[msg] (5.4,-8.1) -- node[above]{\tiny report} (16.2,-8.1);
+
+% fix phase
+\draw[msg] (0,-8.9) -- node[above]{\tiny fix -p} (2.7,-8.9);
+\draw[msg] (2.7,-9.4) -- node[above]{\tiny prompt per finding} (13.5,-9.4);
+\draw[ret] (13.5,-9.9) -- node[above]{\tiny suggested diff} (16.2,-9.9);
+\draw[ret] (16.2,-10.5) -- node[above]{\tiny diff + confidence, for review} (0,-10.5);
+\draw[msg] (0,-11.1) -- node[above]{\tiny accept / reject / rollback} (16.2,-11.1);
+
+\end{tikzpicture}
+\caption{\new{Dynamic (sequence) view of a scan followed by an optional
+refactor. Self-messages denote work internal to a participant. The refactor
+phase never writes to disk without returning to the developer: every suggested
+diff is reviewed, and the applier also emits a rollback script, so the
+developer remains the decision point for each fix.}}
+\label{fig:microsec_dynamic}
+\end{figure}
+
+% ---------------------------------------------------------------------
+% DEPLOYMENT VIEW
+% ---------------------------------------------------------------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  font=\scriptsize,
+  nodebox/.style={draw, rounded corners=2pt, align=center, inner sep=5pt,
+                  minimum height=0.7cm, font=\scriptsize},
+  art/.style={draw, fill=gray!8, rounded corners=1pt, align=center,
+              font=\tiny, inner sep=2.5pt},
+  ext/.style={draw, dashed, rounded corners=2pt, align=center, font=\scriptsize,
+              inner sep=4pt},
+  flow/.style={-{Stealth[length=1.6mm]}, thick},
+  flowd/.style={-{Stealth[length=1.6mm]}, thick, dashed}
+]
+
+% developer workstation
+\node[art] (src) at (0,0) {service sources\\+ docker-compose};
+\node[art, below=0.25cm of src] (cli) {microsec-scan CLI\\\tiny Node.js $\geq$ 18};
+\node[art, below=0.25cm of cli] (rep) {JSON / Markdown\\report, diffs,\\rollback script};
+\node[nodebox, fit=(src)(cli)(rep), label={[font=\scriptsize\bfseries]above:Developer workstation}] (ws) {};
+
+% CI runner
+\node[art, right=2.6cm of src] (ci) {pipeline stage\\\tiny microsec-scan scan};
+\node[art, below=0.25cm of ci] (gate) {JSON findings\\consumed as\\build gate};
+\node[nodebox, fit=(ci)(gate), label={[font=\scriptsize\bfseries]above:CI/CD runner}] (cir) {};
+
+% external inference
+\node[ext, below=1.5cm of cir] (prov) {Inference provider\\\tiny Groq | OpenRouter\\\tiny Together | OpenAI};
+
+\draw[flow] (ws.east |- ci) -- node[above, font=\tiny]{commit} (ci.west);
+\draw[flowd] (cli.east) -- ++(0.5,0) |- node[pos=0.75, above, font=\tiny]{HTTPS, opt-in} (prov.west);
+
+\end{tikzpicture}
+\caption{\new{Deployment view. The analyzer runs entirely on the developer
+workstation or CI runner and requires no cluster, agent, or running service.
+Only the optional refactor stage leaves the machine, contacting a
+developer-selected inference provider over HTTPS; when refactoring is not
+requested, no source code is transmitted anywhere.}}
+\label{fig:microsec_deployment}
+\end{figure}

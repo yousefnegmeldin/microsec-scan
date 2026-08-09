@@ -1,0 +1,184 @@
+% =====================================================================
+% REPLACEMENT for Appendix B ("MicroSec-Scan LLM Prompt Template")
+% Addresses Reviewer #1, comment 2: "although prompt templates are
+% provided in the appendix, they do not really appear to be templates,
+% since I do not see clear placeholders or parameters"
+%
+% Source of truth: src/refactor/LLMClient.js
+%   - getSystemPrompt()   -> lines 201-229  (system message, verbatim)
+%   - buildPrompt()       -> lines 275-303  (single-finding user message)
+%   - buildBatchPrompt()  -> lines 234-269  (batch user message)
+%   - constructor()       -> lines 12-24    (decoding parameters)
+% =====================================================================
+
+\section{MicroSec-Scan LLM Prompt Templates}
+\label{app:microsec-prompt}
+
+\new{The refactor layer issues two messages per invocation. The system
+message is fixed and states the invariants every suggested fix must respect.
+The user message is a template instantiated per finding, binding the
+placeholders shown in double braces from the finding record and the extracted
+code context. Table~\ref{tab:microsec_prompt_params} defines each placeholder
+and the field it is bound from, so any model call can be reconstructed from
+the JSON findings file and the analyzed source file alone.}
+
+\begin{tcolorbox}[
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    title=System message (fixed),
+    fonttitle=\bfseries,
+    breakable
+]
+\small\ttfamily
+You are a security expert specializing in Node.js microservices.\\[6pt]
+CRITICAL RULES - YOU MUST FOLLOW THESE EXACTLY:\\
+\hspace*{1em}1. Make ONLY the minimal security changes required - nothing else\\
+\hspace*{1em}2. DO NOT rename variables, functions, or change code structure\\
+\hspace*{1em}3. DO NOT change environment variable names (e.g., keep\\
+\hspace*{2em}RABBITMQ\_URI as RABBITMQ\_URI)\\
+\hspace*{1em}4. DO NOT remove comments or documentation\\
+\hspace*{1em}5. DO NOT change formatting, indentation, or code style\\
+\hspace*{1em}6. DO NOT add new features or "improvements" beyond security\\
+\hspace*{1em}7. ONLY fix the specific security vulnerability mentioned\\[6pt]
+ALLOWED CHANGES:\\
+\hspace*{1em}- Change insecure protocols (http $\rightarrow$ https, amqp $\rightarrow$ amqps)\\
+\hspace*{1em}- Add missing security headers/middleware\\
+\hspace*{1em}- Add authentication/authorization checks\\
+\hspace*{1em}- Fix hardcoded secrets\\
+\hspace*{1em}- Add input validation\\[6pt]
+FORBIDDEN CHANGES:\\
+\hspace*{1em}- Renaming variables or functions\\
+\hspace*{1em}- Changing environment variable names\\
+\hspace*{1em}- Removing comments\\
+\hspace*{1em}- Restructuring code\\
+\hspace*{1em}- Adding "helpful" features\\[6pt]
+Output ONLY the fixed code block in markdown format without\\
+explanations. Use a javascript-tagged fence for JavaScript/TypeScript
+code.
+\end{tcolorbox}
+
+\begin{tcolorbox}[
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    title=User message template A --- single finding (instantiated per finding),
+    fonttitle=\bfseries,
+    breakable
+]
+\small\ttfamily
+Fix this security vulnerability:\\[6pt]
+**Issue:** \{\{RULE\_ID\}\}\\
+**Description:** \{\{MESSAGE\}\}\\
+**Severity:** \{\{SEVERITY\}\}\\
+**File:** \{\{FILE\_PATH\}\}\\
+**Lines:** \{\{START\_LINE\}\}-\{\{END\_LINE\}\}\\[6pt]
+**Current Code:**\\
+\{\{CODE\}\}\\[6pt]
+**Full File Context (for imports):**\\
+\{\{FULL\_FILE\}\}\\
+\hspace*{1em}\textrm{\itshape(this block is emitted only when
+\{\{FULL\_FILE\}\} is non-empty)}\\[6pt]
+**Fix Requirements:**\\
+\{\{FIX\_GUIDANCE\}\}\\[6pt]
+Provide the complete fixed version of the code section (lines\\
+\{\{START\_LINE\}\}-\{\{END\_LINE\}\}). Include any new imports or\\
+dependencies needed. Maintain the same code structure and style.
+\end{tcolorbox}
+
+\begin{tcolorbox}[
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    title=User message template B --- batch (one call per file),
+    fonttitle=\bfseries,
+    breakable
+]
+\small\ttfamily
+Fix multiple security vulnerabilities in this file:\\[6pt]
+**File:** \{\{FILE\_PATH\}\}\\[6pt]
+**Current Code:**\\
+\{\{FULL\_FILE\}\}\\[6pt]
+**Issues to Fix:**\\[6pt]
+\textrm{\itshape(the following block repeats for each finding $i$ in the file)}\\
+\{\{INDEX\}\}. **\{\{RULE\_ID\}\}** (\{\{SEVERITY\}\})\\
+\hspace*{1em}- Description: \{\{MESSAGE\}\}\\
+\hspace*{1em}- Line: \{\{LINE\}\}\\
+\hspace*{1em}- Fix: \{\{FIX\_GUIDANCE\}\}\\[6pt]
+IMPORTANT INSTRUCTIONS:\\
+\hspace*{1em}- Fix ONLY the security issues listed above\\
+\hspace*{1em}- DO NOT rename any variables, functions, or environment\\
+\hspace*{2em}variable names\\
+\hspace*{1em}- DO NOT remove any comments or documentation\\
+\hspace*{1em}- DO NOT change code structure or formatting\\
+\hspace*{1em}- Keep ALL existing variable names exactly as they are\\
+\hspace*{1em}- Make the MINIMAL changes required to fix the security issues\\[6pt]
+Provide the complete fixed file with ONLY security changes applied.\\
+Return ONLY the complete fixed code in a single code block.
+\end{tcolorbox}
+
+\begin{table}[htbp]
+\centering
+\caption{\new{Placeholders in the MicroSec-Scan user message templates and
+the fields they are bound from. Fields prefixed \texttt{finding.} come from
+the normalized finding record emitted by the analysis layer; fields prefixed
+\texttt{context.} come from the code context extracted for that finding.}}
+\label{tab:microsec_prompt_params}
+\safefixtablestyle
+\begin{tabularx}{\linewidth}{@{} L{2.5cm} L{3.0cm} Y @{}}
+\toprule
+\textbf{Placeholder} & \textbf{Bound from} & \textbf{Meaning} \\
+\midrule
+\{\{RULE\_ID\}\} & \path{finding.rule} & Rule identifier from the rule registry \\
+\{\{MESSAGE\}\} & \path{finding.message} & Rule description, or the rule-specific message \\
+\{\{SEVERITY\}\} & \path{finding.severity} & critical, high, medium, or low \\
+\{\{LINE\}\} & \path{finding.line} & Line the finding anchors to; \texttt{N/A} when the finding is service-scoped \\
+\{\{FILE\_PATH\}\} & \path{context.filePath} & Path of the file being repaired \\
+\{\{START\_LINE\}\} & \path{context.startLine} & First line of the extracted section \\
+\{\{END\_LINE\}\} & \path{context.endLine} & Last line of the extracted section \\
+\{\{CODE\}\} & \path{context.code} & The extracted section only, in a fenced block \\
+\{\{FULL\_FILE\}\} & \path{context.fullFile} & Whole file, supplied so imports resolve; omitted when unset \\
+\{\{FIX\_GUIDANCE\}\} & \path{getFixGuidance(rule)} & Per-rule remediation pattern, keyed by rule identifier \\
+\{\{INDEX\}\} & enumeration position & 1-based index within the batch, template B only \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\new{Decoding is held constant across providers: temperature is fixed at 0.1,
+the response is capped at 8000 tokens, and a call is abandoned after 120
+seconds. The provider and model are developer-selectable; the default is
+LLaMA-3.3 70B served through Groq, with OpenRouter, Together AI, and OpenAI
+also implemented behind the same interface. Because template A is instantiated
+once per finding and template B once per file, the number of model calls is a
+function of the findings file alone and is therefore reproducible from the
+scan output.}
+
+\new{The \{\{FIX\_GUIDANCE\}\} binding is what makes each instantiation
+rule-specific. Two representative bindings are shown below; the registry
+defines one such entry per rule.}
+
+\begin{tcolorbox}[
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    title=\{\{FIX\_GUIDANCE\}\} bound for RULE\_ID = PLAINTEXT\_BROKER,
+    fonttitle=\bfseries
+]
+\small\ttfamily
+Enable TLS for RabbitMQ connections.\\
+- ONLY change amqp:// to amqps:// in the connection string\\
+- DO NOT rename environment variables (keep RABBITMQ\_URI as\\
+\hspace*{1em}RABBITMQ\_URI, not RABBITMQ\_URL)\\
+- DO NOT rename local variables\\
+- Example: Change 'amqp://guest:guest@rabbitmq:5672' to\\
+\hspace*{1em}'amqps://guest:guest@rabbitmq:5672'
+\end{tcolorbox}
+
+\begin{tcolorbox}[
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    title=\{\{FIX\_GUIDANCE\}\} bound for RULE\_ID = MISSING\_RATE\_LIMITING,
+    fonttitle=\bfseries
+]
+\small\ttfamily
+Add rate limiting to prevent abuse.\\
+- Install: npm install express-rate-limit\\
+- Import: const rateLimit = require('express-rate-limit')\\
+- Configure with reasonable limits (e.g., 100 requests per 15 minutes)
+\end{tcolorbox}

@@ -1,0 +1,121 @@
+% =====================================================================
+% NEW SUBSECTION for Section V (Results), to follow the existing
+% "MicroSec-Scan Performance" subsection.
+%
+% Addresses Reviewer #4, comment 1 ("all the mentioned reference
+% microservice applications include Node.js services as first-class
+% implementations ... these are demonstrably polyglot systems") and
+% Reviewer #1, comment 3 (the Node.js-only limitation is not
+% sufficiently emphasised).
+%
+% All numbers below were produced by running the released tool; the raw
+% JSON outputs are in the replication package under
+% paper/revision/raw-results/.
+% =====================================================================
+
+\subsection{\new{Evaluation on Polyglot Reference Benchmarks}}
+\label{sec:polyglot_eval}
+
+\new{The evaluation in the preceding subsections uses microservice systems
+implemented entirely in Node.js. Because established reference benchmarks are
+polyglot by construction, a separate question is whether MicroSec-Scan applies
+to them at all. It does, and this subsection reports what it finds. The
+distinction that makes this possible is that every inter-service rule in
+Table~\ref{tab:rule_examples} is \emph{caller-side}: a rule binds its
+variables from the abstract syntax tree of the service that originates the
+call, so the implementation language of the callee never enters the analysis.
+A Node.js service that calls a Go service is analyzable exactly as one that
+calls another Node.js service. MicroSec-Scan therefore applies to the Node.js
+services \emph{within} a polyglot system, rather than requiring that every
+service in the system be written in Node.js.}
+
+\new{Three widely used reference systems were selected: Sock Shop, Online
+Boutique, and Train Ticket. Each was cloned at its current head and every
+service implemented in Node.js was scanned, identified by the presence of a
+\path{package.json} manifest. Four such services exist across the three
+systems, confirming that Node.js is a first-class implementation language in
+all of them. Table~\ref{tab:polyglot_results} reports the outcome.}
+
+\begin{table}[!t]
+\centering
+\caption{\new{MicroSec-Scan applied to the Node.js services of three polyglot
+reference benchmarks. V = total findings, ISV = inter-service findings.
+Runtimes are wall-clock best-of-three in the evaluation container and are not
+comparable to the macOS figures in Table~\ref{tab:resource_consumption}.}}
+\label{tab:polyglot_results}
+\safefixtablestyle
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{} l l l r r r r @{}}
+\toprule
+\textbf{Benchmark} & \textbf{Node.js service} & \textbf{Transport} &
+\textbf{Files} & \textbf{V} & \textbf{ISV} & \textbf{Time (s)} \\
+\midrule
+Sock Shop       & front-end                 & HTTP (\texttt{request}) & 33 & 51 & 1 & 4.41 \\
+Online Boutique & currencyservice           & gRPC                    &  2 &  0 & 0 & 0.50 \\
+Online Boutique & paymentservice            & gRPC                    &  4 &  0 & 0 & 0.50 \\
+Train Ticket    & ts-ticket-office-service  & none (DB only)          &  3 &  6 & 0 & 0.65 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\new{The Sock Shop front-end, an Express service that fronts the Go and Java
+back-end services, produced 51 findings: 27 insecure HTTP usages, 13
+root-container findings, 4 unprotected routes, 2 hardcoded secrets, 1 exposed
+internal port, and one each of missing helmet, missing rate limiting, missing
+body size limit, and missing authentication. The Train Ticket Node.js service
+produced 6 local findings. The two Online Boutique services produced none.}
+
+\new{Only one inter-service finding was reported across all four services,
+against 148 on the in-house system of
+Table~\ref{tab:results_by_tool}. This gap is informative rather than
+incidental, and it has four distinct causes, three of which are genuine
+limitations of the current implementation and one of which is correct
+behavior.}
+
+\new{\emph{Unsupported transport.} Both Online Boutique services communicate
+exclusively over gRPC. Neither registers an Express, Fastify, or NestJS
+application, so no framework adapter matches and the egress analyzer is never
+reached, yielding zero findings. This is the concrete cost of the gRPC gap
+already identified as future work, and it is a detection blind spot rather
+than an absence of vulnerabilities.}
+
+\new{\emph{Unsupported HTTP client.} The egress analyzer recognizes
+\texttt{axios}, \texttt{fetch}, and the Node.js \texttt{http}/\texttt{https}
+request APIs. The Sock Shop front-end issues its inter-service calls through
+the \texttt{request} library, which is outside that set, so its outbound calls
+to the catalogue, cart, order, and user services are not modelled as egress
+edges. The rules that would otherwise fire on those edges are
+\path{EGRESS_INSECURE_HTTP}, \path{MISSING_SERVICE_AUTH}, and
+\path{MISSING_CIRCUIT_BREAKER}. The 27 insecure HTTP findings that were
+reported come from the general source-level rule, which observes the
+\texttt{http://} URLs without attributing them to a service boundary.}
+
+\new{\emph{Interprocedural indirection.} Even with the client library
+supported, the Sock Shop front-end would remain partly opaque, because its
+route handlers do not call the HTTP client directly. They call a project-local
+helper, \path{helpers.simpleHttpRequest(url, res, next)}, which wraps
+\path{request.get} in a separate module. The destination URL therefore reaches
+the client through a function parameter, and binding it at the call site
+requires interprocedural, cross-module data-flow analysis rather than the
+intraprocedural AST matching the current rules perform. This indirection is
+idiomatic in production Node.js code and is, on this evidence, a more
+significant limitation than language coverage.}
+
+\new{\emph{Correct absence.} The Train Ticket Node.js service is a leaf
+service: it communicates only with MySQL and MongoDB and issues no
+service-to-service calls at all. Its zero inter-service findings is a true
+negative, not a missed detection, and no inter-service rule should fire on it.}
+
+\new{Two conclusions follow. First, the objection that MicroSec-Scan cannot be
+applied to standard polyglot benchmarks does not hold: it runs on the Node.js
+services of all three systems and reports actionable local findings on two of
+them. Second, and more importantly, the low inter-service yield locates the
+real boundary of the approach more precisely than the Node.js-only evaluation
+did. Recall on inter-service vulnerabilities is limited not primarily by the
+implementation language of neighbouring services, but by the breadth of the
+recognized client and transport surface and by the absence of interprocedural
+analysis. Both are addressable within the existing architecture --- the client
+set and transport handlers are registry entries, and the framework adapters
+already sit behind a common interface --- and both are stated as immediate
+future work rather than as inherent properties of design-time analysis.}

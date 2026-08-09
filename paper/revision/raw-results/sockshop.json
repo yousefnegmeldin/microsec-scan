@@ -1,0 +1,355 @@
+[
+  {
+    "rule": "MISSING_HELMET",
+    "severity": "high",
+    "message": "App missing helmet middleware for security headers",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end"
+  },
+  {
+    "rule": "MISSING_RATE_LIMITING",
+    "severity": "high",
+    "message": "App missing rate limiting middleware",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end"
+  },
+  {
+    "rule": "MISSING_BODY_SIZE_LIMIT",
+    "severity": "medium",
+    "message": "Body parser missing size limit (vulnerable to large payload attacks)",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end"
+  },
+  {
+    "rule": "UNPROTECTED_ROUTE",
+    "severity": "high",
+    "message": "Sensitive route POST /cart/update lacks authentication",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/api/cart/index.js",
+    "line": 110
+  },
+  {
+    "rule": "UNPROTECTED_ROUTE",
+    "severity": "high",
+    "message": "Sensitive route GET /orders lacks authentication",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/api/orders/index.js",
+    "line": 11
+  },
+  {
+    "rule": "UNPROTECTED_ROUTE",
+    "severity": "high",
+    "message": "Sensitive route GET /orders/* lacks authentication",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/api/orders/index.js",
+    "line": 43
+  },
+  {
+    "rule": "UNPROTECTED_ROUTE",
+    "severity": "high",
+    "message": "Sensitive route POST /orders lacks authentication",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/api/orders/index.js",
+    "line": 48
+  },
+  {
+    "rule": "MISSING_AUTHENTICATION",
+    "severity": "high",
+    "message": "No authentication middleware detected",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end"
+  },
+  {
+    "rule": "HARDCODED_SECRET",
+    "severity": "high",
+    "message": "Potential hardcoded secret in property 'secret'",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/config.js",
+    "line": 10
+  },
+  {
+    "rule": "HARDCODED_SECRET",
+    "severity": "high",
+    "message": "Potential hardcoded secret in property 'secret'",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/config.js",
+    "line": 18
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/helpers_test.js",
+    "line": 165
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/helpers_test.js",
+    "line": 182
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/helpers_test.js",
+    "line": 218
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "edge-router container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/docker-compose.yml",
+    "line": 4
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "catalogue container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/docker-compose.yml",
+    "line": 12
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "catalogue-db container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/docker-compose.yml",
+    "line": 18
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "carts container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/docker-compose.yml",
+    "line": 26
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "carts-db container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/docker-compose.yml",
+    "line": 32
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "orders container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/docker-compose.yml",
+    "line": 38
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "orders-db container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/docker-compose.yml",
+    "line": 44
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "shipping container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/docker-compose.yml",
+    "line": 50
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "queue-master container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/docker-compose.yml",
+    "line": 56
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "rabbitmq container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/docker-compose.yml",
+    "line": 64
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "payment container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/docker-compose.yml",
+    "line": 70
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "user container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/docker-compose.yml",
+    "line": 81
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "user-db container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/docker-compose.yml",
+    "line": 86
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "edge-router exposes port 80:80 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/docker-compose.yml",
+    "line": 7
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/api/endpoints.js",
+    "line": 18
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/api/endpoints.js",
+    "line": 19
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/api/endpoints.js",
+    "line": 20
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/api/endpoints.js",
+    "line": 21
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/api/endpoints.js",
+    "line": 22
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/api/endpoints.js",
+    "line": 23
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/api/endpoints.js",
+    "line": 24
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/api/endpoints.js",
+    "line": 25
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/api/endpoints.js",
+    "line": 26
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/e2e/login_test.js",
+    "line": 7
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/e2e/homepage_test.js",
+    "line": 7
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/e2e/checkout_test.js",
+    "line": 9
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/e2e/catalogue_test.js",
+    "line": 6
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/e2e/cart_test.js",
+    "line": 7
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/api/endpoints_test.js",
+    "line": 10
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/api/endpoints_test.js",
+    "line": 16
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/api/endpoints_test.js",
+    "line": 22
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/api/endpoints_test.js",
+    "line": 28
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/api/endpoints_test.js",
+    "line": 34
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/api/endpoints_test.js",
+    "line": 40
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/api/endpoints_test.js",
+    "line": 46
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/api/endpoints_test.js",
+    "line": 52
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/test/api/endpoints_test.js",
+    "line": 58
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sockshop-front-end/public/js/modernizr.js",
+    "line": 81
+  }
+]

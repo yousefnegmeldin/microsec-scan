@@ -1,0 +1,40 @@
+[
+  {
+    "rule": "MISSING_HELMET",
+    "severity": "high",
+    "message": "App missing helmet middleware for security headers",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ticket-office-service"
+  },
+  {
+    "rule": "MISSING_RATE_LIMITING",
+    "severity": "high",
+    "message": "App missing rate limiting middleware",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ticket-office-service"
+  },
+  {
+    "rule": "MISSING_BODY_SIZE_LIMIT",
+    "severity": "medium",
+    "message": "Body parser missing size limit (vulnerable to large payload attacks)",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ticket-office-service"
+  },
+  {
+    "rule": "UNPROTECTED_ROUTE",
+    "severity": "high",
+    "message": "Sensitive route POST /deleteOffice lacks authentication",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ticket-office-service/bin/router.js",
+    "line": 58
+  },
+  {
+    "rule": "UNPROTECTED_ROUTE",
+    "severity": "high",
+    "message": "Sensitive route POST /updateOffice lacks authentication",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ticket-office-service/bin/router.js",
+    "line": 67
+  },
+  {
+    "rule": "MISSING_AUTHENTICATION",
+    "severity": "high",
+    "message": "No authentication middleware detected",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ticket-office-service"
+  }
+]
