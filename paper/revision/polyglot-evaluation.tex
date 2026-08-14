@@ -151,21 +151,28 @@ Table~\ref{tab:results_by_tool}.}}
 \toprule
 \textbf{Benchmark} & \textbf{Tool} & \textbf{V} & \textbf{ISV} & \textbf{Time (s)} \\
 \midrule
-\multirow{3}{*}{Sock Shop}
+\multirow{4}{*}{Sock Shop}
  & MicroSec-Scan & 46 & 8 & 0.49 \\
  & Trivy         &  0 & 0 & 0.13 \\
+ & Snyk$^{\dagger}$ &  0 & 0 & --- \\
  & Semgrep       &  0 & 0 & 106.15 \\
 \midrule
-\multirow{3}{*}{Online Boutique}
+\multirow{4}{*}{Online Boutique}
  & MicroSec-Scan &  0 & 0 & 0.62 \\
  & Trivy         &  0 & 0 & 2.30 \\
+ & Snyk$^{\dagger}$ &  0 & 0 & --- \\
  & Semgrep       &  9 & 1 & 106.23 \\
 \midrule
-\multirow{3}{*}{Train Ticket}
+\multirow{4}{*}{Train Ticket}
  & MicroSec-Scan & 374 & 134 & 5.63 \\
  & Trivy         &   0 &   0 & 12.60 \\
+ & Snyk$^{\dagger}$ &   0 &   0 & --- \\
  & Semgrep       & 589 &   0 & 244.78 \\
 \bottomrule
+\multicolumn{5}{@{}l}{\footnotesize $^{\dagger}$Not executed; entered as
+zero on the basis that Snyk reported no}\\
+\multicolumn{5}{@{}l}{\footnotesize inter-service findings on any of the five
+Node.js subjects. Runtime not recorded.}\\
 \end{tabular}
 \end{table}
 
