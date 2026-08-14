@@ -95,9 +95,26 @@ Using the whole-repository scans:
 
 | System | Present | Detected | TP | FP | Recall | Precision |
 |---|---:|---:|---:|---:|---:|---:|
-| Sock Shop | 12 | 1 (cat 12, disputed) | 0–1 | 0–1 | 0.00–0.08 | 0.00–1.00 |
-| Online Boutique | 6 | 0 | 0 | 0 | 0.00 | n/a |
+| Sock Shop | 13 | 1 (cat 12) | 1 | 0 | 0.08 | 1.00 |
+| Online Boutique | 6 | 0 | 0 | 0 | 0.00 | undefined |
 | Train Ticket | 14 | 1 (cat 12) | 1 | 0 | 0.07 | 1.00 |
+
+**Category 12 resolved.** The authors have settled the disputed Sock Shop
+category as *present*: publishing Prometheus, Grafana, Elasticsearch and
+Kibana to the host in the monitoring and logging Compose files is an
+exposed-internal-port finding. MicroSec-Scan's detection is therefore a
+true positive, Sock Shop present rises from 12 to 13, and precision is
+1.00. This is a defensible reading — a security review would ordinarily
+flag unauthenticated ops dashboards published to a host port — and it is
+the reading now used throughout. The alternative reading (only
+`edge-router` publishes in the core Compose file, so the category is
+absent) is recorded here for transparency but is not the one adopted.
+
+**Online Boutique precision is undefined, not 1.00.** With zero detections
+the ratio is 0/0. Report it as "---" or n/a rather than 1.00 or 0.00;
+claiming 1.00 where nothing was detected would not survive scrutiny.
+Precision is 1.00 on every subject where MicroSec-Scan reported anything
+at all.
 
 ## What this means for the paper
 
