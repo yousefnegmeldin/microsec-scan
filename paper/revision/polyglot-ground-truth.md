@@ -132,3 +132,53 @@ a collapse in tool quality rather than a scope boundary.
 The disputed category 12 should be resolved by the authors before any of
 these numbers are used, since with 3 systems it swings both Sock Shop's
 precision and its recall.
+
+## Baseline results on the same subjects
+
+Trivy v0.58.1 (`trivy fs`) and Semgrep 1.173.0. Semgrep was run offline
+against the cloned open-source rule corpus (`semgrep/semgrep-rules`,
+198 JavaScript/TypeScript rules) because the hosted registry
+(`semgrep.dev`) is blocked by this environment's network policy, so
+`semgrep ci` could not be reproduced. V excludes dependency findings,
+per the protocol used in the manuscript.
+
+| Benchmark | Tool | V | ISV | Time (s) | Note |
+|---|---|---:|---:|---:|---|
+| Sock Shop | MicroSec-Scan | 46 | 8 | 0.49 | 1 category, disputed |
+| | Trivy | 0 | 0 | 0.13 | 0 dependency findings too |
+| | Semgrep | 0 | 0 | 106.15 | no JS source in deploy repo |
+| Online Boutique | MicroSec-Scan | 0 | 0 | 0.62 | |
+| | Trivy | 0 | 0 | 2.30 | 223 dependency findings excluded |
+| | Semgrep | 9 | **1** | 106.23 | **detects insecure gRPC** |
+| Train Ticket | MicroSec-Scan | 374 | 134 | 5.63 | 1 category |
+| | Trivy | 0 | 0 | 12.60 | 651 dependency findings excluded |
+| | Semgrep | 589 | 0 | 244.78 | all client-side/local |
+
+### The result that matters
+
+On Online Boutique, **Semgrep detects an inter-service vulnerability that
+MicroSec-Scan does not.** The rule
+`javascript.grpc.security.grpc-nodejs-insecure-connection` matches
+`grpc.credentials.createInsecure()` at
+`src/currencyservice/client.js:21` — the same unencrypted inter-service
+transport annotated as present (category 5) above.
+
+This is the first subject in the whole evaluation where a baseline beats
+MicroSec-Scan on inter-service detection, and it directly qualifies the
+manuscript's claim that the baselines report zero inter-service findings.
+
+The mechanism argument survives: the Semgrep rule is a single-file pattern
+match on a constructor argument and reconstructs no cross-service path. But
+the coverage argument does not. On a transport MicroSec-Scan does not
+model, rule breadth alone is sufficient to win, and no amount of
+architectural reasoning compensates for a missing transport.
+
+The practical implication is that gRPC support is not merely future work —
+a competitor demonstrably covers it today on a benchmark the reviewers
+named. That strengthens the case for implementing gRPC egress before
+resubmission rather than after.
+
+Semgrep's 589 Train Ticket findings are client-side and local (383 `alert`
+uses, 125 jQuery/DOM sinks, 4 SQL injections, 9 open redirects); none are
+inter-service, so the broader claim holds everywhere except Online
+Boutique.

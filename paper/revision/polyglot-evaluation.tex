@@ -128,6 +128,66 @@ service: it communicates only with MySQL and MongoDB and issues no
 service-to-service calls at all. Its zero inter-service findings is a true
 negative, not a missed detection, and no inter-service rule should fire on it.}
 
+\new{Table~\ref{tab:polyglot_baselines} repeats the comparison against the
+baselines on the same three subjects. Following the protocol used for the
+main evaluation, dependency vulnerabilities are excluded from V, which
+reduces Trivy to zero application-level findings on all three systems
+despite its 223 and 651 dependency advisories on Online Boutique and Train
+Ticket. Semgrep was run offline against the open-source rule corpus rather
+than through \texttt{semgrep ci}, because the hosted registry was
+unreachable from the evaluation environment; the JavaScript and TypeScript
+rulesets used comprise 198 rules.}
+
+\begin{table}[!t]
+\centering
+\caption{\new{Baseline comparison on the polyglot benchmarks. V excludes
+dependency findings, per the protocol used in
+Table~\ref{tab:results_by_tool}.}}
+\label{tab:polyglot_baselines}
+\safefixtablestyle
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{} l l r r r @{}}
+\toprule
+\textbf{Benchmark} & \textbf{Tool} & \textbf{V} & \textbf{ISV} & \textbf{Time (s)} \\
+\midrule
+\multirow{3}{*}{Sock Shop}
+ & MicroSec-Scan & 46 & 8 & 0.49 \\
+ & Trivy         &  0 & 0 & 0.13 \\
+ & Semgrep       &  0 & 0 & 106.15 \\
+\midrule
+\multirow{3}{*}{Online Boutique}
+ & MicroSec-Scan &  0 & 0 & 0.62 \\
+ & Trivy         &  0 & 0 & 2.30 \\
+ & Semgrep       &  9 & 1 & 106.23 \\
+\midrule
+\multirow{3}{*}{Train Ticket}
+ & MicroSec-Scan & 374 & 134 & 5.63 \\
+ & Trivy         &   0 &   0 & 12.60 \\
+ & Semgrep       & 589 &   0 & 244.78 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\new{One result in Table~\ref{tab:polyglot_baselines} runs against the
+pattern reported for the Node.js subjects, and it should be stated plainly.
+On Online Boutique, Semgrep reports one inter-service finding and
+MicroSec-Scan reports none: the rule
+\path{grpc-nodejs-insecure-connection} matches
+\path{grpc.credentials.createInsecure()} at
+\path{src/currencyservice/client.js:21}, the same unencrypted inter-service
+transport recorded as present in the ground truth. This is the first
+subject on which a baseline detects an inter-service vulnerability that
+MicroSec-Scan does not, and the cause is direct: Semgrep ships a gRPC rule
+and MicroSec-Scan does not model gRPC at all. The mechanism claim made
+earlier is unaffected --- the Semgrep rule is a single-file pattern match
+on a constructor argument and reconstructs no cross-service path --- but
+the coverage claim is. Pattern breadth and architectural reasoning are
+independent axes, and on a transport MicroSec-Scan does not implement, rule
+breadth alone wins. Semgrep's 589 findings on Train Ticket, by contrast,
+are client-side and local (383 \texttt{alert} uses, 125 jQuery and DOM
+sinks, 4 SQL injections) with no inter-service finding among them.}
+
 \new{Two conclusions follow. First, the objection that MicroSec-Scan cannot be
 applied to standard polyglot benchmarks does not hold: it runs on the Node.js
 services of all three systems and reports actionable local findings on two of
