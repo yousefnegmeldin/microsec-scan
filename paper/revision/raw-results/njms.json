@@ -1,0 +1,372 @@
+[
+  {
+    "rule": "MISSING_QUEUE_AUTHORIZATION",
+    "severity": "high",
+    "message": "RabbitMQ assertQueue() without queue-level ACL permissions configured",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/shopping/src/utils/index.js",
+    "line": 65
+  },
+  {
+    "rule": "MISSING_MESSAGE_VALIDATION",
+    "severity": "medium",
+    "message": "RabbitMQ publish() without schema validation (consider JSON Schema, Avro, or Protobuf)",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/shopping/src/utils/index.js",
+    "line": 73
+  },
+  {
+    "rule": "MISSING_MESSAGE_ENCRYPTION",
+    "severity": "high",
+    "message": "RabbitMQ publish() without message encryption (data at rest vulnerability)",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/shopping/src/utils/index.js",
+    "line": 73
+  },
+  {
+    "rule": "MISSING_QUEUE_AUTHORIZATION",
+    "severity": "high",
+    "message": "RabbitMQ publish() without queue-level ACL permissions configured",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/shopping/src/utils/index.js",
+    "line": 73
+  },
+  {
+    "rule": "MISSING_QUEUE_AUTHORIZATION",
+    "severity": "high",
+    "message": "RabbitMQ assertExchange() without queue-level ACL permissions configured",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/shopping/src/utils/index.js",
+    "line": 78
+  },
+  {
+    "rule": "MISSING_QUEUE_AUTHORIZATION",
+    "severity": "high",
+    "message": "RabbitMQ assertQueue() without queue-level ACL permissions configured",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/shopping/src/utils/index.js",
+    "line": 79
+  },
+  {
+    "rule": "MISSING_QUEUE_AUTHORIZATION",
+    "severity": "high",
+    "message": "RabbitMQ bindQueue() without queue-level ACL permissions configured",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/shopping/src/utils/index.js",
+    "line": 82
+  },
+  {
+    "rule": "MISSING_QUEUE_AUTHORIZATION",
+    "severity": "high",
+    "message": "RabbitMQ consume() without queue-level ACL permissions configured",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/shopping/src/utils/index.js",
+    "line": 84
+  },
+  {
+    "rule": "MISSING_HELMET",
+    "severity": "high",
+    "message": "App missing helmet middleware for security headers",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/shopping"
+  },
+  {
+    "rule": "MISSING_RATE_LIMITING",
+    "severity": "high",
+    "message": "App missing rate limiting middleware",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/shopping"
+  },
+  {
+    "rule": "MISSING_BODY_SIZE_LIMIT",
+    "severity": "medium",
+    "message": "Body parser missing size limit (vulnerable to large payload attacks)",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/shopping"
+  },
+  {
+    "rule": "MISSING_AUTHENTICATION",
+    "severity": "high",
+    "message": "No authentication middleware detected",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/shopping"
+  },
+  {
+    "rule": "MISSING_SERVICE_AUTH",
+    "severity": "critical",
+    "message": "Service-to-service call to http://customer:8001/app-events/ without authentication header",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/products/src/utils/index.js",
+    "line": 62
+  },
+  {
+    "rule": "MISSING_CIRCUIT_BREAKER",
+    "severity": "medium",
+    "message": "Service-to-service call to http://customer:8001/app-events/ without circuit breaker pattern",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/products/src/utils/index.js",
+    "line": 62
+  },
+  {
+    "rule": "MISSING_REQUEST_SIGNING",
+    "severity": "high",
+    "message": "Service-to-service call to http://customer:8001/app-events/ without request signing (HMAC/signature)",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/products/src/utils/index.js",
+    "line": 62
+  },
+  {
+    "rule": "MISSING_SERVICE_AUTH",
+    "severity": "critical",
+    "message": "Service-to-service call to http://shopping:8003/app-events/ without authentication header",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/products/src/utils/index.js",
+    "line": 76
+  },
+  {
+    "rule": "MISSING_CIRCUIT_BREAKER",
+    "severity": "medium",
+    "message": "Service-to-service call to http://shopping:8003/app-events/ without circuit breaker pattern",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/products/src/utils/index.js",
+    "line": 76
+  },
+  {
+    "rule": "MISSING_REQUEST_SIGNING",
+    "severity": "high",
+    "message": "Service-to-service call to http://shopping:8003/app-events/ without request signing (HMAC/signature)",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/products/src/utils/index.js",
+    "line": 76
+  },
+  {
+    "rule": "MISSING_QUEUE_AUTHORIZATION",
+    "severity": "high",
+    "message": "RabbitMQ assertQueue() without queue-level ACL permissions configured",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/products/src/utils/index.js",
+    "line": 87
+  },
+  {
+    "rule": "MISSING_MESSAGE_VALIDATION",
+    "severity": "medium",
+    "message": "RabbitMQ publish() without schema validation (consider JSON Schema, Avro, or Protobuf)",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/products/src/utils/index.js",
+    "line": 95
+  },
+  {
+    "rule": "MISSING_MESSAGE_ENCRYPTION",
+    "severity": "high",
+    "message": "RabbitMQ publish() without message encryption (data at rest vulnerability)",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/products/src/utils/index.js",
+    "line": 95
+  },
+  {
+    "rule": "MISSING_QUEUE_AUTHORIZATION",
+    "severity": "high",
+    "message": "RabbitMQ publish() without queue-level ACL permissions configured",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/products/src/utils/index.js",
+    "line": 95
+  },
+  {
+    "rule": "MISSING_HELMET",
+    "severity": "high",
+    "message": "App missing helmet middleware for security headers",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/products"
+  },
+  {
+    "rule": "MISSING_RATE_LIMITING",
+    "severity": "high",
+    "message": "App missing rate limiting middleware",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/products"
+  },
+  {
+    "rule": "MISSING_BODY_SIZE_LIMIT",
+    "severity": "medium",
+    "message": "Body parser missing size limit (vulnerable to large payload attacks)",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/products"
+  },
+  {
+    "rule": "MISSING_AUTHENTICATION",
+    "severity": "high",
+    "message": "No authentication middleware detected",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/products"
+  },
+  {
+    "rule": "MISSING_HELMET",
+    "severity": "high",
+    "message": "App missing helmet middleware for security headers",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/gateway"
+  },
+  {
+    "rule": "MISSING_RATE_LIMITING",
+    "severity": "high",
+    "message": "App missing rate limiting middleware",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/gateway"
+  },
+  {
+    "rule": "MISSING_BODY_SIZE_LIMIT",
+    "severity": "medium",
+    "message": "Body parser missing size limit (vulnerable to large payload attacks)",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/gateway"
+  },
+  {
+    "rule": "MISSING_AUTHENTICATION",
+    "severity": "high",
+    "message": "No authentication middleware detected",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/gateway"
+  },
+  {
+    "rule": "MISSING_QUEUE_AUTHORIZATION",
+    "severity": "high",
+    "message": "RabbitMQ assertQueue() without queue-level ACL permissions configured",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/customer/src/utils/index.js",
+    "line": 64
+  },
+  {
+    "rule": "MISSING_MESSAGE_VALIDATION",
+    "severity": "medium",
+    "message": "RabbitMQ publish() without schema validation (consider JSON Schema, Avro, or Protobuf)",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/customer/src/utils/index.js",
+    "line": 72
+  },
+  {
+    "rule": "MISSING_MESSAGE_ENCRYPTION",
+    "severity": "high",
+    "message": "RabbitMQ publish() without message encryption (data at rest vulnerability)",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/customer/src/utils/index.js",
+    "line": 72
+  },
+  {
+    "rule": "MISSING_QUEUE_AUTHORIZATION",
+    "severity": "high",
+    "message": "RabbitMQ publish() without queue-level ACL permissions configured",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/customer/src/utils/index.js",
+    "line": 72
+  },
+  {
+    "rule": "MISSING_QUEUE_AUTHORIZATION",
+    "severity": "high",
+    "message": "RabbitMQ assertExchange() without queue-level ACL permissions configured",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/customer/src/utils/index.js",
+    "line": 77
+  },
+  {
+    "rule": "MISSING_QUEUE_AUTHORIZATION",
+    "severity": "high",
+    "message": "RabbitMQ assertQueue() without queue-level ACL permissions configured",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/customer/src/utils/index.js",
+    "line": 78
+  },
+  {
+    "rule": "MISSING_QUEUE_AUTHORIZATION",
+    "severity": "high",
+    "message": "RabbitMQ bindQueue() without queue-level ACL permissions configured",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/customer/src/utils/index.js",
+    "line": 81
+  },
+  {
+    "rule": "MISSING_QUEUE_AUTHORIZATION",
+    "severity": "high",
+    "message": "RabbitMQ consume() without queue-level ACL permissions configured",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/customer/src/utils/index.js",
+    "line": 83
+  },
+  {
+    "rule": "MISSING_HELMET",
+    "severity": "high",
+    "message": "App missing helmet middleware for security headers",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/customer"
+  },
+  {
+    "rule": "MISSING_RATE_LIMITING",
+    "severity": "high",
+    "message": "App missing rate limiting middleware",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/customer"
+  },
+  {
+    "rule": "MISSING_BODY_SIZE_LIMIT",
+    "severity": "medium",
+    "message": "Body parser missing size limit (vulnerable to large payload attacks)",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/customer"
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "nosql-db container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/docker-compose.yml",
+    "line": 3
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "rabbitmq container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/docker-compose.yml",
+    "line": 11
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "products container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/docker-compose.yml",
+    "line": 17
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "shopping container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/docker-compose.yml",
+    "line": 34
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "customer container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/docker-compose.yml",
+    "line": 50
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "nginx-proxy container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/docker-compose.yml",
+    "line": 66
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "nosql-db exposes port 27018:27017 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/docker-compose.yml",
+    "line": 6
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "rabbitmq exposes port 5672:5672 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/docker-compose.yml",
+    "line": 15
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "products exposes port 8002:8002 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/docker-compose.yml",
+    "line": 23
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "shopping exposes port 8003:8003 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/docker-compose.yml",
+    "line": 40
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "customer exposes port 8001:8001 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/docker-compose.yml",
+    "line": 56
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "nginx-proxy exposes port 80:80 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/docker-compose.yml",
+    "line": 75
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/products/src/utils/index.js",
+    "line": 62
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/njms/products/src/utils/index.js",
+    "line": 76
+  }
+]

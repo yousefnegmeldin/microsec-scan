@@ -1,0 +1,2616 @@
+[
+  {
+    "rule": "MISSING_HELMET",
+    "severity": "high",
+    "message": "App missing helmet middleware for security headers",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ticket-office-service"
+  },
+  {
+    "rule": "MISSING_RATE_LIMITING",
+    "severity": "high",
+    "message": "App missing rate limiting middleware",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ticket-office-service"
+  },
+  {
+    "rule": "MISSING_BODY_SIZE_LIMIT",
+    "severity": "medium",
+    "message": "Body parser missing size limit (vulnerable to large payload attacks)",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ticket-office-service"
+  },
+  {
+    "rule": "UNPROTECTED_ROUTE",
+    "severity": "high",
+    "message": "Sensitive route POST /deleteOffice lacks authentication",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ticket-office-service/bin/router.js",
+    "line": 58
+  },
+  {
+    "rule": "UNPROTECTED_ROUTE",
+    "severity": "high",
+    "message": "Sensitive route POST /updateOffice lacks authentication",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ticket-office-service/bin/router.js",
+    "line": 67
+  },
+  {
+    "rule": "MISSING_AUTHENTICATION",
+    "severity": "high",
+    "message": "No authentication middleware detected",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ticket-office-service"
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "redis container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 28
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-ui-dashboard container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 35
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-auth-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 44
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-auth-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 53
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-user-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 58
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-user-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 67
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-verification-code-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 72
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-account-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 81
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-route-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 86
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-route-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 95
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-contacts-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 100
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-contacts-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 109
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-order-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 114
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-order-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 123
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-order-other-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 128
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-order-other-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 137
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-config-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 142
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-config-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 151
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-station-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 156
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-station-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 165
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-train-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 170
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-train-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 179
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-travel-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 184
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-travel-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 193
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-travel2-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 198
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-travel2-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 207
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-preserve-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 212
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-preserve-other-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 221
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-basic-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 230
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-ticketinfo-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 239
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-price-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 248
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-price-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 258
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-notification-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 263
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-security-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 272
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-security-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 281
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-inside-payment-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 286
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-inside-payment-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 295
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-execute-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 300
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-payment-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 309
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-payment-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 318
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-rebook-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 323
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-rebook-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 332
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-cancel-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 337
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-assurance-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 346
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-assurance-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 355
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-seat-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 360
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-travel-plan-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 369
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-ticket-office-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 378
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-ticket-office-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 387
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-news-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 392
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-news-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 401
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-voucher-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 406
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-voucher-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 415
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-food-map-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 428
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-food-map-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 437
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-route-plan-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 442
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-food-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 451
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-consign-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 460
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-consign-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 469
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-consign-price-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 474
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-consign-price-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 483
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-food-mongo container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 488
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-admin-basic-info-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 493
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-admin-order-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 502
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-admin-route-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 511
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-admin-travel-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 524
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-admin-user-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 537
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-avatar-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 550
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "redis exposes port 6379:6379 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 31
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-ui-dashboard exposes port 8080:8080 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 40
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-auth-service exposes port 12340:12340 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 49
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-user-service exposes port 12342:12342 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 63
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-verification-code-service exposes port 15678:15678 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 77
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-route-service exposes port 11178:11178 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 91
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-contacts-service exposes port 12347:12347 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 105
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-order-service exposes port 12031:12031 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 119
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-order-other-service exposes port 12032:12032 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 133
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-config-service exposes port 15679:15679 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 147
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-station-service exposes port 12345:12345 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 161
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-train-service exposes port 14567:14567 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 175
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-travel-service exposes port 12346:12346 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 189
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-travel2-service exposes port 16346:16346 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 203
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-preserve-service exposes port 14568:14568 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 217
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-preserve-other-service exposes port 14569:14569 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 226
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-basic-service exposes port 15680:15680 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 235
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-ticketinfo-service exposes port 15681:15681 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 244
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-price-service exposes port 16579:16579 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 253
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-notification-service exposes port 17853:17853 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 268
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-security-service exposes port 11188:11188 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 277
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-inside-payment-service exposes port 18673:18673 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 291
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-execute-service exposes port 12386:12386 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 305
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-payment-service exposes port 19001:19001 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 314
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-rebook-service exposes port 18886:18886 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 328
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-cancel-service exposes port 18885:18885 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 342
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-assurance-service exposes port 18888:18888 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 351
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-seat-service exposes port 18898:18898 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 365
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-travel-plan-service exposes port 14322:14322 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 374
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-ticket-office-service exposes port 16108:16108 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 383
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-news-service exposes port 12862:12862 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 397
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-voucher-service exposes port 16101:16101 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 420
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-food-map-service exposes port 18855:18855 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 433
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-route-plan-service exposes port 14578:14578 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 447
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-food-service exposes port 18856:18856 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 456
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-consign-service exposes port 16111:16111 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 465
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-consign-price-service exposes port 16110:16110 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 479
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-admin-basic-info-service exposes port 18767:18767 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 498
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-admin-order-service exposes port 16112:16112 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 507
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-admin-route-service exposes port 16113:16113 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 516
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-admin-travel-service exposes port 16114:16114 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 529
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-admin-user-service exposes port 16115:16115 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 542
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-avatar-service exposes port 17001:17001 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/docker-compose.yml",
+    "line": 554
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "redis container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 28
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-ui-dashboard container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 35
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-auth-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 43
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-auth-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 51
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-user-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 56
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-user-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 64
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-verification-code-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 69
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-route-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 83
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-route-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 91
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-contacts-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 96
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-contacts-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 104
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-order-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 109
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-order-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 117
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-order-other-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 123
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-order-other-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 131
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-config-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 137
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-config-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 145
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-station-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 150
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-station-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 158
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-train-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 163
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-train-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 171
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-travel-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 176
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-travel-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 184
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-travel2-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 189
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-travel2-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 197
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-preserve-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 202
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-preserve-other-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 210
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-basic-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 219
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-price-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 235
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-price-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 243
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-notification-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 248
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-notification-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 256
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-security-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 261
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-security-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 269
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-inside-payment-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 274
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-inside-payment-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 282
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-execute-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 287
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-payment-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 295
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-payment-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 303
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-rebook-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 308
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-rebook-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 316
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-cancel-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 321
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-assurance-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 329
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-assurance-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 337
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-seat-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 342
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-travel-plan-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 350
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-news-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 371
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-news-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 379
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-voucher-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 384
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-voucher-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 393
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-route-plan-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 418
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-food-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 426
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-consign-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 434
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-consign-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 442
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-consign-price-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 447
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-consign-price-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 455
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-food-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 460
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-admin-basic-info-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 465
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-admin-order-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 473
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-admin-route-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 481
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-admin-travel-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 493
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-admin-user-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 505
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-avatar-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 517
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-delivery-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 525
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-delivery-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 533
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-food-delivery-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 538
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-food-delivery-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 546
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-gateway-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 551
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-gateway-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 559
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-station-food-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 565
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-station-food-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 573
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-train-food-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 579
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-train-food-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 587
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "redis exposes port 6379:6379 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 31
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-ui-dashboard exposes port 8080:8080 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 39
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-auth-service exposes port 12340:12340 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 47
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-user-service exposes port 12342:12342 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 60
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-verification-code-service exposes port 15678:15678 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 73
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-route-service exposes port 11178:11178 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 87
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-contacts-service exposes port 12347:12347 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 100
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-order-service exposes port 12031:12031 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 113
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-order-other-service exposes port 12032:12032 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 127
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-config-service exposes port 15679:15679 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 141
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-station-service exposes port 12345:12345 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 154
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-train-service exposes port 14567:14567 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 167
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-travel-service exposes port 12346:12346 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 180
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-travel2-service exposes port 16346:16346 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 193
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-preserve-service exposes port 14568:14568 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 206
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-preserve-other-service exposes port 14569:14569 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 214
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-basic-service exposes port 15680:15680 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 223
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-price-service exposes port 16579:16579 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 239
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-notification-service exposes port 17853:17853 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 252
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-security-service exposes port 11188:11188 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 265
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-inside-payment-service exposes port 18673:18673 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 278
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-execute-service exposes port 12386:12386 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 291
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-payment-service exposes port 19001:19001 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 299
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-rebook-service exposes port 18886:18886 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 312
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-cancel-service exposes port 18885:18885 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 325
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-assurance-service exposes port 18888:18888 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 333
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-seat-service exposes port 18898:18898 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 346
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-travel-plan-service exposes port 14322:14322 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 354
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-news-service exposes port 12862:12862 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 375
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-voucher-service exposes port 16101:16101 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 397
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-route-plan-service exposes port 14578:14578 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 422
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-food-service exposes port 18856:18856 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 430
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-consign-service exposes port 16111:16111 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 438
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-consign-price-service exposes port 16110:16110 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 451
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-admin-basic-info-service exposes port 18767:18767 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 469
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-admin-order-service exposes port 16112:16112 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 477
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-admin-route-service exposes port 16113:16113 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 485
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-admin-travel-service exposes port 16114:16114 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 497
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-admin-user-service exposes port 16115:16115 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 509
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-avatar-service exposes port 17001:17001 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 521
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-delivery-service exposes port 18808:18808 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 529
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-food-delivery-service exposes port 18957:18957 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 542
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-gateway-service exposes port 18888:18888 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 555
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-station-food-service exposes port 18855:18855 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 569
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-train-food-service exposes port 19999:19999 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/quickstart-docker-compose.yml",
+    "line": 583
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "redis container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 28
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-ui-dashboard container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 35
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-auth-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 43
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-auth-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 51
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-user-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 56
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-user-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 64
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-verification-code-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 69
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-route-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 83
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-route-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 91
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-contacts-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 96
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-contacts-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 104
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-order-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 109
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-order-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 117
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-order-other-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 123
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-order-other-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 131
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-config-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 137
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-config-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 145
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-station-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 150
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-station-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 158
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-train-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 163
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-train-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 171
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-travel-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 176
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-travel-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 184
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-travel2-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 189
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-travel2-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 197
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-preserve-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 202
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-preserve-other-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 210
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-basic-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 219
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-price-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 235
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-price-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 243
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-notification-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 248
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-notification-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 256
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-security-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 261
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-security-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 269
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-inside-payment-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 274
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-inside-payment-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 282
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-execute-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 287
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-payment-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 295
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-payment-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 303
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-rebook-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 308
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-rebook-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 316
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-cancel-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 321
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-assurance-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 329
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-assurance-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 337
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-seat-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 342
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-travel-plan-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 350
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-news-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 371
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-news-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 379
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-voucher-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 384
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-voucher-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 393
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-route-plan-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 418
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-food-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 426
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-food-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 435
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-consign-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 440
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-consign-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 448
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-consign-price-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 453
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-consign-price-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 461
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-admin-basic-info-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 467
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-admin-order-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 475
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-admin-route-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 483
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-admin-travel-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 495
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-admin-user-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 507
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-avatar-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 519
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-delivery-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 528
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-delivery-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 536
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-food-delivery-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 542
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-food-delivery-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 550
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-gateway-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 556
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-gateway-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 564
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-station-food-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 569
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-station-food-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 577
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-train-food-service container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 582
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "ts-train-food-mysql container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 590
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "jaeger container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 36
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "redis exposes port 6379:6379 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 31
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-ui-dashboard exposes port 8080:8080 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 39
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-auth-service exposes port 12340:12340 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 47
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-user-service exposes port 12342:12342 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 60
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-verification-code-service exposes port 15678:15678 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 73
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-route-service exposes port 11178:11178 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 87
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-contacts-service exposes port 12347:12347 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 100
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-order-service exposes port 12031:12031 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 113
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-order-other-service exposes port 12032:12032 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 127
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-config-service exposes port 15679:15679 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 141
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-station-service exposes port 12345:12345 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 154
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-train-service exposes port 14567:14567 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 167
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-travel-service exposes port 12346:12346 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 180
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-travel2-service exposes port 16346:16346 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 193
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-preserve-service exposes port 14568:14568 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 206
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-preserve-other-service exposes port 14569:14569 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 214
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-basic-service exposes port 15680:15680 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 223
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-price-service exposes port 16579:16579 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 239
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-notification-service exposes port 17853:17853 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 252
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-security-service exposes port 11188:11188 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 265
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-inside-payment-service exposes port 18673:18673 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 278
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-execute-service exposes port 12386:12386 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 291
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-payment-service exposes port 19001:19001 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 299
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-rebook-service exposes port 18886:18886 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 312
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-cancel-service exposes port 18885:18885 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 325
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-assurance-service exposes port 18888:18888 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 333
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-seat-service exposes port 18898:18898 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 346
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-travel-plan-service exposes port 14322:14322 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 354
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-news-service exposes port 12862:12862 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 375
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-voucher-service exposes port 16101:16101 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 397
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-route-plan-service exposes port 14578:14578 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 422
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-food-service exposes port 18856:18856 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 430
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-consign-service exposes port 16111:16111 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 444
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-consign-price-service exposes port 16110:16110 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 457
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-admin-basic-info-service exposes port 18767:18767 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 471
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-admin-order-service exposes port 16112:16112 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 479
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-admin-route-service exposes port 16113:16113 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 487
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-admin-travel-service exposes port 16114:16114 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 499
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-admin-user-service exposes port 16115:16115 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 511
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-avatar-service exposes port 17001:17001 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 523
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-delivery-service exposes port 18808:18808 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 532
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-food-delivery-service exposes port 18957:18957 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 546
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-gateway-service exposes port 18888:18888 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 560
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-station-food-service exposes port 18855:18855 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 573
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "ts-train-food-service exposes port 19999:19999 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 586
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "jaeger exposes port 16686:16686 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/deployment/docker-compose-manifests/docker-compose-with-jaeger.yml",
+    "line": 599
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/vue.js",
+    "line": 5108
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/vue.js",
+    "line": 5206
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/vue.js",
+    "line": 5207
+  },
+  {
+    "rule": "HARDCODED_SECRET",
+    "severity": "high",
+    "message": "Potential hardcoded secret in property 'password'",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/index.js",
+    "line": 18
+  },
+  {
+    "rule": "HARDCODED_SECRET",
+    "severity": "high",
+    "message": "Potential hardcoded secret in property 'password'",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/client_login.js",
+    "line": 5
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/amazeui.min.js",
+    "line": 6
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/amazeui.min.js",
+    "line": 6
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/amazeui.min.js",
+    "line": 6
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/amazeui.min.js",
+    "line": 6
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/amazeui.min.js",
+    "line": 6
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/amazeui.min.js",
+    "line": 6
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/amazeui.min.js",
+    "line": 8
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/amazeui.min.js",
+    "line": 8
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/amazeui.min.js",
+    "line": 8
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/aliyun-oss-sdk.min.js",
+    "line": 5
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/aliyun-oss-sdk.min.js",
+    "line": 12
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/aliyun-oss-sdk.min.js",
+    "line": 12
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/aliyun-oss-sdk.min.js",
+    "line": 16
+  },
+  {
+    "rule": "INSECURE_HTTP",
+    "severity": "medium",
+    "message": "HTTP connection instead of HTTPS",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/train-ticket/ts-ui-dashboard/static/assets/js/aliyun-oss-sdk.min.js",
+    "line": 18
+  }
+]

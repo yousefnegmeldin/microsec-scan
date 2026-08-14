@@ -38,26 +38,47 @@ all of them. Table~\ref{tab:polyglot_results} reports the outcome.}
 
 \begin{table}[!t]
 \centering
-\caption{\new{MicroSec-Scan applied to the Node.js services of three polyglot
-reference benchmarks. V = total findings, ISV = inter-service findings.
-Runtimes are wall-clock best-of-three in the evaluation container and are not
-comparable to the macOS figures in Table~\ref{tab:resource_consumption}.}}
+\caption{\new{MicroSec-Scan applied to three polyglot reference benchmarks,
+at whole-repository granularity (upper block) and at the granularity of the
+individual Node.js services they contain (lower block). V = total findings,
+ISV\textsubscript{i} = inter-service findings counted as instances,
+ISV\textsubscript{c} = distinct inter-service categories. Runtimes are
+wall-clock in the evaluation container and are not comparable to the macOS
+figures in Table~\ref{tab:resource_consumption}.}}
 \label{tab:polyglot_results}
 \safefixtablestyle
 \scriptsize
 \setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{} l l l r r r r @{}}
+\begin{tabular}{@{} l l r r r r @{}}
 \toprule
-\textbf{Benchmark} & \textbf{Node.js service} & \textbf{Transport} &
-\textbf{Files} & \textbf{V} & \textbf{ISV} & \textbf{Time (s)} \\
+\textbf{Subject} & \textbf{Transport} &
+\textbf{V} & \textbf{ISV\textsubscript{i}} & \textbf{ISV\textsubscript{c}} &
+\textbf{Time (s)} \\
 \midrule
-Sock Shop       & front-end                 & HTTP (\texttt{request}) & 33 & 51 & 1 & 4.41 \\
-Online Boutique & currencyservice           & gRPC                    &  2 &  0 & 0 & 0.50 \\
-Online Boutique & paymentservice            & gRPC                    &  4 &  0 & 0 & 0.50 \\
-Train Ticket    & ts-ticket-office-service  & none (DB only)          &  3 &  6 & 0 & 0.65 \\
+\multicolumn{6}{@{}l}{\textit{Whole repository}}\\
+Sock Shop (deploy repo)   & ---                     &  46 &   8 & 1 & 0.49 \\
+Online Boutique           & gRPC                    &   0 &   0 & 0 & 0.62 \\
+Train Ticket              & mixed                   & 374 & 134 & 1 & 5.63 \\
+\midrule
+\multicolumn{6}{@{}l}{\textit{Individual Node.js services}}\\
+Sock Shop front-end       & HTTP (\texttt{request}) &  51 &   1 & 1 & 4.41 \\
+OB currencyservice        & gRPC                    &   0 &   0 & 0 & 0.50 \\
+OB paymentservice         & gRPC                    &   0 &   0 & 0 & 0.50 \\
+TT ts-ticket-office-service & none (DB only)        &   6 &   0 & 0 & 0.65 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\new{The two granularities are reported separately because the Sock Shop
+deployment repository does not vendor the \texttt{front-end} source, which is
+maintained in its own repository, and because whole-repository scanning
+additionally reaches the Docker Compose definitions that service-level
+scanning does not. The instance counts in the upper block must be read with
+care: the 8 and 134 inter-service instances recorded for Sock Shop and Train
+Ticket originate entirely from a single Compose-level rule,
+\path{EXPOSED_INTERNAL_PORT}, which is why the corresponding category counts
+are 1. No code-level inter-service rule fired on any of the three benchmarks,
+at either granularity.}
 
 \new{The Sock Shop front-end, an Express service that fronts the Go and Java
 back-end services, produced 51 findings: 27 insecure HTTP usages, 13

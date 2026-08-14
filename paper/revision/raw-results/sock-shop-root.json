@@ -1,0 +1,324 @@
+[
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "front-end container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 4
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "edge-router container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 11
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "catalogue container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 29
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "catalogue-db container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 38
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "carts container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 46
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "carts-db container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 59
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "orders container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 72
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "orders-db container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 85
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "shipping container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 98
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "queue-master container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 111
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "rabbitmq container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 124
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "payment container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 136
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "user container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 145
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "user-db container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 155
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "user-sim container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 169
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "edge-router exposes port 80:80 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 14
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "edge-router exposes port 8080:8080 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.yml",
+    "line": 15
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "prometheus container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.monitoring.yml",
+    "line": 4
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "nodeexporter container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.monitoring.yml",
+    "line": 21
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "alertmanager container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.monitoring.yml",
+    "line": 20
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "grafana container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.monitoring.yml",
+    "line": 41
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "importer container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.monitoring.yml",
+    "line": 52
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "prometheus exposes port 9090:9090 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.monitoring.yml",
+    "line": 18
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "nodeexporter exposes port 9100:9100 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.monitoring.yml",
+    "line": 31
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "alertmanager exposes port 9093:9093 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.monitoring.yml",
+    "line": 35
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "grafana exposes port 3000:3000 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.monitoring.yml",
+    "line": 46
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "elasticsearch container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 4
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "kibana container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 7
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "log-server container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 14
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "front-end container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 21
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "edge-router container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 26
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "catalogue container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 31
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "catalogue-db container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 36
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "carts container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 41
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "carts-db container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 46
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "orders container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 51
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "orders-db container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 56
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "shipping container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 61
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "queue-master container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 66
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "rabbitmq container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 71
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "payment container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 76
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "user container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 81
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "user-db container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 86
+  },
+  {
+    "rule": "ROOT_CONTAINER",
+    "severity": "medium",
+    "message": "user-sim container runs as root",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 91
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "kibana exposes port 5601:5601 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 13
+  },
+  {
+    "rule": "EXPOSED_INTERNAL_PORT",
+    "severity": "critical",
+    "message": "log-server exposes port 24224:24224 to all network interfaces (0.0.0.0). Consider binding to 127.0.0.1 for internal services.",
+    "file": "/tmp/claude-0/-home-user-microservices-security-scanner/d8e4cae1-6c21-52ad-8bcd-beebdca57416/scratchpad/bench/sock-shop/deploy/docker-compose/docker-compose.logging.yml",
+    "line": 20
+  }
+]
