@@ -154,25 +154,29 @@ Table~\ref{tab:results_by_tool}.}}
 \multirow{4}{*}{Sock Shop}
  & MicroSec-Scan & 46 & 8 & 0.49 \\
  & Trivy         &  0 & 0 & 0.13 \\
- & Snyk$^{\dagger}$ &  0 & 0 & --- \\
+ & Snyk$^{\dagger}$ &  0 & 0 & 11.0 \\
  & Semgrep       &  0 & 0 & 106.15 \\
 \midrule
 \multirow{4}{*}{Online Boutique}
  & MicroSec-Scan &  0 & 0 & 0.62 \\
  & Trivy         &  0 & 0 & 2.30 \\
- & Snyk$^{\dagger}$ &  0 & 0 & --- \\
+ & Snyk$^{\dagger}$ &  0 & 0 & 12.0 \\
  & Semgrep       &  9 & 1 & 106.23 \\
 \midrule
 \multirow{4}{*}{Train Ticket}
  & MicroSec-Scan & 374 & 134 & 5.63 \\
  & Trivy         &   0 &   0 & 12.60 \\
- & Snyk$^{\dagger}$ &   0 &   0 & --- \\
+ & Snyk$^{\dagger}$ &   0 &   0 & 15.0 \\
  & Semgrep       & 589 &   0 & 244.78 \\
 \bottomrule
-\multicolumn{5}{@{}l}{\footnotesize $^{\dagger}$Not executed; entered as
-zero on the basis that Snyk reported no}\\
-\multicolumn{5}{@{}l}{\footnotesize inter-service findings on any of the five
-Node.js subjects. Runtime not recorded.}\\
+\multicolumn{5}{@{}l}{\footnotesize $^{\dagger}$Snyk was not executed on these
+three subjects. Findings are entered as}\\
+\multicolumn{5}{@{}l}{\footnotesize zero on the basis that it reported no
+inter-service findings on any of the five}\\
+\multicolumn{5}{@{}l}{\footnotesize Node.js subjects, and runtimes are
+estimates extrapolated from its 11--13\,s}\\
+\multicolumn{5}{@{}l}{\footnotesize range there, scaled by repository size.
+Neither is a measurement.}\\
 \end{tabular}
 \end{table}
 
