@@ -98,6 +98,63 @@ Since the point of the appendix is reproducibility, the text should match
 the implementation exactly. `appendix-microsec-prompt.tex` in this
 directory is a verbatim, parameterized replacement.
 
+## 5b. Reconciliation against the ground-truth spreadsheet
+
+Checked against the ground-truth sheet
+(`19CfaqIhIrAjdJqYoauEfdCH54IoB7_lawJtUdbxY2-4`).
+
+**Confirmed correct.** The presence matrix `tab:presence_matrix` reproduces
+the sheet exactly: all 14 category rows, all five "present" counts
+(14/13/13/12/10) and all five detected counts (13/10/8/4/7). The 19 rule
+rows also confirm item 3 above: 19 is the right number, and Table
+`tab:isv_categories` is the artifact that is wrong.
+
+**Confirms item 2.** The sheet records F1 = 0.8325 for
+Microservices-in-Nodejs. The correct value for P = 1.00, R = 0.70 is
+0.8235 — the sheet has a digit transposition, which the paper inherited as
+0.83. The sheet also records the old nodejs_microservice F1 of 0.70, which
+is precisely the value that produces the stale 0.772 average.
+
+**New — the sheet records a false positive.** The nodejs_microservice
+summary block reads P = 0.875, R = 0.5833, F1 = 0.70, i.e. 7 correct of 8
+detected against 12 present. The presence matrix for the same application
+shows 8 detected of which all 8 are marked present, giving P = 1.00,
+R = 8/13 = 0.62, F1 = 0.76 — the values the paper now reports. The summary
+block is stale, but it is the only record of a false positive anywhere,
+and the manuscript argues at length that precision is necessarily 1.00
+("no false positives were observed"). If this sheet ships in the
+replication package, that block must be corrected or removed first.
+
+**New — Semgrep ISV numbers do not match the paper.**
+
+| Application | Paper | Sheet |
+|---|---|---|
+| nodejs-microservices-rabbitmq | 5 | 5 ✓ |
+| Message-Driven E-commerce | 5 | 5 ✓ |
+| nodejs_microservice | 0 | 25 |
+| Microservices-in-Nodejs | 1 | 13 |
+| E-commerce (in-house) | 0 | 32 |
+
+The paper's Semgrep ISV column mixes two metrics: 5 and 5 come from the
+sheet's summary blocks (instance counts), while 0, 1 and 0 come from the
+sheet's Semgrep columns in the presence matrix (category level, almost all
+zero). The claim "In comparison, Semgrep detected only 5 ISV findings"
+about the in-house system is not supported by either reading. Choose one
+metric, apply it uniformly to all five applications, and restate the
+surrounding prose.
+
+**New — e-commerce totals disagree.** The sheet gives MicroSec-Scan
+V = 227, ISV = 166 for the in-house e-commerce system; the paper reports
+218 and 148. These figures appear four times in the text.
+
+**Gaps in the sheet.** Timing is recorded only for
+nodejs-microservices-rabbitmq (0.38 / 0.09 / 12 / 120); the per-application
+times the paper reports for the other four applications are not in the
+sheet and need their source added to the replication package. The sheet's
+average-runtime block says 0.415 s for MicroSec-Scan, while the paper's
+five per-application values average 0.406 s. Semgrep's minimum recorded
+memory is 1394 MB, not the 1390 MB stated as the lower bound.
+
 ## 6. Section roadmap in the introduction is stale
 
 The introduction states: "Section III presents the system model and
