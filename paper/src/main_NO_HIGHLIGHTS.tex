@@ -1,0 +1,2948 @@
+%% Copyright 2007-2025 Elsevier Ltd
+\documentclass[preprint,12pt]{elsarticle}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, patterns, fit}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{multirow} 
+\usetikzlibrary{arrows.meta, positioning, shapes, fit, calc}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{xurl} % allows line breaks in \url and \path at slashes
+\usepackage{tcolorbox}
+\tcbuselibrary{listings}
+\tcbuselibrary{skins}
+\tcbuselibrary{breakable}
+\usepackage{tikz}
+\usepackage{color}
+\usepackage[section]{placeins}
+
+\usepackage{listings}
+
+\definecolor{lstbg}{RGB}{247,247,247}
+\definecolor{lstrule}{RGB}{190,190,190}
+\definecolor{lstkey}{RGB}{0,60,140}
+\definecolor{lststr}{RGB}{150,40,20}
+\definecolor{lstnum}{RGB}{130,130,130}
+\definecolor{lsthlcol}{RGB}{255,232,150}
+
+\lstdefinelanguage{yamlx}{
+  sensitive=false,
+  morecomment=[l]{\#},
+  morestring=[b]",
+  morestring=[b]',
+  morekeywords={apiVersion,kind,metadata,name,namespace,annotations,spec,
+    containers,image,securityContext,allowPrivilegeEscalation,capabilities,
+    drop,readOnlyRootFilesystem,runAsNonRoot,runAsUser,seccompProfile,type,
+    volumeMounts,mountPath,livenessProbe,readinessProbe,tcpSocket,port,
+    initialDelaySeconds,periodSeconds,resources,limits,requests,cpu,memory,
+    automountServiceAccountToken,fsGroup,volumes,emptyDir,restartPolicy},
+}
+
+\lstdefinelanguage{jsonx}{morestring=[b]",sensitive=false}
+
+\lstdefinestyle{sfbase}{
+  basicstyle=\ttfamily\scriptsize,
+  backgroundcolor=\color{lstbg},
+  frame=single,
+  rulecolor=\color{lstrule},
+  framesep=4pt,
+  numbers=left,
+  numberstyle=\tiny\color{lstnum},
+  numbersep=7pt,
+  xleftmargin=2.4em,
+  framexleftmargin=2.0em,
+  keywordstyle=\color{lstkey}\bfseries,
+  stringstyle=\color{lststr},
+  commentstyle=\color{lstnum}\itshape,
+  showstringspaces=false,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  upquote=true,
+  tabsize=2,
+  escapeinside={(*}{*)},
+}
+
+\lstdefinestyle{sfyaml}{style=sfbase,language=yamlx}
+\lstdefinestyle{sfjson}{style=sfbase,language=jsonx}
+
+\newcommand{\lsthl}[1]{\colorbox{lsthlcol}{\ttfamily\scriptsize #1}}
+
+% \newcommand{\new}[1]{\textcolor{blue}{#1}}
+\newcommand{\new}[1]{#1}
+% \newcommand{\fix}[1]{\textcolor{orange}{#1}}
+\newcommand{\fix}[1]{#1}
+
+
+\renewcommand{\thetable}{\Roman{table}}  
+\renewcommand{\thesection}{\Roman{section}}
+
+
+
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds}
+\usepackage{lineno}
+\linenumbers
+
+\journal{Computers \& Security}
+
+
+
+
+
+
+% ---------- Consistent table style (SafeFix style) ----------
+\usepackage{ragged2e}
+
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}     % wrapped, left aligned
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}% centered fixed width
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}% left fixed width
+
+\newcommand{\safefixtablestyle}{%
+  \small
+  \setlength{\tabcolsep}{5pt}
+  \renewcommand{\arraystretch}{1.15}
+}
+
+
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{MicroSec-Scan and SafeFix-K8s for Automated Analysis and Repair in Microservices and Kubernetes}
+
+\author[1]{Yousef Negmeldin}
+%\ead{yousef.negmeldin@student.giu-uni.de}
+\author[1]{Ahmed Hegab}
+% \ead{ahmed.hegab@student.giu-uni.de}
+
+\author[1]{Menna Singergy}
+% \ead{menna.singergy@giu-uni.de}
+
+\author[1]{Marwa Zamzam}
+%\ead{marwa.zamzam@giu-uni.de}
+\author[1,2]{John Zaki}
+% \ead{john.fayez@giu-uni.de}
+
+
+
+\affiliation[1]{organization={German International University (GIU), Faculty of Computer Science},%
+addressline={New Administrative Capital}, 
+city={Cairo},  
+country={Egypt}}
+
+\affiliation[2]{
+organization={Mansoura University, Computer \& Systems Dept., Faculty of Engineering},%
+addressline={Mansoura},
+city={Mansoura},
+country={Egypt}}
+
+\begin{abstract}
+
+
+\new{The adoption of microservices has made cloud-native systems harder to secure.} Systems are distributed, containerized, and built with different technology stacks. This increases the attack surface. It also creates risks that come from inter-service communication paths and from insecure infrastructure configuration. Many security scanners still target monolithic applications solely. They focus on one service or one layer, so they miss issues that span across multiple components of a system.
+The novel contributions of this work to DevSecOps and Cloud-Native security are: a) Introducing a practical framework for automation of microservices application security and Kubernetes configuration hardening. This is a known gap in existing static scanner tools that typically focuses on a single service or partial CI/CD pipeline. The originality comes from combining existing state-of-the-art techniques with large language models. b) MicroSec-Scan tool: pioneering design-time, code level, and context aware security analysis for microservices in Node.js ecosystem. It detects, analyzes, and refactors security deficiencies in microservice systems. It handles a broad range of issues such as missing rate-limiting, insecure middleware usage, and vulnerabilities arising from inter-services interactions. c) SafeFix-K8s: an automated layered pipeline advancing Kubernetes misconfiguration remediation. It detects, repairs, and validates insecure Kubernetes misconfigurations through the orchestration of multiple detectors, canonical normalization, and large language models to generate fixes and rigorously verify them. During the evaluation process, the MicroSec-Scan tool detected tens of vulnerabilities, including inter-service findings. It also achieved an average F1-score of 0.78. Across the evaluation dataset, the SafeFix-K8s tool achieved high detection coverage and a 72.9\% validated fix success rate. 
+\end{abstract}
+% These results show that multi-tool detection and layered repair can produce reliable Kubernetes hardening with little manual work. This end-to-end automation is novel and proposes solutions for prevalent problems.
+
+
+
+
+
+\begin{graphicalabstract}
+\centering
+\begin{tikzpicture}[node distance=0.35cm and 0.5cm, scale=0.75, transform shape]
+\tikzset{
+    % Box styles - black and white only
+    toolbox/.style={rectangle, rounded corners=8pt, minimum width=4cm, minimum height=0.8cm, align=center, font=\normalsize\bfseries, fill=white, draw=black, line width=1.1pt},
+    stagebox/.style={rectangle, rounded corners=6pt, minimum width=3.7cm, minimum height=0.7cm, align=center, font=\footnotesize, fill=white, draw=black, line width=0.8pt},
+    % Arrow styles
+    arrow/.style={-{Stealth[length=1.8mm]}, line width=1.2pt, black},
+    bigarrow/.style={-{Stealth[length=2.5mm]}, line width=1.5pt, black},
+    inputarrow/.style={-{Stealth[length=2.5mm]}, line width=1.5pt, black},
+}
+
+% ============= MicroSec-Scan Tool =============
+% Tool header
+\node[toolbox] (microsec-header) at (0,0) {
+    MicroSec-Scan
+};
+
+% External Input Node - positioned above
+\node[font=\small\bfseries, above=1cm of microsec-header] (external-input) {Source Code};
+
+% Input arrow from above
+\draw[inputarrow] (external-input.south) -- (microsec-header.north);
+
+% Stage 1: Input
+\node[stagebox, below=0.45cm of microsec-header] (microsec-input) {
+    \textbf{Input}\\[1pt]
+    {\scriptsize Source Code Parser (AST) | Docker Compose}
+};
+% Arrow
+\draw[arrow] (microsec-input.south) -- ++(0,-0.6);
+% Stage 2: Analysis
+\node[stagebox, below=0.63cm of microsec-input] (microsec-analysis) {
+    \textbf{Analysis}\\[1pt]
+    {\scriptsize Rule Checking Layer}
+};
+% Arrow
+\draw[arrow] (microsec-analysis.south) -- ++(0,-0.6);
+% stage 3 LLM Refactor Layer
+\node[stagebox, below=0.63cm of microsec-analysis] (microsec-refactor) {
+    \textbf{LLM Refactor Layer}\\[1pt]
+    {\scriptsize Diff Applier | Inference Provider Integration }
+};
+\draw[arrow] (microsec-refactor.south) -- ++(0,-0.6);
+% Stage 4 Output
+\node[stagebox, below=0.63 cm of microsec-refactor] (microsec-output) {
+    \textbf{Developer Friendly Output}\\[1pt]
+    {\scriptsize Console | JSON | Markdown}
+};
+
+% Bounding box for MicroSec-Scan
+\begin{scope}[on background layer]
+    \node[draw=black, fill=white, rounded corners=10pt, line width=1.3pt, 
+          fit=(microsec-header)(microsec-input)(microsec-analysis)(microsec-refactor)(microsec-output),
+          inner sep=9pt] (microsec-box) {};
+\end{scope}
+
+% ============= SafeFix K8s Tool =============
+% Tool header
+\node[toolbox, right=5.5cm of microsec-header] (safefix-header) {
+    SafeFix-K8s
+};
+
+% Stage 1: Detection
+\node[stagebox, below=0.45cm of safefix-header] (safefix-detection) {
+    \textbf{Detection}\\[1pt]
+    {\scriptsize Checkov | Kubescape | KubeLinter | Trivy | +9 more}
+};
+% Arrow
+\draw[arrow] (safefix-detection.south) -- ++(0,-0.6);
+% Stage 2: Normalization
+\node[stagebox, below=0.63cm of safefix-detection] (safefix-norm) {
+    \textbf{Normalization}\\[1pt]
+    {\scriptsize SafeFix‑K8s Normalizer | FP Filtering}
+};
+% Arrow
+\draw[arrow] (safefix-norm.south) -- ++(0,-0.6);
+% Stage 3: LLM Repair
+\node[stagebox, below=0.63cm of safefix-norm] (safefix-repair) {
+    \textbf{Repair}\\[1pt]
+    {\scriptsize Category-aware Repair | LLM}
+};
+% Arrow
+\draw[arrow] (safefix-repair.south) -- ++(0,-0.6);
+% Stage 4: Validation
+\node[stagebox, below=0.63cm of safefix-repair] (safefix-validation) {
+    \textbf{Validation Gates}\\[1pt]
+    {\scriptsize Structural Diff | Dangerous Config | Schema}
+};
+% Arrow
+\draw[arrow] (safefix-validation.south) -- ++(0,-0.6);
+% Stage 5: Output
+\node[stagebox, below=0.63cm of safefix-validation] (safefix-output) {
+    \textbf{Secured Output}\\[1pt]
+    {\scriptsize Secured Manifests and Reports}
+};
+
+% Bounding box for SafeFix K8s
+\begin{scope}[on background layer]
+    \node[draw=black, fill=white, rounded corners=10pt, line width=1.3pt, 
+          fit=(safefix-header)(safefix-detection)(safefix-norm)(safefix-repair)(safefix-validation)(safefix-output),
+          inner sep=9pt] (safefix-box) {};
+\end{scope}
+
+% ============= Arrow between tools with YAML file label =============
+% ============= Arrow between tools with YAML file label =============
+\draw[bigarrow] (microsec-box.east |- safefix-detection.west) -- node[above, font=\small\bfseries, align=center] {YAML\\file} (safefix-detection.west);
+
+\end{tikzpicture}
+\end{graphicalabstract}
+
+\begin{highlights}
+\item \new{Detects code-level and inter-service vulnerabilities in Node.js microservices.}
+\item \new{SafeFix-K8s: automated detection, repair, and validation of K8s misconfigurations.}
+\item \new{Canonical normalization unifies heterogeneous scanner outputs for consistent repair.}
+\item \new{RFC 6902 patch generation with strict validation gates ensures repair correctness.}
+\end{highlights}
+
+
+\begin{keyword}
+Kubernetes \sep Misconfigurations \sep Large Language Models \sep Microservices \sep Security Framework
+\end{keyword}
+
+\end{frontmatter}
+
+
+
+
+
+
+
+
+
+
+
+
+
+% INTRO
+
+
+
+
+
+\section{Introduction}
+
+%negm
+Microservice architectures have become the building blocks of new software systems, enhancing scalability and agility by splitting systems into independent deployable services \cite{sowmya2023apitad}. Despite these advantages, the distributed nature of microservices introduces security challenges \cite{abdurrahman2024securemarketplace}. Each microservice and its exposed API endpoints can act as entry points for attackers. Therefore increasing the risk of attacks and threats at scale \cite{abdurrahman2024securemarketplace}. As a result of this growing trend, securing these interconnected services has become a critical concern \cite{haindl2024systematic}.
+
+
+Traditional security analysis tools, including Static Application Security Testing (SAST) and container vulnerability scanners, perform poorly in microservice contexts \cite{unver2023}. This is due to their limited contextual awareness about the architecture of the application and their lack of ability to map out ingress and egress data communication paths \cite{chou2021}. Tools like these typically treat code as a single isolated entity. Thus, they fail to identify vulnerabilities that arise from misconfigured communication channels, missing authentication layers, or insecure data exchange between services. This limitation makes it difficult for developers and security teams to integrate effective security checks within the DevOps lifecycle ~\cite{zhang2024devsecops}.
+
+In practice, microservices rarely work in isolation. They’re typically packed into containers. Which are managed by cloud platforms that handle communication, permissions, scaling, and workload segregation. This structure means application weaknesses along with setup errors may combine to open real attack paths. Thus, improving security for microservices requires protecting the orchestration layer hosting them \cite{dellimmagine2023kubehound,rahman2023k8s}.
+
+%hegab%
+Kubernetes plays a key role in today’s cloud-based setups, supporting many container and distributed apps. Thanks to its declarative model, engineers describe desired states through YAML files instead of commands. Still, this ease brings notable security challenges. Real-world analyses reveal those configuration scripts frequently include errors, lack essential protections, or rely on environment-specific conditions. These flaws may result in live cluster exposures \cite{rahman2023k8s}.
+
+
+
+Although Kubernetes provides solid automation and orchestration features, it applies only what is specified in the configuration files. Therefore, deployment safety relies on how accurately those configuration files are created and updated \cite{rout2024kubernetes,rahman2023k8s}.
+
+
+
+
+
+Research on open-source Kubernetes manifests confirms this risk by showing that misconfigurations are widespread and frequently repeated across different environments. Large-scale analyses consistently report the same recurring issues in Kubernetes manifests. Containers are often configured to run with privileged access. Security context fields are frequently missing or incorrect. Many workloads omit runAsUser or runAsNonRoot protections. Default service accounts are used without restriction. Image tags are often unpinned or left floating. Network and RBAC policies are sometimes overly permissive. Host access features such as hostPID or hostNetwork are also commonly misconfigured~\cite{rahman2023k8s,dellimmagine2023kubehound}. Educational and technical studies agree on these findings and emphasize that such errors persist not because Kubernetes is inherently unsafe but because teams often lack operational experience or rely on defaults that expose files unnecessarily \cite{shamim2024technoeducational}.
+
+
+
+
+
+To detect these misconfigurations, practitioners increasingly rely on automated scanners. Tools such as Trivy, Checkov, Kubescape, Polaris, KubeLinter, and KubeAudit have been widely adopted in DevSecOps pipelines. Comparative evaluations show, however, that these tools only provide limited coverage. Each stands out in specific categories but misses others, producing inconsistent and fragmented results that cannot be used directly for remediation without substantial manual interpretation \cite{sivaraman2023mlk8s, dellimmagine2023kubehound}. Detection tools identify weaknesses but do not apply safe corrections, and their disagreements make it difficult to know which findings are accurate or actionable.
+
+
+
+This gap has led to new studies using large language models to fix Kubernetes security issues. For example, GenKubeSec \cite{malul2024genkubesec} along with LLMSecConfig \cite{ye2025llmsecconfig} suggest that LLMs are able to interpret YAML layouts, detect flaws, then propose fixes that strengthen system defenses. Research also indicates these methods help rework configurations in Helm templates and related framework setups \cite{minna2025helmllm}. Even so, existing model-driven solutions often deliver patches in uneven formats, insert incorrect fields, skip essential checks, while lacking ways to ensure repairs follow required schemas safely. These attempts reveal promise; however, \new{they fall short of offering reliable tools covering full workflows, from finding problems through fixing them via schema-validated, rule-enforced verification.}
+
+
+Thus, the aim of this paper is to address this dual-layer gap with MicroSec-Scan  and SafeFix-K8s, providing the first integrated pipeline to secure microservices development across both application and infrastructure layers.
+
+
+\new{This work makes the following contributions. For the application layer, 
+MicroSec-Scan is the first design-time, code-level, context-aware security 
+analyzer for Node.js microservices, targeting the inter-service layer that 
+SAST, dependency, and container scanners overlook. It also provides a 
+constrained LLM-assisted refactoring stage that turns findings into 
+developer-reviewed fixes. For the infrastructure layer, SafeFix-K8s is an 
+automated layered pipeline that advances Kubernetes misconfiguration 
+remediation through the orchestration of 13 detection tools, canonical 
+normalization, a category-aware repair engine combining deterministic, 
+template-based, and LLM-guided strategies, and a 7-gate validation framework 
+that enforces schema correctness and security compliance on every repaired 
+manifest. Together, MicroSec-Scan and SafeFix-K8s form an end-to-end 
+framework where application-layer analysis feeds directly into 
+infrastructure-layer hardening, bridging a gap that no existing tool 
+addresses as a unified pipeline.}
+
+\new{Evaluated on five Node.js microservice applications, MicroSec-Scan 
+detected inter-service vulnerabilities in every one, where Trivy and Snyk 
+found none, achieving a precision of 1.00, recall of 0.33--0.93, and an 
+average F1-score of 0.78, all in under half a second per scan. SafeFix-K8s 
+was evaluated on 28 intentionally misconfigured Kubernetes manifests, 
+achieving 100\% detection coverage after normalization, 100\% repair success 
+on all CRITICAL and HIGH severity findings, and an overall validated fix rate 
+of 72.9\% across 528 canonical findings. These results show that design-time, 
+architecture-aware analysis reliably exposes inter-service vulnerabilities 
+missed by existing tools, and that layered multi-tool detection combined with 
+structured LLM-guided repair and strict validation gates can produce 
+reliable, auditable Kubernetes hardening at a runtime cost suitable for 
+continuous integration pipelines.}
+
+
+
+% to be completed 
+\new{The rest of this paper is structured as follows. Section~II reviews related work on microservice security analysis, Kubernetes misconfiguration detection, and LLM-based remediation. Section~III presents the architecture of the proposed framework. Section~IV describes the implementation of both tools. Section~V defines the experimental design, including the research questions, subject selection criteria, metrics, and annotation protocol. Section~VI reports and discusses the results. Section~VII analyses the threats to validity. Section~VIII concludes and outlines directions for future research.}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Related Work}
+\label{sec:lit_gap}
+
+This section reviews related work on microservice security and Kubernetes configuration vulnerabilities. It covers runtime security techniques, design-time tools, model-based approaches, and static analysis scanners. The discussion highlights existing gaps that motivate the need for a practical end-to-end automation approach for securing microservice applications and hardening Kubernetes configurations, which is addressed through the development of MicroSec-Scan and SafeFix-K8s tools.
+
+
+
+\subsection{Runtime Security and Static Analysis for Microservices}
+
+
+
+Many studies focus on run-time monitoring in microservices architectures. The API Traffic Anomaly Detection (API-TAD) mechanism applies machine learning to detect abnormal API traffic \cite{sowmya2023apitad}. Similarly, the Privacy and Security Risk Detection (PSRD) model uses distributed tracing and a fully connected neural network to classify the risk level of request paths across service nodes \cite{chou2021}. These approaches operate during execution and do not support design-time checks or early vulnerability detection.
+
+Some tools offer Software Composition Analysis (SCA), where they detect vulnerabilities in third-party libraries \cite{ali2024sca}. Moreover, tools such as the OWASP Dependency-Check tool and the Trivy CLI tool scan dependency files such as "package.json". Much of the existing literature focuses on Java Spring Boot ecosystems \cite{abdurrahman2024securemarketplace}, leaving other programming languages with no research. The tools research primarily focuses on detecting common OWASP vulnerabilities but lack architectural insight into interactions between services or insecure design choices. \new{The works reviewed in this section are research contributions that
+characterize microservice and inter-service security vulnerabilities and
+propose detection or mitigation approaches; they are not off-the-shelf
+security scanners, which is why the evaluation baselines are not drawn from
+them. Those baselines are instead deployed industry tools, introduced here
+at the point where their scanning class is relevant. Trivy~\cite{trivy},
+Snyk~\cite{snyk}, and Semgrep~\cite{semgrep} are widely used in practice,
+reflected in the adoption of their open-source repositories on GitHub, where
+Trivy alone exceeds 36{,}000 stars~\cite{trivy_repo}. They represent the
+dominant scanning classes: container and dependency scanning (Trivy, Snyk)
+and single-file static pattern matching (Semgrep). Each is
+selected because its scanning class is the one MicroSec-Scan is measured
+against rather than a competitor to it: Trivy and Snyk cover container
+images and third-party dependencies~\cite{trivy,snyk}, and Semgrep matches
+single-file code patterns~\cite{semgrep}, none of which reconstruct the
+cross-service paths that define inter-service vulnerabilities. They are
+therefore used as the baselines in the evaluation, where they characterize
+the coverage gap for inter-service analysis rather than serving as direct
+algorithmic competitors.}
+
+Some research tries to organize findings by offering taxonomies and high-level concepts. Other work compares monolithic and microservice architectures to understand how each one handles security \cite{nemmini2023fortifying}. There’s also research focused on APIs, where common vulnerabilities are grouped using OWASP categories \cite{nawrocki2024vulnerabilities}. In addition, several surveys and systematization studies analyze runtime security issues and review existing tools for securing microservice-based systems\cite{minna2023runtime,haindl2024systematic,gorige2020privacy}.
+
+\new{The closest prior approach to MicroSec-Scan is the sidecar-based work of Meadows et al.~\cite{meadows2023sidecar}, which in Table~\ref{tab:microservices-literature} is the only entry that combines design-time analysis, inter-service scope, and Node.js support. It improves access control through sidecar proxies that inspect requests between services. MicroSec-Scan differs in mechanism: it performs static AST analysis of the service source code and applies detection rules spanning authentication, transport security, messaging integrity, and resilience (Table~\ref{tab:isv_categories}).}
+
+Microservices are commonly deployed as containers and managed by orchestration  platforms\cite{haindl2024systematic}. As a result, security weaknesses in service code and inter-service communication often extend to the configuration layer that controls how these services run in production, particularly Kubernetes.
+
+Table~\ref{tab:microservices-literature} provides a comprehensive comparison of related work on microservice security, highlighting the unique contributions of MicroSec-Scan in terms of design-time analysis, inter-service vulnerability detection, and Node.js ecosystem support. \new{In this table, Design-Time indicates whether the approach detects issues before deployment rather than at runtime; Inter-Service indicates whether it captures vulnerabilities arising from service-to-service communication rather than isolated single-service defects; and Node.js indicates whether the approach explicitly supports the Node.js ecosystem.}
+
+\begin{table*}[!t]
+\centering
+\caption{Comparison of Related Literature on Microservice Security}
+\label{tab:microservices-literature}
+\safefixtablestyle
+\begin{tabularx}{\textwidth}{@{} C{1.1cm} C{1.0cm} C{1.6cm} C{1.7cm} C{1.2cm} Y Y @{}}
+\toprule
+\textbf{Ref} & \textbf{Year} & \textbf{Design-Time} & \textbf{Inter-Service} & \textbf{Node.js} & \textbf{Results} & \textbf{Technique} \\
+\midrule
+\cite{abdalkareem2022sftsdh} & 2022 & Yes & No & No & Framework improves auth correctness & Spring Security, OAuth2 \\
+\cite{mujahid2024owasp} & 2024 & Yes & No & No & Secure API design validated on prototype & OWASP API Top 10, Spring Boot \\
+\cite{nemmini2023fortifying} & 2023 & Yes & No & No & Architectural comparison (mono vs micro) & Conceptual architecture analysis \\
+\cite{nawrocki2024vulnerabilities} & 2024 & Yes & No & No & Identifies common API vulnerabilities & OWASP review, taxonomy \\
+\cite{sowmya2023apitad} & 2023 & No & No & No & Acc: 91.63\% anomaly detection & RandomForest, ML-based detection \\
+\cite{minna2023runtime} & 2023 & No & Partial & No & Systematizes runtime microservice security & SoK, 48 papers + 33 tools \\
+\cite{meadows2023sidecar} & 2023 & Yes & Yes & Yes & Prototype sidecar improves access control & Sidecar proxies, request inspection \\
+\cite{idris2021vais} & 2021 & Yes & No & No & Case study on API vulnerabilities & OWASP API Top 10, microservice app \\
+% MicroSec-Scan & 2025 & Yes & Yes & Yes & High detection rate + automated refactors & Rule-based static analysis + LLM refactor \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+
+
+\subsection{Kubernetes Misconfiguration Detection}
+
+
+%hegab start %
+
+Kubernetes has become a \new{core component} of many cloud-native and containerized systems, and \new{substantial research} has demonstrated that security in Kubernetes is strongly linked to how YAML manifests are configured \cite{kamieniarz2024comparative, rahman2023k8s}. Large scale studies have identified common security issues in open-source Kubernetes configuration files, such as missing security contexts, unsafe defaults, and misused access-control settings \cite{rahman2023k8s, dellimmagine2023kubehound}. Shamim’s recent work \cite{shamim2024technoeducational} also highlights the fact that even teams with experience will struggle to apply these best practices consistently across real clusters. This evidence shows that YAML misconfiguration is at the core of Kubernetes security risk.
+
+Much research and set of tools are focused on the detection of Kubernetes misconfigurations. Rahman et al. \cite{rahman2023k8s} analyze large datasets of real-world Kubernetes manifests and build detailed taxonomies of common misconfigurations, such as privileged containers, unsafe hostPath mounts, weak authentication settings, and missing resource limits. Dell’Immagine et al \cite{dellimmagine2023kubehound} present KubeHound, which addresses these misconfigurations under the umbrella of  "security smells" and reports recurring risks such as overprivileged files and poor isolation controls. Besides the academic works, widely used industrial tools like Checkov, Kubescape, and Polaris define extensive rule sets for scanning Kubernetes and infrastructure-as-code artifacts. These tools provide broad coverage of known misconfigurations but all remain limited to detection, since none integrate structured or automated repair mechanisms \cite{checkovtool, kubescapetool, polaristool}.
+
+\subsection{Automated Repair and LLM-Based Approaches}
+
+More recent work investigates automated detection and classification using machine learning and large language models. Sivaraman \cite{sivaraman2023mlk8s} shows that features extracted from YAML can be used to train classifiers that differentiate secure from insecure configurations, establishing that misconfigurations possess learnable patterns. In a follow-up, Minna et al. \cite{minna2025helmllm} study security issues in Helm charts from Artifact Hub and experiment with using LLMs to suggest fixes for detected misconfigurations, with focus on how well models can understand and rewrite chart templates. These lines of work improve the ability to identify problematic patterns and hint at the possibility of automated remediation, but so far they do not offer any guarantees about the correctness or safety of the output patches.
+A separate line of research looks at whether large language models can handle the entire remediation process for Kubernetes and container configurations. GenKubeSec \cite{malul2024genkubesec} presents a pipeline that uses an LLM to detect, locate, reason about, and attempt to fix Kubernetes misconfigurations. The authors show that the model can often produce sensible corrections when given a clear textual description of the issue. LLMSecConfig \cite{ye2025llmsecconfig} takes a broader view and applies LLMs to container configuration files in general, modifying them based on the output of security scanners. Minna et al.\ also explore the use of LLMs for rewriting Kubernetes manifests \cite{minna2025helmllm}. Although these systems demonstrate that LLMs can be helpful in generating possible fixes, they still face recurring problems. Models sometimes introduce fields that do not exist, apply only partial hardening, or produce changes that fail to preserve important elements of the configuration such as selectors, ports, or required API structures \cite{minna2025helmllm, malul2024genkubesec, ye2025llmsecconfig}.
+
+Outside Kubernetes-specific research, the broader cloud-native and microservice security literature also shows that misconfigurations are a common cause of security incidents. Many studies highlight weak configuration management as a recurring contributor. They report problems such as configuration debt, excessive API exposure, and unsafe defaults. These issues appear frequently in real systems. Several works argue that stronger automation is needed to detect and mitigate such problems at scale~\cite{haindl2024systematic, zhang2024devsecops, viswathan2024zero}.
+
+
+
+
+
+\new{Table~\ref{tab:work_comparison_pipeline} compares related work on Kubernetes security across the four layers addressed by the SafeFix-K8s tool. The Focus Area column distinguishes the scope of each work: studies labelled K8s Manifests analyze real-world YAML files spanning all resource kinds such as Deployments, Services, RoleBindings, and Ingress rules, while K8s Deployments refers to work that evaluated scanners specifically against Deployment resources only. K8s YAML denotes LLM-based tools that process any Kubernetes YAML regardless of resource kind, Helm Charts targets templated chart definitions, Containers covers configuration files beyond Kubernetes, and Dockerfile refers to container build definitions. The four layer columns are rated as follows: YES if the layer is fully addressed, Partial if addressed incompletely or only under limited conditions, and (~-- ) if not addressed at all. Detection (Det.) indicates whether misconfigurations are identified. Normalization (Norm.) indicates whether findings from multiple sources are unified into a canonical format. Repair indicates whether concrete fixes are generated. Validation (Val.) indicates whether the repaired output is verified for correctness and security compliance after modification.}
+
+
+
+\begin{table}[!t]
+\centering
+\caption{Comparison of related work across pipeline stages (Detection, Normalization, Repair, Validation).}
+\label{tab:work_comparison_pipeline}
+\safefixtablestyle
+\footnotesize
+
+% (optional) slightly tighter horizontal padding for this table only
+\setlength{\tabcolsep}{4.5pt}
+
+\begin{tabularx}{\linewidth}{@{} C{0.75cm} C{0.95cm} Y C{0.8 cm} C{1.05cm} C{1.05cm} C{1.05cm} @{}}
+\toprule
+\textbf{Work} & \textbf{Year} & \textbf{Focus Area} & \textbf{Det.} & \textbf{Norm.} & \textbf{Repair} & \textbf{Val.} \\
+\midrule
+\cite{mittal2025practical} & 2025 & CI/CD Policy & Partial & - & - & YES \\
+\cite{rahman2023k8s} & 2023 & K8s Manifests & - & YES & - & - \\
+\cite{kamieniarz2024comparative} & 2024 & K8s Deployments & Partial & - & - & - \\
+\cite{dellimmagine2023kubehound} & 2023 & K8s Manifests & YES & Partial & - & - \\
+\cite{malul2024genkubesec} & 2024 & K8s YAML & YES & Partial & Partial & Partial \\
+\cite{ye2025llmsecconfig} & 2025 & Containers & YES & - & YES & Partial \\
+\cite{cohen2025kubeguard} & 2025 & K8s Hardening & YES & - & YES & Partial \\
+\cite{minna2025helmllm} & 2024 & Helm Charts & YES & - & YES & Partial \\
+\cite{de2022security} & 2022 & Dockerfile & YES & - & YES & Partial \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+
+
+
+\subsection{Research Gaps and Motivation}
+Despite the breadth of existing research, several interconnected gaps remain across the microservice stack.
+\new{
+At the application level, which this work addresses through MicroSec-Scan tool, three gaps can be identified. Firstly, most existing security tools emphasize runtime monitoring, vulnerability taxonomies, or dependency analysis, while providing limited support for design-time detection of security issues in real-world microservice codebases. Despite the widespread adoption of Node.js in microservice architectures, existing design-time tools remain largely tailored to Java ecosystems and offer limited coverage for Node.js-based services. Secondly, current tools primarily target synchronous REST-based architectures and often fail to capture vulnerabilities arising from inter-service communication, insecure trust assumptions, and event-driven interaction patterns involving messaging brokers such as Kafka and RabbitMQ. Thirdly, many existing approaches stop at vulnerability detection and reporting, providing little guidance to developers on how to refactor or secure vulnerable code, which makes remediation largely manual and error-prone.
+}
+
+\new{
+These application-level limitations do not stop at service code. Since microservices are deployed and managed through orchestration platforms, similar limitations also arise at the orchestration level, which this work addresses through the SafeFix-K8s tool.
+}
+
+\new{
+Fourthly, although prior research has demonstrated that misconfigurations in Kubernetes YAML manifests are a dominant source of security risk, most tools or frameworks use one tool to detect misconfigurations. Fifthly, recent approaches that employ machine learning and large language models to generate fixes for Kubernetes configurations often lack schema awareness, structural guarantees, and consistency, resulting in patches that may be incomplete, unsafe, or incompatible with production environments. Sixthly, few existing systems validate whether generated fixes actually satisfy security baselines or preserve correctness after modification, leaving repaired configurations without strong security or correctness guarantees.
+}
+
+\new{
+Collectively, these gaps show a split. Security checks at the service level do not align well with those at the configuration level. Similarly, finding flaws \new{does not} lead directly to practical fixes. Because of this, there is a clear push for a combined approach: one that links early-stage microservice reviews with reliable, automatic strengthening of Kubernetes setups. This solution tackles both issues using MicroSec-Scan tool alongside the SafeFix-K8s tool, creating a single workflow where analysis flows into verified corrective actions.
+}
+
+
+%hegab end %
+
+    \new{\section{Framework Architecture}}
+
+
+% This section introduces the structure and setup of a new end-to-end microservice security system, built to find and fix weaknesses at various levels within cloud-based apps. Built as an integrated CI/CD workflow, it links code inspection tools with automatic correction of deployment errors.
+% The suggested model uses multiple security levels, addressing issues at both application and infrastructure layers. On the application layer, it examines microservice code to detect inter-service vulnerabilities between connected services. For the underlying platform, it checks Kubernetes configurations while automatically correcting frequent misconfigurations that could lead to risks prone to be found in production environments.
+
+% The framework is composed of two tightly integrated tools. Firstly, the MicroSec-Scan tool handles static checks of microservice code, spotting inter-service vulnerabilities. Secondly, the SafeFix-K8s tool works on Kubernetes configuration files, fixing misconfigurations automatically when found. These pieces combine into one unified process securing development through deployment.
+% The rest of this section explains how each piece is built and put together. To begin, MicroSec-Scan’s structure and analysis steps are outlined, then comes an overview of the SafeFix-K8s tool along with its self-running fix system.
+\new{This section presents the proposed end-to-end security framework that combines
+MicroSec-Scan and SafeFix-K8s into a unified DevSecOps workflow. The framework
+secures both the application layer and the infrastructure layer by coupling
+microservice security analysis with Kubernetes configuration hardening.
+Rather than operating as two independent tools, the framework treats
+application source code, deployment descriptors, and Kubernetes manifests
+as components of a single security pipeline.}
+
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[node distance=0.35cm and 0.5cm, scale=0.75, transform shape]
+\tikzset{
+    % Box styles - black and white only
+    toolbox/.style={rectangle, rounded corners=8pt, minimum width=4cm, minimum height=0.8cm, align=center, font=\normalsize\bfseries, fill=white, draw=black, line width=1.1pt},
+    stagebox/.style={rectangle, rounded corners=6pt, minimum width=3.7cm, minimum height=0.7cm, align=center, font=\footnotesize, fill=white, draw=black, line width=0.8pt},
+    % Arrow styles
+    arrow/.style={-{Stealth[length=1.8mm]}, line width=1.2pt, black},
+    bigarrow/.style={-{Stealth[length=2.5mm]}, line width=1.5pt, black},
+    inputarrow/.style={-{Stealth[length=2.5mm]}, line width=1.5pt, black},
+}
+
+% ============= MicroSec-Scan Tool =============
+% Tool header
+\node[toolbox] (microsec-header) at (0,0) {
+    MicroSec-Scan
+};
+
+% External Input Node - positioned above
+\node[font=\small\bfseries, above=1cm of microsec-header] (external-input) {Source Code};
+
+% Input arrow from above
+\draw[inputarrow] (external-input.south) -- (microsec-header.north);
+
+% Stage 1: Input
+\node[stagebox, below=0.45cm of microsec-header] (microsec-input) {
+    \textbf{Input}\\[1pt]
+    {\scriptsize Source Code Parser (AST) | Docker Compose}
+};
+% Arrow
+\draw[arrow] (microsec-input.south) -- ++(0,-0.6);
+% Stage 2: Analysis
+\node[stagebox, below=0.63cm of microsec-input] (microsec-analysis) {
+    \textbf{Analysis}\\[1pt]
+    {\scriptsize Rule Checking Layer}
+};
+% Arrow
+\draw[arrow] (microsec-analysis.south) -- ++(0,-0.6);
+% stage 3 LLM Refactor Layer
+\node[stagebox, below=0.63cm of microsec-analysis] (microsec-refactor) {
+    \textbf{LLM Refactor Layer}\\[1pt]
+    {\scriptsize Diff Applier | Inference Provider Integration }
+};
+\draw[arrow] (microsec-refactor.south) -- ++(0,-0.6);
+% Stage 4 Output
+\node[stagebox, below=0.63 cm of microsec-refactor] (microsec-output) {
+    \textbf{Developer Friendly Output}\\[1pt]
+    {\scriptsize Console | JSON | Markdown}
+};
+
+% Bounding box for MicroSec-Scan
+\begin{scope}[on background layer]
+    \node[draw=black, fill=white, rounded corners=10pt, line width=1.3pt, 
+          fit=(microsec-header)(microsec-input)(microsec-analysis)(microsec-refactor)(microsec-output),
+          inner sep=9pt] (microsec-box) {};
+\end{scope}
+
+% ============= SafeFix K8s Tool =============
+% Tool header
+\node[toolbox, right=5.5cm of microsec-header] (safefix-header) {
+    SafeFix-K8s
+};
+
+% Stage 1: Detection
+\node[stagebox, below=0.45cm of safefix-header] (safefix-detection) {
+    \textbf{Detection}\\[1pt]
+    {\scriptsize Checkov | Kubescape | KubeLinter | Trivy | +9 more}
+};
+% Arrow
+\draw[arrow] (safefix-detection.south) -- ++(0,-0.6);
+% Stage 2: Normalization
+\node[stagebox, below=0.63cm of safefix-detection] (safefix-norm) {
+    \textbf{Normalization}\\[1pt]
+    {\scriptsize SafeFix‑K8s Normalizer | FP Filtering}
+};
+% Arrow
+\draw[arrow] (safefix-norm.south) -- ++(0,-0.6);
+% Stage 3: LLM Repair
+\node[stagebox, below=0.63cm of safefix-norm] (safefix-repair) {
+    \textbf{Repair}\\[1pt]
+    {\scriptsize Category-aware Repair | LLM}
+};
+% Arrow
+\draw[arrow] (safefix-repair.south) -- ++(0,-0.6);
+% Stage 4: Validation
+\node[stagebox, below=0.63cm of safefix-repair] (safefix-validation) {
+    \textbf{Validation Gates}\\[1pt]
+    {\scriptsize Structural Diff | Dangerous Config | Schema}
+};
+% Arrow
+\draw[arrow] (safefix-validation.south) -- ++(0,-0.6);
+% Stage 5: Output
+\node[stagebox, below=0.63cm of safefix-validation] (safefix-output) {
+    \textbf{Secured Output}\\[1pt]
+    {\scriptsize Secured Manifests and Reports}
+};
+
+% Bounding box for SafeFix K8s
+\begin{scope}[on background layer]
+    \node[draw=black, fill=white, rounded corners=10pt, line width=1.3pt, 
+          fit=(safefix-header)(safefix-detection)(safefix-norm)(safefix-repair)(safefix-validation)(safefix-output),
+          inner sep=9pt] (safefix-box) {};
+\end{scope}
+
+% ============= Arrow between tools with YAML file label =============
+% ============= Arrow between tools with YAML file label =============
+\draw[bigarrow] (microsec-box.east |- safefix-detection.west) -- node[above, font=\small\bfseries, align=center] {YAML\\file} (safefix-detection.west);
+
+\end{tikzpicture}
+\caption{MicroSec-Scan and SafeFix-K8s Architecture Overview}
+\label{fig:framework_architecture}
+\end{figure}
+
+% \subsection{Integrated Framework Architecture}
+
+\new{Figure~\ref{fig:framework_architecture} illustrates the architecture of the
+proposed framework. The framework consists of two tightly integrated
+subsystems: MicroSec-Scan and SafeFix-K8s.}
+
+\new{MicroSec-Scan operates on the application layer and is responsible for
+design-time security analysis of Node.js microservices. It performs
+context-aware static analysis to identify both local-service weaknesses and
+inter-service vulnerabilities. SafeFix-K8s operates on the infrastructure
+layer and is responsible for detecting, repairing, and validating security
+misconfigurations within Kubernetes deployment manifests.}
+
+\new{Together, the two subsystems form a layered architecture spanning the
+complete cloud-native software lifecycle. MicroSec-Scan secures the service
+implementation before deployment, while SafeFix-K8s secures the deployment
+configuration before release into production environments.}
+
+
+\new{Each subsystem is organized into four logical layers. MicroSec-Scan secures
+the application before deployment through the following layers:}
+
+\new{
+\begin{enumerate}
+\item Input Layer
+\item Analysis Layer
+\item LLM Refactor Layer
+\item Output Layer
+\end{enumerate}
+}
+
+\new{SafeFix-K8s then secures the deployment configuration through a parallel set
+of four layers:}
+
+\new{
+\begin{enumerate}
+\item Detection Layer
+\item Normalization Layer
+\item Repair Layer
+\item Validation Layer
+\end{enumerate}
+}
+
+\new{The Input Layer is the entry point of MicroSec-Scan. It ingests the Node.js
+microservice source code together with Docker Compose definitions, discovers
+the individual services within a project, normalizes their structure, and
+parses each source file into an Abstract Syntax Tree (AST). This prepares a
+uniform program model for analysis and addresses the lack of Node.js focused
+design-time tooling identified in the research gap.}
+
+\new{The Analysis Layer represents the core of MicroSec-Scan. It traverses the
+parsed ASTs to identify API routes, middleware configurations, service
+dependencies, and inter-service communication paths, then applies the
+security rule registry to detect vulnerabilities. The layer reasons about
+both local-service weaknesses and egress behavior across services, emitting
+findings annotated with severity levels and remediation metadata.}
+
+\new{The LLM Refactor Layer provides developer-assisted remediation for the
+application layer. Findings produced by the analysis layer are transformed
+into structured prompts and passed to configurable Large Language Model
+providers. Returned remediations are applied as suggested diffs through the
+diff applier, while the developer retains full control over which fixes are
+accepted.}
+
+\new{The Output Layer serializes the results of MicroSec-Scan into
+developer-friendly formats, including console reports, machine-readable JSON,
+and Markdown summaries. These outputs double as the handoff artifacts of the
+application phase and feed naturally into continuous-integration workflows.}
+
+\new{Following application-layer analysis, the pipeline transitions to
+SafeFix-K8s, which consumes the Kubernetes YAML manifests and infrastructure
+configuration files produced alongside the analyzed services.}
+
+
+\new{SafeFix-K8s then hardens the deployment configuration through four
+corresponding layers. The Detection Layer runs the thirteen scanners listed in
+Fig.~\ref{fig:framework_architecture} over the input manifests and collects
+their heterogeneous outputs. The Normalization Layer consolidates those
+outputs into a canonical intermediate representation, applying category
+mapping, false-positive filtering and multi-tool consensus scoring so that
+later stages operate on a single deduplicated view. The Repair Layer emits
+RFC~6902 patches against the original manifests, selecting a deterministic,
+template-based or LLM-guided strategy according to the canonical category of
+each finding. The Validation Layer then admits or rejects every patched
+manifest through a sequence of gates covering schema correctness, dangerous
+configurations and per-category verification. Each layer is described in
+detail in Section~\ref{sec:implementation}.}
+
+\section{System Implementation}
+\label{sec:implementation}
+The implementation of the framework follows the layered architecture
+described previously. Each layer is implemented independently while
+communicating through normalized intermediate representations.
+
+\subsection{Phase 1: Application-Level Implementation (MicroSec-Scan)}
+MicroSec-Scan follows a layered architecture as shown in Fig.~\ref{fig:framework_architecture} that splits the tool into 4 main layers, input, analysis, refactor, and output. MicroSec-Scan starts with the input layer, where it processes Node.js microservices. This layer normalizes project structures, detects API route endpoints, and prepares the codebase for static inspection. This input layer addresses the lack of Node.js focused design-time tools gap found in the research field. 
+
+The second layer of the MicroSec-Scan tool is the analysis layer, which is responsible for the core detection logic. It uses a static analysis engine that builds Abstract Syntax Trees (ASTs) to understand the API controller routing logic, the use of middleware, and inter-service communication. It also uses a context-aware analyzer that extracts all egress communication flows and identifies any insecure interaction between microservices. The context-aware analyzer addresses the lack of contextually aware SAST tools gap in this field, specifically for microservices. 
+
+The third layer of the MicroSec-Scan tool is the the LLM refactor layer, where developers can choose an LLM inference provider of their choice (Groq, OpenRouter, TogetherAI) and generate quick fixes all through the command line interface. It is important to note that the LLM refactor layer in MicroSec-Scan is designed as a developer assistance feature rather than an automated remediation pipeline.
+% Unlike SafeFix-K8s, which operates on declarative YAML configurations where structural and schema validation can be applied deterministically,
+MicroSec-Scan's refactoring targets application code where automated correctness verification is significantly more complex. The generated fixes are presented to the developer as suggested diffs through the command line interface, and the developer is still needed to actively participate and retains full control over whether to accept, modify, or reject each suggestion before it is applied to the codebase. This design choice reflects the fact that application-level code changes often require contextual judgment about business logic, testing requirements, and architectural constraints that cannot be fully captured by automated validation alone. 
+
+Finally, the fourth layer of MicroSec-Scan is the output layer which produces the final results. It generates a normalized structured JSON file, suitable for future integration with CI/CD pipelines with each identified issue \new{paired} with a severity score and a Common Weakness Enumeration (CWE). The tool also generates developer-friendly summaries written in markdown. This addresses the gap where there is a lack of analysis and remediation guidance on security threats for microservices. 
+
+\new{The contract between layers is as follows: the input layer passes a parsed project model and the per-file Abstract Syntax Trees to the analysis layer; the analysis layer emits normalized findings, each carrying a rule identifier, a scope (local or inter-service), a severity, and a CWE; the refactor layer consumes these findings and produces suggested diffs without altering the findings themselves; and the output layer serializes the findings to JSON and Markdown without discarding any finding metadata.}
+
+\new{The inference provider and model used by the refactor layer are configurable by the developer (for example Groq, OpenRouter, TogetherAI, or OpenAI), and every suggested fix is presented as a diff that the developer accepts, edits, or rejects.}
+
+\new{Operationally, the refactor layer is invoked through a dedicated command, \texttt{microsec-scan fix -p <project> -o <output>}. For each finding it produces a patch describing the change, annotated with the security issue, its severity, a confidence level (high, medium, or low), the affected file and line range, and a short explanation. The fixes are applied by a generated script that appends or rewrites the affected code directly on disk. The tool operates locally on the developer's machine, performs no automatic commits, and assumes no particular version-control system. It is therefore agnostic to how services are version-controlled, and works equally well on a single repository or on services checked out from multiple repositories. It also produces a rollback script, a summary file, and a before/after remediation report, so each suggestion can be reviewed, ranked by its confidence level, applied or reverted by the developer, and verified by re-scanning.}
+
+\new{As a concrete end-to-end example, consider a service that opens a broker connection with \texttt{amqp.connect('amqp://user:pass@broker:5672')}. During AST analysis MicroSec-Scan matches the Egress Insecure RabbitMQ rule (Table~\ref{tab:rule_examples}) because the URI uses the plaintext \texttt{amqp://} scheme, and records an inter-service finding tagged with its severity and CWE. When the refactor layer is invoked, the model returns a minimal suggested diff that changes only \texttt{amqp://} to the TLS-protected \texttt{amqps://} scheme, leaving variable names and surrounding code unchanged, and the developer reviews this diff before it is applied.} 
+
+To support reproducibility of the LLM-based refactoring, Appendix~\ref{app:microsec-prompt} provides the full system prompt and an example of the per-rule fix guidance used by the refactor layer. The system prompt constrains the model to make only minimal security-relevant changes, explicitly forbidding variable renaming, code restructuring, and formatting changes. Each detected vulnerability is accompanied by rule-specific remediation guidance that describes the expected fix pattern. The temperature is set to 0.1 to promote deterministic output across runs.
+
+MicroSec-Scan classifies security issues into two main categories: local service weaknesses and inter-service weaknesses. Local service weaknesses include issues such as missing rate limiting, insecure middleware configurations, or fallback to insecure transport mechanisms, which are detected using AST inspection. Inter-service weaknesses capture vulnerabilities that arise from interactions between services, such as unprotected outbound calls, missing mutual authentication, insecure trust assumptions, and communication channels lacking confidentiality guarantees.
+
+To support systematic detection, MicroSec-Scan relies on a \new{knowledge base derived from empirically validated vulnerabilities} and security practices reported in microservice security studies \cite{haindl2024systematic}. \new{This knowledge base of vulnerabilities is then encoded as custom
+detection rules in the tool's implementation, each authored specifically for
+MicroSec-Scan rather than drawn from an external rule database.} \new{This source~\cite{haindl2024systematic} is a systematic review of inter-service security threats and mitigation strategies in microservice architectures; we use it as the empirically grounded threat taxonomy from which the detection rules are derived. It is a threat taxonomy rather than a labelled vulnerability benchmark.}
+
+\new{MicroSec-Scan's detection logic is a custom rule set authored for this
+work; it does not consume CVE feeds, OWASP rule packs, or any external or
+official vulnerability database at run time. Each rule is a hand-written AST
+pattern, and the references below indicate the literature each rule was
+informed by, not rule content imported from an external source. The CWE
+identifier attached to every rule is a classification mapping for reporting
+and interoperability, not a feed the tool reads from.}
+Each rule in the knowledge base is derived from vulnerabilities reported in prior research. These include inter-service threat taxonomies \cite{haindl2024systematic}, static detection patterns for security deficiencies \cite{unver2023pomegranate}, scope over-provisioning and authentication flaws \cite{kalubowila2021optimization}, architectural security tactics and conformance criteria \cite{zdun2024tactics}, and OWASP-aligned API weaknesses \cite{mujahid2024owasp}. Combined, these studies ground MicroSec-Scan’s detection logic in established literature and ensure that its rule set reflects real-world microservice security risks. \new{The rule set is therefore an extensible registry rather than a fixed list: each category is selected from these empirically validated sources and mapped to a Common Weakness Enumeration (CWE) identifier in the registry, and further rules can be added as new AST patterns. MicroSec-Scan does not consume CVE feeds or external vulnerability databases; its rules are custom and study-derived, with the link to an official taxonomy made explicit through this CWE mapping.}
+
+To clarify how these categories are implemented at the code level, Table~\ref{tab:rule_examples} presents representative detection rules from MicroSec-Scan's registry alongside the AST-level logic used to trigger each rule. The distinction between local and inter-service scope is determined by whether the rule's detection pattern involves egress communication across a service boundary. Local rules inspect a single service's middleware chain or framework configuration, such as checking whether helmet middleware appears in the Express or NestJS initialization sequence. Inter-service rules analyze outbound calls, broker client constructors, or cross-service trust communication by traversing the Abstract Syntax Tree of each service's codebase files. For example, the Kafka plaintext rule parses the Kafka constructor's configuration object and checks whether the SSL property is enabled. 
+
+The missing service authentication rule inspects outbound HTTP calls targeting internal service URLs and verifies whether an authorization header is present in the request configuration. Internal service URLs are identified using heuristics that match localhost addresses, private IP ranges, port-bearing hostnames, and template literal variables. Missing message validation, which is an inter-service vulnerability, traverses upward from a RabbitMQ publish or send-to-queue call to the enclosing function scope and checks whether any schema validation call exists within that scope. The shared broker credentials rule operates at the Docker Compose level by parsing environment variables across all service definitions, extracting RabbitMQ usernames from connection strings, and flagging cases where multiple services share identical broker credentials.
+
+\begin{table}[!t]
+\centering
+\caption{Representative MicroSec-Scan detection rules: parameterized template and AST-level trigger logic.}
+\label{tab:rule_examples}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.1}
+\scriptsize
+\begin{tabularx}{\linewidth}{@{} L{2.3cm} C{0.7cm} Y @{}}
+\toprule
+\textbf{Rule ID} & \textbf{Scope} & \textbf{AST Detection Logic} \\
+\midrule
+Egress Insecure HTTP & ISV &
+\textit{$S_a \rightarrow S_b$ over $P=\mathtt{http}$ (unencrypted).} Outbound axios/fetch/http.request call whose URL begins with http:// and matches an internal-service heuristic (localhost, private IP, or port-bearing host) \\
+\addlinespace[2pt]
+Kafka Plaintext & ISV &
+\textit{$S_a \rightarrow B$ over $P=\mathtt{PLAINTEXT}$ (no $\mathtt{SSL}$).} Kafka constructor config parsed; the ssl key is absent or not enabled \\
+\addlinespace[2pt]
+Kafka Missing SASL & ISV &
+\textit{$S_a \rightarrow B$ without mechanism $M=\mathtt{SASL}$.} Same Kafka constructor; the sasl property is absent from the config object \\
+\addlinespace[2pt]
+Egress Insecure RabbitMQ & ISV &
+\textit{$S_a \rightarrow B$ over $P=\mathtt{amqp}$ instead of $\mathtt{amqps}$.} amqp.connect() first string argument begins with amqp:// rather than amqps:// \\
+\addlinespace[2pt]
+Missing Service Auth & ISV &
+\textit{$S_a$ calls $S_b$ over $P$ without mechanism $M$.} Outbound call to an internal URL whose request config has no headers.Authorization key \\
+\addlinespace[2pt]
+Missing Message Validation & ISV &
+\textit{$S_a$ publishes to broker $B$ without validating the message schema.} From a publish()/sendToQueue() call, no schema-validation call (ajv/joi/schema.validate) in the enclosing function scope \\
+\addlinespace[2pt]
+Shared Broker Credentials & ISV &
+\textit{Broker $B$ is accessed by two services using the same credential $C$.} Compose env vars parsed across services; the same RabbitMQ username/password $C$ is reused by two or more services \\
+\addlinespace[2pt]
+Missing Circuit Breaker & ISV &
+\textit{$S_a$ calls $S_b$ without a circuit breaker.} Outbound call not wrapped (within five parent AST levels) by a breaker library such as opossum, hystrixjs, or brakes \\
+\addlinespace[2pt]
+Unprotected Route & Local &
+\textit{$S_a$ exposes a sensitive route without authentication mechanism $M$.} Route handler (Express/NestJS/Fastify) matching a sensitive path (/admin, /users, /payments) lacks auth middleware or a guard \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+For the purpose of evaluation, an inter-service vulnerability is technically defined as any security finding that satisfies all of the following conditions:
+\begin{enumerate}
+    \item It involves communication or trust relationships across explicit service boundaries, where data is moved in a horizontal path.
+    \item It affects confidentiality, integrity, authentication, authorization, or availability any interaction between services.
+    \item It arises due to distributed system design or configuration rather than isolated code defects.
+\end{enumerate}
+
+Based on this definition, MicroSec-Scan classifies the rule identifiers in Table~\ref{tab:isv_categories}. The table includes four categories of inter-service vulnerabilities. Each entry in the table is mapped out to a Common Weakness Enumeration (CWE) in the MicroSec-Scan rule registry. Consequently, the tools to be evaluated against MicroSec-Scan were evaluated by running and collecting the vulnerabilities output by the CLI versions of the tools on repositories collected from GitHub. This is further discussed in the results section. \new{Although Table~\ref{tab:isv_categories} lists these categories under descriptive names, each is implemented as a parameterized rule template that the detector instantiates, for example "service A calls service B over protocol P without authentication mechanism M" or "broker B is accessed by services S1 and S2 using shared credential C"; the concrete AST conditions that bind these variables are given in Table~\ref{tab:rule_examples}.} 
+\begin{table}[!t]
+\centering
+\caption{Inter-service vulnerability categories and descriptions.}
+\label{tab:isv_categories}
+\safefixtablestyle
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\linewidth}{@{} L{3.6cm} Y @{}}
+\toprule
+\textbf{Category} & \textbf{Vulnerability Description} \\
+\midrule
+\textbf{Authentication \& Authorization} &
+1. Services communicate without authenticating each other \newline
+2. Message queues lack proper access control \newline
+3. Requests between services are not signed or verified \newline
+4. Services trust upstream services without validation \newline
+5. Service discovery or registry can be poisoned or misused \\
+\midrule
+\textbf{Transport Security \& Encryption} &
+1. Mutual TLS is not enforced between services \newline
+\new{2. Service mesh traffic is transmitted without encryption} \newline
+3. Messages are sent without encryption \newline
+4. Message brokers communicate in plaintext \newline
+5. Kafka communication is unencrypted \newline
+6. Outbound HTTP traffic is sent without encryption \newline
+7. Outbound RabbitMQ traffic is unencrypted \newline
+8. Outbound Kafka traffic is unencrypted \newline
+9. Kafka does not enforce authentication mechanisms \\
+\midrule
+\textbf{Messaging Integrity} &
+1. Incoming messages are not validated \newline
+2. Kafka messages are not validated against a schema \newline
+3. Multiple services share the same broker credentials \\
+\midrule
+\textbf{Resilience \& Isolation} &
+1. No circuit breaker is implemented for service calls \newline
+2. Internal service ports are exposed unnecessarily \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\new{The subjects on which MicroSec-Scan is evaluated were sourced from
+GitHub after an extensive search for repositories that are (1)
+microservice-based and contained within a single repository, (2) written in
+Node.js, and (3) make use of inter-service communication, so that the
+inter-service categories of Table~\ref{tab:isv_categories} are actually
+exercised rather than evaluated on isolated single-service code. The
+scarcity of repositories satisfying all three criteria is itself part of
+the gap this work targets, as design-time inter-service security tooling
+remains overwhelmingly oriented toward Java ecosystems and leaves the
+Node.js ecosystem under-served despite its widespread adoption.}
+
+MicroSec-Scan targets security issues between microservices, \new{it is} also vital to check the accuracy of orchestration setups for system security. This includes the Kubernetes manifests that handle deployment, isolation, and access rules. That is where the SafeFix-K8s tool's role becomes crucial. 
+
+% ---------------------------------------------------------------------
+% STATIC VIEW
+% ---------------------------------------------------------------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  font=\scriptsize,
+  comp/.style={draw, rounded corners=2pt, fill=gray!8, align=center,
+               minimum height=0.55cm, inner sep=3pt, font=\scriptsize},
+  abstract/.style={comp, fill=white, draw, dashed},
+  layer/.style={draw=black, rounded corners=4pt, inner sep=6pt, line width=0.7pt},
+  lbl/.style={font=\scriptsize\bfseries, anchor=west},
+  dep/.style={-{Stealth[length=1.5mm]}, thick, gray!60}
+]
+
+% ---- Layer 1: input
+\node[comp] (mp)  at (0,0)     {microserviceParser\\\tiny service discovery};
+\node[comp, right=0.3cm of mp] (acp) {ASTCodeParser\\\tiny @babel/parser};
+\node[comp, right=0.3cm of acp] (cp)  {composeParser\\\tiny js-yaml};
+\node[layer, fit=(mp)(acp)(cp)] (L1) {};
+\node[lbl, above=1pt of L1.north west, anchor=south west] {Input layer};
+
+% ---- Layer 2: framework adapters
+\node[abstract, below=1.15cm of mp.south west, anchor=north west] (base)
+  {\textit{$\ll$abstract$\gg$}\\BaseFramework};
+\node[comp, right=0.3cm of base] (expr) {Express\\Framework};
+\node[comp, right=0.2cm of expr] (fast) {Fastify\\Framework};
+\node[comp, right=0.2cm of fast] (nest) {NestJS\\Framework};
+\node[abstract, right=0.2cm of nest] (future) {\textit{future}\\\textit{adapters}};
+\node[comp, below=0.25cm of expr, xshift=0.6cm, minimum width=4.2cm] (rp)
+  {ASTExpress / ASTFastify / ASTNestJS RouteParser,\\ASTFrameworkChecker, RouteAnalyzer};
+\node[layer, fit=(base)(expr)(fast)(nest)(future)(rp)] (L2) {};
+\node[lbl, above=1pt of L2.north west, anchor=south west] {Framework adapter layer};
+
+% ---- Layer 3: analysis
+\node[comp, below=1.15cm of base.south west, anchor=north west, minimum width=2.6cm] (reg)
+  {rules/registry\\\tiny RULES, createFinding};
+\node[comp, right=0.35cm of reg, minimum width=2.9cm] (egr)
+  {ASTEgressAnalyzer\\\tiny + EgressModels};
+\node[layer, fit=(reg)(egr)] (L3) {};
+\node[lbl, above=1pt of L3.north west, anchor=south west] {Analysis layer};
+
+% ---- Layer 4: refactor
+\node[comp, below=1.15cm of reg.south west, anchor=north west] (pg) {Prompt\\Generator};
+\node[comp, right=0.2cm of pg] (llm) {LLMClient\\\tiny Groq | OpenRouter\\\tiny Together | OpenAI};
+\node[comp, right=0.2cm of llm] (cr) {Code\\Remediation};
+\node[comp, right=0.2cm of cr] (fa) {FixApplicator\\\tiny DirectFileReplacer};
+\node[layer, fit=(pg)(llm)(cr)(fa)] (L4) {};
+\node[lbl, above=1pt of L4.north west, anchor=south west] {LLM refactor layer};
+
+% ---- Layer 5: output
+\node[comp, below=1.15cm of pg.south west, anchor=north west] (rr) {routeReporter};
+\node[comp, right=0.25cm of rr] (er) {EgressReporter};
+\node[comp, right=0.25cm of er] (jr) {jsonReporter\\\tiny JSON | Markdown};
+\node[layer, fit=(rr)(er)(jr)] (L5) {};
+\node[lbl, above=1pt of L5.north west, anchor=south west] {Output layer};
+
+% ---- dependencies
+\draw[dep] (L1.south) -- (L2.north);
+\draw[dep] (L2.south) -- (L3.north);
+\draw[dep] (L3.south) -- (L4.north);
+\draw[dep] (L4.south) -- (L5.north);
+\draw[dep] (L3.east) -- ++(0.45,0) |- (L5.east);
+
+\end{tikzpicture}
+\caption{\new{Static (component) view of MicroSec-Scan. Concrete framework
+adapters realize the common \texttt{BaseFramework} interface; the dashed
+element marks the extension point at which additional language or framework
+adapters are registered without changes to the analysis, refactor, or output
+layers. The right-hand edge shows that analysis results reach the output layer
+directly when no refactoring is requested.}}
+\label{fig:microsec_static}
+\end{figure}
+
+% ---------------------------------------------------------------------
+% DYNAMIC VIEW
+% ---------------------------------------------------------------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  scale=0.78, transform shape,
+  font=\scriptsize,
+  actor/.style={draw, fill=gray!8, rounded corners=2pt, minimum height=0.75cm,
+                minimum width=2.0cm, align=center, font=\scriptsize\bfseries},
+  life/.style={dashed, gray},
+  msg/.style={-{Stealth[length=1.6mm]}, thick},
+  ret/.style={-{Stealth[length=1.6mm]}, thick, dashed},
+  selfl/.style={-{Stealth[length=1.4mm]}, thick},
+  note/.style={align=left, font=\tiny, text width=2.7cm}
+]
+\def\ylast{-11.6}
+
+\foreach \x/\n/\l in {0/dev/{Developer},
+                      2.7/cli/{CLI},
+                      5.4/scan/{Scanner},
+                      8.1/fw/{Framework\\adapter},
+                      10.8/an/{Egress +\\registry},
+                      13.5/llm/{LLMClient},
+                      16.2/out/{Reporter /\\FixApplicator}}
+{
+  \node[actor] (\n) at (\x,0) {\l};
+  \draw[life] (\x,-0.48) -- (\x,\ylast);
+}
+
+% scan phase
+\draw[msg] (0,-1.0)   -- node[above]{\tiny scan -p} (2.7,-1.0);
+\draw[msg] (2.7,-1.7) -- node[above]{\tiny runScanner} (5.4,-1.7);
+\draw[selfl] (5.4,-2.4) -- ++(0.7,0) -- ++(0,-0.5) -- ++(-0.7,0);
+\node[note, anchor=west] at (6.2,-2.65) {glob files, discover services by package.json};
+\draw[msg] (5.4,-3.7) -- node[above]{\tiny analyze} (8.1,-3.7);
+\draw[selfl] (8.1,-4.4) -- ++(0.7,0) -- ++(0,-0.5) -- ++(-0.7,0);
+\node[note, anchor=west] at (8.9,-4.65) {detect framework, parse routes to AST};
+\draw[msg] (8.1,-5.7) -- node[above]{\tiny rules} (10.8,-5.7);
+\draw[selfl] (10.8,-6.4) -- ++(0.7,0) -- ++(0,-0.5) -- ++(-0.7,0);
+\node[note, anchor=west] at (11.6,-6.65) {bind rule variables, emit findings};
+\draw[ret] (10.8,-7.5) -- node[above]{\tiny findings} (5.4,-7.5);
+\draw[msg] (5.4,-8.1) -- node[above]{\tiny report} (16.2,-8.1);
+
+% fix phase
+\draw[msg] (0,-8.9) -- node[above]{\tiny fix -p} (2.7,-8.9);
+\draw[msg] (2.7,-9.4) -- node[above]{\tiny prompt per finding} (13.5,-9.4);
+\draw[ret] (13.5,-9.9) -- node[above]{\tiny suggested diff} (16.2,-9.9);
+\draw[ret] (16.2,-10.5) -- node[above]{\tiny diff + confidence, for review} (0,-10.5);
+\draw[msg] (0,-11.1) -- node[above]{\tiny accept / reject / rollback} (16.2,-11.1);
+
+\end{tikzpicture}
+\caption{\new{Dynamic (sequence) view of a scan followed by an optional
+refactor. Self-messages denote work internal to a participant. The refactor
+phase never writes to disk without returning to the developer: every suggested
+diff is reviewed, and the applier also emits a rollback script, so the
+developer remains the decision point for each fix.}}
+\label{fig:microsec_dynamic}
+\end{figure}
+
+% ---------------------------------------------------------------------
+% DEPLOYMENT VIEW
+% ---------------------------------------------------------------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  font=\scriptsize,
+  nodebox/.style={draw, rounded corners=2pt, align=center, inner sep=5pt,
+                  minimum height=0.7cm, font=\scriptsize},
+  art/.style={draw, fill=gray!8, rounded corners=1pt, align=center,
+              font=\tiny, inner sep=2.5pt},
+  ext/.style={draw, dashed, rounded corners=2pt, align=center, font=\scriptsize,
+              inner sep=4pt},
+  flow/.style={-{Stealth[length=1.6mm]}, thick},
+  flowd/.style={-{Stealth[length=1.6mm]}, thick, dashed}
+]
+
+% developer workstation
+\node[art] (src) at (0,0) {service sources\\+ docker-compose};
+\node[art, below=0.25cm of src] (cli) {microsec-scan CLI\\\tiny Node.js $\geq$ 18};
+\node[art, below=0.25cm of cli] (rep) {JSON / Markdown\\report, diffs,\\rollback script};
+\node[nodebox, fit=(src)(cli)(rep), label={[font=\scriptsize\bfseries]above:Developer workstation}] (ws) {};
+
+% CI runner
+\node[art, right=2.6cm of src] (ci) {pipeline stage\\\tiny microsec-scan scan};
+\node[art, below=0.25cm of ci] (gate) {JSON findings\\consumed as\\build gate};
+\node[nodebox, fit=(ci)(gate), label={[font=\scriptsize\bfseries]above:CI/CD runner}] (cir) {};
+
+% external inference
+\node[ext, below=1.5cm of cir] (prov) {Inference provider\\\tiny Groq | OpenRouter\\\tiny Together | OpenAI};
+
+\draw[flow] (ws.east |- ci) -- node[above, font=\tiny]{commit} (ci.west);
+\draw[flowd] (cli.east) -- ++(0.5,0) |- node[pos=0.75, above, font=\tiny]{HTTPS, opt-in} (prov.west);
+
+\end{tikzpicture}
+\caption{\new{Deployment view. The analyzer runs entirely on the developer
+workstation or CI runner and requires no cluster, agent, or running service.
+Only the optional refactor stage leaves the machine, contacting a
+developer-selected inference provider over HTTPS; when refactoring is not
+requested, no source code is transmitted anywhere.}}
+\label{fig:microsec_deployment}
+\end{figure}
+
+
+\subsection{Phase 2: Infrastructure-Level Implementation (SafeFix-K8s)}
+%hegab starts%
+
+The SafeFix-K8s tool is a complete flow that takes Kubernetes YAML manifests and passes them through four layers: Detection layer, Normalization layer, Repair layer, and finally the validation layer as shown in Fig.~\ref{fig:safefix-architecture}, with the message flow between them shown in Fig.~\ref{fig:safefix-sequence}. The tool works as follows: it first runs 13 detection tools to uncover potential problems, then collects and merges their outputs through a normalization layer. Once the misconfigurations are unified in one single file, the tool applies repair strategies matching the type of misconfiguration found. The final layer then evaluates the repaired files to ensure they satisfy both the structural requirements of Kubernetes and security expectations defined by the framework.
+
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    node distance=0.8cm and 0.3cm,
+    every node/.style={font=\scriptsize},
+    box/.style={
+        draw, 
+        rounded corners=2pt, 
+        minimum width=2.4cm, 
+        minimum height=2.2cm, 
+        align=center, 
+        fill=gray!5,
+        inner sep=3pt
+    },
+    arrow/.style={-Latex, thick}
+]
+
+\node[box] (detectors) {\textbf{Multi-tool}\\[-2pt]\textbf{Detectors}\\[2pt]
+    \tiny Checkov\\[-2pt]
+    \tiny Kubescape\\[-2pt]
+    \tiny KubeLinter\\[-2pt]
+    \tiny Trivy\\[-2pt]
+    \tiny Polaris\\[-2pt]
+    \tiny Pluto\\[-2pt]
+    \tiny KubeScore\\[-2pt]
+    \tiny RBAC-Police\\[-2pt]
+    \tiny Conftest\\[-2pt]
+    \tiny Kubeaudit\\[-2pt]
+    \tiny Kubeconform\\[-2pt]
+    \tiny Yamllint\\[-2pt]
+    \tiny Gitleaks
+};
+
+\node[box, right=of detectors] (normalizer) {\textbf{SafeFix‑K8s}\\[-2pt]\textbf{Normalizer}\\[2pt]
+    \tiny Canonical\\[-2pt]
+    \tiny categories\\[-2pt]
+    \tiny FP filtering
+};
+
+\node[box, right=of normalizer] (orchestrator) {\textbf{Category-aware}\\[-2pt]\textbf{Repair}\\[-2pt]\textbf{Orchestrator}\\[2pt]
+    \tiny Deterministic\\[-2pt]
+    \tiny Template-based\\[-2pt]
+    \tiny LLM-guided\\[-2pt]
+    \tiny (GPT-4o-mini,\\[-2pt]
+    \tiny LLaMA-3 8B,\\[-2pt]
+    \tiny Gemini 2.0 Flash)\\[-2pt]
+    \tiny RFC 6902\\[-2pt]
+    \tiny patches
+};
+
+\node[box, right=of orchestrator] (gates) {\textbf{Validation}\\[-2pt]\textbf{Gates}\\[2pt]
+    \tiny Structural\\[-2pt]
+    \tiny diff\\[-2pt]
+    \tiny Identity\\[-2pt]
+    \tiny immutability\\[-2pt]
+    \tiny Category-\\[-2pt]
+    \tiny scoped edits\\[-2pt]
+    \tiny Schema\\[-2pt]
+    \tiny validation
+};
+
+\draw[arrow] (detectors) -- (normalizer);
+\draw[arrow] (normalizer) -- (orchestrator);
+\draw[arrow] (orchestrator) -- (gates);
+
+\end{tikzpicture}
+\caption{SafeFix‑K8s system architecture: detection, normalization, category-aware repair, and validation.}
+\label{fig:safefix-architecture}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  scale=0.78, transform shape,
+  font=\scriptsize,
+  actor/.style={draw, fill=gray!8, rounded corners=2pt, minimum height=0.75cm,
+                minimum width=2.3cm, align=center, font=\scriptsize\bfseries},
+  life/.style={dashed, gray},
+  msg/.style={-{Stealth[length=1.6mm]}, thick},
+  selfl/.style={-{Stealth[length=1.4mm]}, thick},
+  note/.style={align=left, font=\scriptsize, text width=2.5cm}
+]
+\def\ylast{-10.4}
+
+\foreach \x/\n/\l in {0/mf/{Input\\manifest},
+                      2.9/det/{Detection\\Layer},
+                      5.8/nrm/{Normalization\\Layer},
+                      8.7/rep/{Repair\\Orchestrator},
+                      11.6/val/{Validation\\Gates},
+                      14.5/out/{Secured\\Output}}
+{
+  \node[actor] (\n) at (\x,0) {\l};
+  \draw[life] (\x,-0.48) -- (\x,\ylast);
+}
+
+\draw[msg] (0,-1.0) -- node[above]{raw YAML} (2.9,-1.0);
+\draw[selfl] (2.9,-1.7) -- ++(0.8,0) -- ++(0,-0.6) -- ++(-0.8,0);
+\node[note, anchor=west] at (3.85,-2.0) {13 scanners in parallel, errors captured};
+
+\draw[msg] (2.9,-3.2) -- node[above]{1{,}689 raw} (5.8,-3.2);
+\draw[selfl] (5.8,-3.9) -- ++(0.8,0) -- ++(0,-0.6) -- ++(-0.8,0);
+\node[note, anchor=west] at (6.75,-4.2) {canonical categories, FP filter, secrets stripped};
+
+\draw[msg] (5.8,-5.4) -- node[above]{528 canonical} (8.7,-5.4);
+\draw[selfl] (8.7,-6.1) -- ++(0.8,0) -- ++(0,-0.6) -- ++(-0.8,0);
+\node[note, anchor=west] at (9.65,-6.4) {strategy per category: DET / TMPL / LLM};
+
+\draw[msg] (8.7,-7.6) -- node[above]{RFC 6902} (11.6,-7.6);
+\draw[selfl] (11.6,-8.3) -- ++(0.8,0) -- ++(0,-0.6) -- ++(-0.8,0);
+\node[note, anchor=west] at (12.55,-8.6) {gates 1 to 7};
+
+\draw[msg] (11.6,-9.8) -- node[above]{verdict} (14.5,-9.8);
+
+\draw[msg, dashed] (11.6,-9.2) -- node[below, pos=0.5]{gate 3 rejects patch} (8.7,-9.2);
+
+\end{tikzpicture}
+\caption{\new{Dynamic view of the SafeFix-K8s pipeline for a single manifest.
+Self-messages denote work internal to a layer; the dashed return path shows a
+patch rejected by the blocking dangerous-configuration gate.}}
+\label{fig:safefix-sequence}
+\end{figure}
+
+\new{The SafeFix-K8s tool is evaluated on a dataset of 28 Kubernetes YAML 
+manifests, each containing confirmed security misconfigurations. The dataset 
+was constructed to reflect real-world misconfiguration patterns rather than 
+synthetically injected flaws, following three explicit selection criteria. 
+First, each manifest had to originate from a publicly documented source 
+whose misconfigurations are identified and described by the original authors, 
+ensuring that the presence of flaws is externally verified rather than 
+assumed. Second, every manifest had to be accepted as syntactically valid 
+YAML by a parser, meaning it represents a plausible deployment artifact 
+rather than a deliberately malformed file. Third, the set as a whole had to 
+provide coverage across all canonical misconfiguration categories defined by 
+the normalization layer including privilege boundaries, identity and 
+access control, resource limits, image hygiene, and network isolation so 
+that no category is evaluated on fewer than two files.}
+
+\new{The manifests were drawn from two complementary sources. The first 
+source consists of files used or referenced in prior peer-reviewed work on 
+Kubernetes and container security: GenKubeSec~\cite{malul2024genkubesec}, 
+LLMSecConfig~\cite{ye2025llmsecconfig}, the techno-educational study on 
+Kubernetes misconfiguration hardening~\cite{shamim2024technoeducational}, 
+and the KubeHound security smell taxonomy~\cite{dellimmagine2023kubehound}. 
+These files were originally curated by their respective authors to 
+demonstrate specific, well-documented misconfiguration classes, providing 
+an externally validated ground truth baseline. The second source is 
+KubeGoat~\cite{madhuakula_kubernetes_goat}, an open-source repository 
+maintained specifically to expose intentional Kubernetes security flaws 
+through realistic workload definitions. KubeGoat manifests represent 
+configuration errors that closely resemble those observed in production 
+environments, including privilege escalation paths, overly permissive 
+RBAC bindings, and unsafe host-level access patterns.}
+
+
+\new{Before evaluation, each of the 28 manifests was manually inspected by 
+the authors to confirm that the misconfigurations cited in the source 
+documentation were present and detectable at the YAML field level. Manifests 
+whose cited misconfigurations required live cluster state to be observable 
+such as runtime RBAC binding resolution or admission webhook enforcement 
+were excluded from the dataset. The retained manifests span multiple 
+Kubernetes resource kinds. Collectively they contain the 528 distinct canonical findings reported in Table~\ref{tab:detection_severity}, distributed across the seven security domains of the normalization taxonomy. }
+
+
+The 28 manifests collectively represent common Kubernetes setup issues, such as overprivileged components, poor security settings, risky default options, flawed access rules, or faulty workload setups.This collection enables structured analysis of how well the SafeFix-K8s tool detects, standardizes, fixes, and verifies configurations in real-world scenarios.
+
+\new{To illustrate how the SafeFix-K8s tool operates in practice, 
+here is a running example using \texttt{15.pod\_privilege\_escalation.yaml}, 
+a manifest drawn from LLMSecConfig~\cite{ye2025llmsecconfig}. 
+The file contains a critical misconfiguration: 
+\texttt{allowPrivilegeEscalation: true} is set on the container, 
+as shown in Fig.~\ref{fig:input-yaml}.}
+
+\begin{figure}[htbp]
+\centering
+\begin{lstlisting}[style=sfyaml]
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
+  containers:
+  - name: example-container
+    image: some-image
+    securityContext:
+      allowPrivilegeEscalation: (*\lsthl{true}*)
+\end{lstlisting}
+\caption{\new{Input Kubernetes manifest \path{15.pod_privilege_escalation.yaml}
+containing a critical misconfiguration:
+\path{allowPrivilegeEscalation}\texttt{: true} allows container processes to
+gain elevated privileges beyond their parent process.}}
+\label{fig:input-yaml}
+\end{figure}
+
+
+
+%\newline
+\new {
+The SafeFix-K8s tool begins with the detection layer, which addresses the gap that is most tools or frameworks use a single tool to detect misconfigurations. this layer scans every Kubernetes configuration file using 13 detection tools. Each tool is executed on the targeted file or directory and then stores the output in a consistent JSON or text format. The detection layer relies on schema validators, rule-based analyzers, workload security auditors, and secrets scanners. These include Checkov, Trivy Config Scan, Kubescape, Polaris, KubeLinter, KubeAudit, KubeScore, Conftest with custom OPA and Rego policies, and Kubeconform for schema compliance. The system also integrates extended policies that are defined for RBAC least privilege, forbidden wildcard verbs, dangerous permissions, untrusted registries, PodSecurity violations, and gitleaks for secret exposure. Table \ref{tab:detection_policy_samples} shows some of the rules used to enhance the tools detection capabilities.
+}
+
+
+
+
+
+\begin{table}[htbp]
+\centering
+\caption{Sample Detection Policies and Mapping to Canonical Categories}
+\label{tab:detection_policy_samples}
+\scriptsize
+\begin{tabular}{@{}llp{4.5cm}l@{}}
+\toprule
+\textbf{Engine} & \textbf{Policy} & \textbf{Detection Pattern} & \textbf{Canonical} \\
+\midrule
+OPA/Rego & \texttt{privileged\_container} & \texttt{securityContext.privileged == true} & Priv. Container \\
+OPA/Rego & \texttt{capabilities\_hardening} & Missing \texttt{drop: [ALL]} & Capabilities \\
+OPA/Rego & \texttt{rbac\_wildcard} & \texttt{rules[].verbs[\_] == "*"} & RBAC Wildcard \\
+OPA/Rego & \texttt{seccomp\_profile} & No \texttt{RuntimeDefault} seccomp & Seccomp \\
+\midrule
+Checkov & \texttt{ckv\_k8s\_cni\_privileged} & Embedded CNI \texttt{privileged: true} & CNI Privileged \\
+Checkov & \texttt{ckv\_k8s\_latest\_pull} & \texttt{:latest} without \texttt{Always} & Image Policy \\
+\midrule
+Kyverno & \texttt{restrict-rbac} & Deny \texttt{verbs: "*"} via admission & RBAC Wildcard \\
+\midrule
+KubeLinter & \texttt{run-as-non-root} & \texttt{runAsNonRoot != true} & RunAsRoot \\
+Trivy & \texttt{KSV106} & Missing \texttt{runAsNonRoot} & RunAsRoot \\
+Kubescape & \texttt{C-0057} & NSA: Privileged container & Priv. Container \\
+Polaris & \texttt{hostNetworkSet} & \texttt{hostNetwork: true} & HostNetwork \\
+Gitleaks & \texttt{aws-access-key} & Regex: \texttt{AKIA[0-9A-Z]\{16\}} & Hardcoded Secret \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
+
+
+The detection layer also measures execution time, captures tool errors, and guarantees that every tool outputs a structured template even when a failure occurs, ensuring robustness across heterogeneous environments. In extended mode, the system also includes detectors for deprecated APIs and secrets leakage, and it extracts embedded configurations from ConfigMaps so that hidden YAML fragments can be analyzed alongside top-level manifests. The main goal of this layer is to maximize the coverage. Previous work highlighted that no single Kubernetes security tool reaches complete or reliable detection across the full range of misconfiguration categories, and coverage varies dramatically between scanners \cite{malul2024genkubesec, dellimmagine2023kubehound, ye2025llmsecconfig}. 
+
+\begin{figure}[htbp]
+\centering
+\begin{lstlisting}[style=sfjson]
+{
+  "AuditResultName":    "AllowPrivilegeEscalationTrue",
+  "Container":          "example-container",
+  "ResourceApiVersion": "v1",
+  "ResourceKind":       "Pod",
+  "ResourceName":       "example-pod",
+  "level":              "error",
+  "msg":   "allowPrivilegeEscalation set to 'true'.
+            It should be set to 'false'.",
+  "time":  "2026-08-08T11:28:33+03:00",
+  "file":  "/scan/15.pod_privilege_escalation.yaml"
+}
+\end{lstlisting}
+\caption{\new{Detection layer output for \path{15.pod_privilege_escalation.yaml}.
+KubeAudit flags \path{allowPrivilegeEscalation}\texttt{: true} as an error-level
+finding on the example-container container, recommending it be set to false.}}
+\label{fig:detection-out}
+\end{figure}
+
+\new{Fig.~\ref{fig:detection-out} shows the KubeAudit JSON output 
+for {15.pod\_privilege\_escalation.yaml}. KubeAudit reports 
+an error-level finding with {AuditResultName: AllowPrivilegeEscalationTrue} 
+on the {example-container} container, confirming that 
+{allowPrivilegeEscalation} is set to true and should be set to false.}
+
+
+
+
+
+
+After all the tools have generated their outputs, the normalization layer converts the different tool outputs into a single canonical view of misconfigurations. This layer begins by loading all original YAML manifests and building an index of resources based on their kind and metadata fields. It then parses each detector's output using parsers that understand the specific structure and terminology of tools like Checkov, Kubescape, Polaris, KubeAudit, Conftest, and Trivy. 
+
+Since each scanner uses its own naming conventions, identifiers, and severity scales, the normalizer simplifies these tool-specific patterns and changes them into a stable taxonomy that includes privileged containers, unsafe host-level settings, missing resource requests and limits, unbounded RBAC permissions, insecure image configurations, deprecated API usage, and other categories relevant to Kubernetes hardening.
+
+\new{Fig.~\ref{fig:norm-out} shows the normalization layer output 
+for 15.pod\_privilege\_escalation.yaml. The tool-specific findings are 
+merged into a single canonical record with category 
+Security/AllowPrivilegeEscalation, severity HIGH, 
+and priority HIGH. Five scanners, namely Checkov, Conftest, KubeLinter, 
+KubeAudit, and Polaris, independently reported the same misconfiguration, 
+and the patchHint field instructs the repair layer to set 
+securityContext.allowPrivilegeEscalation=false.}
+
+
+\begin{figure}[htbp]
+\centering
+\begin{lstlisting}[style=sfjson]
+"files": [
+  {
+    "file": "15.pod_privilege_escalation.yaml",
+    "findings": [
+      {
+        "category": "Security/AllowPrivilegeEscalation",
+        "severity": "HIGH",
+        "priority": "HIGH",
+        "resourceRef": {
+          "file": "15.pod_privilege_escalation.yaml",
+          "kind": "",
+          "name": "",
+          "namespace": ""
+        },
+        "snippet": "Containers should not run with
+                    allowPrivilegeEscalation: None",
+        "tools": [
+          "checkov",
+          "conftest",
+          "kubelinter",
+          "kubeaudit",
+          "polaris"
+        ],
+        "score": 1.0,
+        "patchHint": "Set securityContext.
+                      allowPrivilegeEscalation=false."
+      },
+\end{lstlisting}
+\caption{\new{Normalization layer output for
+\path{15.pod_privilege_escalation.yaml} showing the
+Security/AllowPrivilegeEscalation canonical finding reported by five scanners.}}
+\label{fig:norm-out}
+\end{figure}
+
+
+\new{Fig.~\ref{fig:norm-out2} shows another canonical finding 
+from the same file, where five tools agree that CPU and memory 
+requests are missing. The patchHint field provides 
+a concrete remediation value, which the repair layer uses 
+to apply a template-based fix.}
+
+\begin{figure}[htbp]
+\centering
+\begin{lstlisting}[style=sfjson]
+{
+  "category": "Resources/MissingLimits",
+  "severity": "MEDIUM",
+  "priority": "HIGH",
+  "resourceRef": {
+    "file": "15.pod_privilege_escalation.yaml",
+    "kind": "",
+    "name": "",
+    "namespace": ""
+  },
+  "snippet": "CPU limits should be set: None",
+  "tools": [
+    "checkov",
+    "conftest",
+    "kubelinter",
+    "polaris"
+  ],
+  "score": 1.88,
+  "patchHint": "Add cpu/memory limits per container
+                (e.g., limits: {cpu: 500m, memory: 512Mi})."
+},
+\end{lstlisting}
+\caption{\new{Normalization output for a resource misconfiguration in
+\path{15.pod_privilege_escalation.yaml}.}}
+\label{fig:norm-out2}
+\end{figure}
+
+
+When a tool reports a finding without a clear file path or resource reference, the system reconciles the result by matching it against the resource index built from the YAML structure. Actual secrets that are found in the the YAML manifests are removed before constructing the final output from the normalizer layer, which is the normalized findings/ repair plan file and the LLM payload file, to ensure that the secrets are prevented from being passed onto the large language models.
+
+
+
+Table~\ref{tab:norm_examples} provides concrete examples of tool-specific signals mapped into canonical categories and their corresponding patch targets. This directly addresses a practical limitation repeatedly noted in prior work: raw multi-scanner outputs are noisy, inconsistent, and difficult to reason about without consolidation~\cite{rahman2023k8s,dellimmagine2023kubehound}. The normalization layer actually helps the repair layer by unifying all the formats of all the misconfigurations so the output will always stay consistent.
+
+
+
+
+\begin{table}[!t]
+\centering
+\caption{Examples of mapping tool-specific findings into the SafeFix-K8s tool canonical taxonomy.}
+\label{tab:norm_examples}
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\linewidth}{@{} l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}X @{}}
+\toprule
+\textbf{Tool} & \textbf{Tool-specific signal} & \textbf{Canonical category} & \textbf{Canonical patch target} \\
+\midrule
+Checkov & \texttt{CKV\_K8S\_31: seccomp profile not RuntimeDefault} &
+\path{Security/MissingSeccompProfile} &
+\path{/spec/template/spec/securityContext/seccompProfile} \\
+Kubescape & \texttt{C-0210: seccomp RuntimeDefault not set} &
+\path{Security/MissingSeccompProfile} &
+\path{/spec/template/spec/securityContext/seccompProfile} \\
+KubeLinter & \texttt{run-as-non-root check triggered} &
+\path{Auth/RunAsRoot} &
+\path{/spec/template/spec/containers/*/securityContext/runAsNonRoot} \\
+Trivy & \texttt{KSV106: runAsNonRoot not set} &
+\path{Auth/RunAsRoot} &
+\path{/spec/template/spec/containers/*/securityContext/runAsNonRoot} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\new{
+A repair is formally defined as a set of RFC 6902 JSON Patch operations that must satisfy three correctness constraints: it must eliminate the canonical finding as verified by the post-repair category validator, it must preserve all identity-critical fields including metadata.name, metadata.namespace, spec.selector, and container image references, and the patched manifest must pass all seven validation gates. The repair layer takes the normalized payload and the original YAML file and applies a mix of deterministic rules, template-based transformations, and LLM-guided fixes to repair the identified misconfigurations. Regardless of the repair method used, the same steps always apply, first: the repair layer duplicates the original YAML file, locates the misconfiguration using the JSON pointer from the normalization layer, and generates the fix as an RFC 6902 JSON patch keeping changes minimal, targeted, and easy to audit. }
+
+
+\new{
+The orchestrator then selects the appropriate repair strategy based 
+on the canonical category of each finding. Simple structural issues 
+such as default namespaces, service account hardening, and disabled 
+token automounting are handled by deterministic repair 
+pre-programmed, rule-based transformations that apply the same 
+exact fix every time with no model inference involved. Resource 
+gaps and missing health probes follow a template-based approach, 
+where the repair layer infers reasonable CPU/memory values and 
+probe configurations from the existing manifest structure. Two categories are handed off to the LLM-guided repair method: privileged
+containers and Pod Security Standard violations, where the correct fix depends
+on how the container is configured overall. The remaining privilege-related
+categories, including privilege escalation, capability dropping, read-only root
+filesystem, non-root execution and seccomp profiles, are applied
+deterministically by a single security-hardening handler.}
+
+\new{The model is never asked to rewrite an entire manifest. It receives 
+only the canonical category, the resource kind and name, and a 
+category-scoped projection of the manifest truncated to 800 characters, 
+and must return a structured JSON object containing only RFC~6902 patch 
+operations and a brief explanation. The full prompt templates and their 
+parameter bindings are given in Appendix~\ref{app:llm-prompt}. The JSON 
+pointer produced by the normalization layer is consumed by the 
+deterministic and template-based strategies, which locate the field 
+directly rather than delegating that step to the model.}
+
+\fix{Each LLM-guided category is configured with a primary provider and a
+single fallback, drawn from three implemented model families: a proprietary
+OpenAI model (GPT-4o-mini), an open-weight Meta model served through Groq
+(LLaMA-3 8B), and a Google model (Gemini 2.0 Flash). The runs reported here
+used the OpenAI and Groq families; the pairing is per category rather than a
+fixed global order.}
+
+\new{Fig.~\ref{fig:llm-io} illustrates what is returned by the LLM. The model returns a structured JSON object containing RFC~6902 patch operations 
+and a brief explanation, as shown below.}
+
+\begin{figure}[htbp]
+\centering
+\begin{lstlisting}[style=sfjson]
+{
+  "patches": [
+    {
+      "op":    "replace",
+      "path":  "/spec/containers/0/securityContext
+                /allowPrivilegeEscalation",
+      "value": false
+    }
+  ],
+  "explanation": "Fixed allowPrivilegeEscalation to false to
+                  prevent privilege escalation attacks. This is
+                  a security best practice to prevent containers
+                  from gaining more privileges than intended."
+}
+\end{lstlisting}
+\caption{\new{LLM output for the Policy/PodSecurityViolation finding on
+\path{15.pod_privilege_escalation.yaml}, returned by LLaMA-3 8B through Groq.
+The model emits only RFC~6902 patch operations and a brief explanation; the
+surrounding markdown fences and trailing prose in the raw response are
+stripped before the patch is applied.}}
+\label{fig:llm-io}
+\end{figure}
+
+
+
+
+\new{
+These providers were selected based on availability through free or 
+low-cost inference APIs at the time of implementation. This selection 
+ensures that the tool remains accessible without requiring paid 
+enterprise API contracts, while the fallback mitigates the risk of a 
+provider being unavailable or returning a malformed response. Each model call is stateless and independent; 
+there is no agent-to-agent communication between models, and the 
+orchestrator does not share state or intermediate results across 
+providers in the chain. Nondeterminism is controlled by constraining 
+the model output to a structured RFC~6902 JSON object containing 
+only patch operations and a brief explanation, which eliminates 
+free-form generation regardless of the provider used.
+}
+
+\new{
+The result of passing through all three repair strategies is 
+a hardened manifest that goes well beyond fixing the originally 
+detected misconfiguration. As shown in Fig.~\ref{fig:repair-out}, 
+the repair layer transformed a 10-line insecure manifest into a 
+fully hardened deployment  applying 19 patches across 12 
+categories simultaneously, adding allowPrivilegeEscalation: false, 
+dropping all Linux capabilities, enforcing a read-only root 
+filesystem, setting a non-root user, configuring a RuntimeDefault 
+seccomp profile, injecting liveness and readiness probes, and 
+adding CPU/memory resource limits. The result is not just a 
+corrected file it is a production-ready, security-hardened 
+deployment manifest.}
+
+\begin{figure}[htbp]
+\centering
+\begin{lstlisting}[style=sfyaml]
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+  namespace: default-app
+  annotations:
+    container.apparmor.security.beta.kubernetes.io/
+      example-container: runtime/default
+spec:
+  containers:
+  - name: example-container
+    image: some-image
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 1000
+      seccompProfile:
+        type: RuntimeDefault
+    volumeMounts:
+    - name: tmp
+      mountPath: /tmp
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 30
+      periodSeconds: 10
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 10
+      periodSeconds: 5
+    resources:
+      limits:
+        cpu: 200m
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+  automountServiceAccountToken: false
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    fsGroup: 1000
+    seccompProfile:
+      type: RuntimeDefault
+  volumes:
+  - name: run
+    emptyDir: {}
+  restartPolicy: Always
+\end{lstlisting}
+\caption{\new{Hardened manifest produced by the repair layer for
+\path{15.pod_privilege_escalation.yaml}.}}
+\label{fig:repair-out}
+\end{figure}
+
+\new{
+The result of this layer is a hardened version of each manifest 
+that incorporates deterministic best practices, template-driven 
+defaults, and model-driven refinements  all expressed as 
+auditable RFC~6902 patches that preserve schema correctness 
+and leave no unintended side effects.}
+
+
+
+% After the repair layer, the SafeFix-K8s takes the produced file from the repair layer and pass it to the validation layer to ensure that the fixes generated by the repair layer are both functional and safe. To ensure this the SafeFix-K8s tools runs some checks to validate the repairs. Then classify the file based on the results into one of three options, PASSED, FAIL, or NEEDS\_REVIEW. 
+
+% The checks looks for unsafe configurations, if any unsafe configuration appear then the file is marked as FAIL immediately. then the repair layer performs a \new{category}-specific verification. to make sure that all the misconfiguration categories have been addressed. After that the validation layer computes a DIFF file to ensure that all the variables, names, and tags are unchanged. And Finally the validation layer confirms the schema correctness. 
+
+
+\new{After the repair layer produces a hardened manifest, the validation 
+layer takes over as the final quality gate. Its purpose is 
+straightforward: verify that the repaired file is structurally 
+valid Kubernetes YAML, that no dangerous misconfigurations remain, 
+and that every finding from the detection stage has been properly 
+addressed. To achieve this, the validation layer runs a sequential 
+7-gate framework against each secured manifest.}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  font=\scriptsize,
+  node distance=0.4cm,
+  gate/.style={draw, rounded corners=2pt, fill=gray!8, minimum width=6.4cm,
+               minimum height=0.62cm, align=center, font=\scriptsize},
+  verdict/.style={draw, rounded corners=8pt, minimum width=2.5cm,
+                  minimum height=0.6cm, align=center, font=\scriptsize\bfseries},
+  flow/.style={-{Stealth[length=1.6mm]}, thick},
+  branch/.style={-{Stealth[length=1.6mm]}, thick, dashed}
+]
+
+\node[gate] (g1) {G1 \quad Document YAML parse};
+\node[gate, below=of g1] (g2) {G2 \quad Schema auto-correction (audited)};
+\node[gate, below=of g2] (g3) {G3 \quad Dangerous configuration check \textit{(blocking)}};
+\node[gate, below=of g3] (g4) {G4 \quad Per-category validators};
+\node[gate, below=of g4] (g5) {G5 \quad Effective security context resolution};
+\node[gate, below=of g5] (g6) {G6 \quad kubeconform schema validation};
+\node[gate, below=of g6] (g7) {G7 \quad Original vs secured diff (audit trail)};
+
+\foreach \a/\b in {g1/g2, g2/g3, g3/g4, g4/g5, g5/g6, g6/g7}
+  \draw[flow] (\a) -- (\b);
+
+\node[verdict, right=1.1cm of g3] (fail) {FAIL};
+\node[verdict, right=1.1cm of g4] (rev) {NEEDS\_REVIEW};
+\node[verdict, below=0.7cm of g7] (pass) {PASS};
+
+\draw[branch] (g3) -- node[above, font=\tiny]{fires} (fail);
+\draw[branch] (g4) -- node[above, font=\tiny]{unresolvable} (rev);
+\draw[flow] (g7) -- node[right, font=\tiny]{all clear} (pass);
+
+\end{tikzpicture}
+\caption{\new{The seven sequential validation gates and the three possible
+verdicts. Gate 3 is blocking: if it fires, processing stops immediately.
+NEEDS\_REVIEW arises when dangerous-configuration checks pass but a category
+validator cannot be resolved without cluster context.}}
+\label{fig:safefix-gates}
+\end{figure}
+
+
+\new{Figure~\ref{fig:safefix-gates} shows the seven gates and the verdicts
+they produce. Gate 3 is the only blocking gate: it fails the file immediately
+if the repaired manifest still contains privileged mode, allowed privilege
+escalation, host namespace sharing, forbidden Linux capabilities, or a
+hostPath mount on a sensitive path, which prevents any repair method from
+silently introducing a regression. Gate 4 runs a validator per canonical
+finding, checking that the specific security property was actually set, and
+Gate 5 resolves the effective security context by merging pod-level and
+container-level settings so that validation reflects what Kubernetes will
+enforce at runtime rather than what appears at one level of the manifest.}
+
+\new{A file is marked FAIL if Gate 3 fires or a critical validator fails,
+NEEDS\_REVIEW if all dangerous-configuration checks pass but some category
+validator cannot be resolved without cluster context such as a custom service
+account or a pinned image digest, and PASS only when every gate clears and all
+addressable findings are verified as resolved.}
+
+
+
+
+\begin{figure}[htbp]
+\centering
+\begin{lstlisting}[style=sfjson]
+{
+  "file":   "15.pod_privilege_escalation.yaml",
+  "status": "PASS",
+  "categories": [
+    "Security/AllowPrivilegeEscalation",
+    "Resources/MissingLimits",
+    "Resources/MissingRequests",
+    "Security/CapabilitiesNotDropped",
+    ...
+\end{lstlisting}
+\caption{\new{Validation layer output for
+\path{15.pod_privilege_escalation.yaml}: final status PASS across 24 checks.
+The category list is truncated for space.}}
+\label{fig:validation-out}
+\end{figure}
+
+
+\new{Fig.~\ref{fig:validation-out} shows a snippet from the 
+validation report for 15.pod\_privilege \_escalation.yaml. All 
+CRITICAL and HIGH controls were verified privileged mode 
+disabled, privilege escalation blocked, all Linux capabilities 
+dropped, root filesystem made read-only, and a RuntimeDefault 
+seccomp profile confirmed. The file received a final status 
+of PASS across 24 checks.}
+
+
+To summarize, the framework is split into two phases. The first phase consists of the MicroSec-Scan tool. In this phase, the application layer is addressed, where a codebase is parsed, analyzed, refactored. After this is done, a developer-friendly report is output to the user. The second phase is activated, passing the microservice's YAML file to the SafeFix-K8s tool. where the detection layer will detect all the misconfiguration that appear in the file. Then passing these outputs to the normalize layer where the misconfigurations will be filtered out and presented in a consistent form. The fixing layer will now be able to take the output from the normalize layer and fix the misconfigurations. After the new secured file is \new{output}, the validation layer will now check to see if the new secured file is valid or not. 
+
+
+\new{\section{Experimental Design}}
+\label{sec:expdesign}
+
+\new{This section states the design of the evaluation following the
+structure recommended by Wohlin et al. for empirical software engineering
+studies, consolidating material that was previously distributed across the
+implementation and results sections.}
+
+\new{\subsection{Goal and Research Questions}}
+
+\new{The goal of the evaluation is to assess, from the perspective of a
+developer securing a cloud-native system, whether design-time
+architecture-aware analysis and layered automated repair improve on the
+coverage and remediation available from existing tooling. Four research
+questions follow, with the hypothesis each one tests.}
+
+\new{
+\begin{itemize}
+\item \textbf{RQ1.} Does MicroSec-Scan detect inter-service vulnerabilities
+that container, dependency, and single-file static scanners do not?
+\emph{H1: design-time, architecture-aware analysis reports inter-service
+findings that the baseline classes report at a substantially lower rate.}
+\item \textbf{RQ2.} How accurate is that detection? \emph{H2: precision is
+high because rules fire only on exact syntactic conditions, while recall is
+bounded by statically invisible communication paths.}
+\item \textbf{RQ3.} Does MicroSec-Scan apply to polyglot reference
+benchmarks, and where is the boundary of that applicability?
+\emph{H3: the tool applies to the Node.js services within a polyglot system,
+and its recall there is limited by transport and client coverage rather than
+by the language of neighbouring services.}
+\item \textbf{RQ4.} Does multi-tool detection with canonical normalization
+and gated repair produce validated Kubernetes hardening? \emph{H4: layered
+repair resolves the highest-severity findings without introducing
+regressions.}
+\end{itemize}
+}
+
+\new{\subsection{Subject Selection}}
+
+\new{Node.js subjects were sourced from GitHub after a search for
+repositories that are (1) microservice-based and contained within a single
+repository, (2) written in Node.js, and (3) exercise inter-service
+communication, so that the categories of
+Table~\ref{tab:isv_categories} are actually exercised rather than evaluated
+on isolated single-service code. Five subjects satisfied all three criteria.
+The scarcity of qualifying repositories is itself part of the gap this work
+targets.}
+
+\new{Polyglot reference benchmarks were added separately in response to
+reviewer feedback. Sock Shop, Online Boutique, and TrainTicket were selected
+because they are the established reference systems for microservice
+research; every service in each that is implemented in Node.js, identified
+by the presence of a \path{package.json} manifest, was analysed.}
+
+\new{Kubernetes subjects comprise 28 manifests, selected so that each
+originates from a publicly documented source whose misconfigurations are
+described by the original authors, parses as valid YAML, and so that the set
+covers every canonical category with no category evaluated on fewer than two
+files.}
+
+\new{\subsection{Metrics}}
+
+\new{V denotes the total number of findings a tool reports, and ISV the
+subset that are inter-service. Detection accuracy is computed at the level
+of inter-service \emph{categories} rather than instances, because the true
+number of instances in a real-world repository cannot be verified and no
+public Node.js microservice ships with a recorded count. For each of the 19
+categories in the rule registry, a category is marked present or absent per
+repository; precision, recall, and F1-score are then computed over
+categories, so the denominator is always the number of categories present.
+Where instance counts are reported they are labelled as such, and the two
+units are never mixed within a column.}
+
+\new{\subsection{Annotation Protocol}}
+
+\new{Ground truth for the five Node.js subjects was established by the five
+authors acting as independent annotators, each labelling every application
+separately. To constrain subjectivity, annotators did not label from
+intuition but followed a fixed protocol derived from the parameterised rule
+templates of Table~\ref{tab:rule_examples}, recording a category as present
+only when a code location binds a template's variables in violation of its
+condition. Agreement was high, since this leaves little room for
+interpretation. The few disagreements concerned message validation performed
+inline rather than through a recognised library; these were resolved by
+joint re-examination of the code until a unanimous label was reached.
+Ground truth for the Kubernetes manifests was taken from the documentation
+of the originating sources rather than annotated afresh.}
+
+\new{\subsection{Execution Environment}}
+
+\new{All measurements for the five Node.js subjects and the Kubernetes
+dataset were taken on a MacBook Air M4, with runtime and memory recorded
+using the Unix \texttt{time} utility alongside each CLI invocation.
+Measurements for the polyglot reference benchmarks were taken in a separate
+containerised environment and are therefore reported separately and not
+compared against the former.}
+
+
+
+\section{Results and Discussion}
+
+This section presents the empirical evaluation of the proposed system.
+In the first phase of the framework, the results of MicroSec-Scan on Node.js microservice applications are discussed.
+In the second phase of the framework, the evaluation of the SafeFix-K8s tool on intentionally misconfigured Kubernetes manifests is presented. Combined, these results demonstrate the complementary strengths of code-level analysis and configuration-level remediation in cloud-native environments.
+
+\subsection{MicroSec-Scan Vulnerabilities Detection}
+
+MicroSec-Scan was evaluated across five Node.js microservice applications, including one in-house e-commerce system and four open-source repositories cloned from GitHub: nodejs-microservices-rabbitmq~\cite{petrea_nodejs_rabbitmq},
+\newline
+nodejs\_microservice~\cite{codergogoi_nodejs_microservice}, Microservices in Node.js~\cite{tiwari_microservices_nodejs}, and the Message-Driven E-commerce Architecture project~\cite{ondiek_message_driven_ecommerce}.
+
+Before executing any CLI tool, each GitHub repository was manually inspected to identify the presence of inter-service vulnerabilities defined in Table~\ref{tab:isv_categories}.
+
+This manual inspection established a ground-truth reference indicating whether each inter-service vulnerability type was present or not within the codebase. These annotations were then used to to evaluate the precision, recall, and F1-score metrics of the MicroSec-Scan tool. \new{All metrics are defined at the level of inter-service vulnerability \emph{categories} (Table~\ref{tab:isv_categories}), not instance counts, since the true number of instances in a real-world repository cannot be verified and no public Node.js microservice ships with a recorded count. For each of the 19 categories in the rule registry we manually marked it \emph{present} or \emph{absent} per repository, so precision, recall, and F1-score are computed over categories: the denominator is the number of categories present, never an instance count. For example, nodejs-microservices-rabbitmq contains 13 categories, of which MicroSec-Scan detected 10 (recall $10/13$); Table~\ref{tab:presence_matrix} gives the full per-repository breakdown. The counts in Table \ref{tab:results_by_tool} are raw finding counts per tool and are not claimed to be exhaustive.}
+
+\new{The ground truth was established by the five authors, who acted as independent annotators: each of the five applications was labeled separately by all five. To keep the process objective, annotators did not label from intuition but followed a fixed protocol derived from the parameterized rule templates in Table~\ref{tab:rule_examples}, recording a finding only when a code location bound a template's variables ($S_a$, $S_b$, $B$, $P$, $M$, or $C$) in violation of its condition. Agreement was high, as this leaves little room for interpretation.}
+
+\new{The few disagreements were mostly about message validation, which a developer can perform manually with inline checks rather than a known library (ajv, joi, etc.); such hand-written validation is not matched by AST pattern detection, so annotators had to decide whether the message was genuinely validated. These cases were resolved in a joint discussion where the code was re-examined together and a unanimous label was agreed before being committed to the ground truth.}
+
+
+
+Existing tools such as Trivy, Snyk, and Semgrep do not commonly detect inter-service vulnerabilities. This makes it unjust and infeasible to calculate meaningful accuracy metrics for them. As a result, these tools were evaluated only in terms of the number of reported vulnerabilities, execution time, and resource consumption rather than detection accuracy.
+
+This process does introduce some subjectivity. But, there is a common practice in the static analysis research field where expert-driven inspection is used to set the foundational ground truth for these types of vulnerabilities.
+
+To evaluate the tools, the CLI versions of Trivy, Snyk, and Semgrep were used. Each tool ran on every repository using their corresponding CLI command. Moreover, to measure execution time and resource consumption for all tools, the
+built-in Unix \texttt{time} command available within macOS was used alongside each
+CLI execution command.
+The commands are listed below:
+\begin{verbatim}
+time trivy fs /path
+time snyk code test
+time semgrep ci
+time microsec-scan scan -p /path --show-routes --show-egress
+\end{verbatim}
+
+It is important to note that Trivy, Snyk, and Semgrep were not originally designed for inter-service vulnerability detection. Trivy and Snyk primarily target container images and third-party dependencies, while Semgrep operates on single-file pattern matching without cross-service context. The comparison presented in this section therefore reflects differences in analysis scope and coverage capability rather than a direct comparison of detection algorithm quality. The purpose is to demonstrate the existing gap in current tooling for inter-service security analysis, which MicroSec-Scan is specifically designed to address.
+
+After running these commands, dependency vulnerabilities were automatically ignored. Only application-level vulnerabilities were considered, whether inter-service or not.
+All inter-service vulnerabilities were then counted, manually validated and marked as found or not in a CSV file.
+
+To compare MicroSec-Scan with existing security tools, the evaluation reports the total number of detected vulnerabilities as well as the subset of inter-service vulnerabilities for each application. Table~\ref{tab:results_by_tool} summarizes the detection results. The V column represents the number of vulnerabilities found, the ISV column represents the number of inter-service vulnerabilities found, and the time column represents the execution time of the CLI tool. Across all evaluated systems, MicroSec-Scan reports a drastically higher number of vulnerabilities than Trivy and Snyk. For instance, in the in-house e-commerce application, MicroSec-Scan detected 218 vulnerabilities, compared to 20 reported by Snyk and 3 by Trivy. Similarly, in the nodejs-microservices-rabbitmq project, MicroSec-Scan identified 38 vulnerabilities, whereas Snyk detected only 2 and Trivy detected none.
+
+\new{These counts should not be read as evidence that MicroSec-Scan is broadly superior to Trivy, Snyk, or Semgrep. The three baselines are not designed to detect inter-service vulnerabilities, so their low counts reflect a difference in analysis scope, not weaker detection. The tools are in fact complementary: Trivy and Snyk cover third-party dependencies and container images, and Semgrep matches single-file patterns, whereas MicroSec-Scan adds the inter-service layer they do not target. Table \ref{tab:results_by_tool} is therefore intended only to expose this coverage gap, not to rank detection-algorithm quality.}
+
+
+A consistent pattern is found when focusing specifically on inter-service vulnerabilities. MicroSec-Scan detects inter-service security issues in all evaluated applications, while neither Trivy nor Snyk reports any inter-service vulnerabilities. This outcome is expected, as Trivy and Snyk primarily target container images and third-party dependencies rather than service-to-service communication logic.
+
+In the in-house e-commerce system, 148 out of 218 detected vulnerabilities were related to service-to-service interactions. The nodejs\_microservice application exhibited 32 inter-service vulnerabilities, while nodejs-microservices-rabbitmq contained 19 such issues, largely related to insecure message handling. The remaining projects, Microservices in Node.js and Message-Driven E-commerce Architecture, exhibited 8 and 12 inter-service vulnerabilities, respectively.
+
+
+
+\begin{table}[!t]
+\centering
+\caption{Performance and vulnerability detection metrics of each tool across all test applications. \new{Counts reflect each tool's coverage scope, not detection-algorithm quality; Trivy and Snyk are not designed for inter-service detection.}}
+\label{tab:results_by_tool}
+\safefixtablestyle
+\begin{tabular}{@{} l p{4.5cm} c c c @{}}
+\toprule
+\textbf{Tool} & \textbf{Application} & \textbf{V} & \textbf{ISV} & \textbf{Time (s)} \\
+\midrule
+\multirow{5}{*}{MicroSec-Scan} 
+ & nodejs-microservices-rabbitmq & 38 & 19 & 0.38 \\
+ & nodejs\_microservice & 55 & 32 & 0.41 \\
+ & Microservices-in-Nodejs & 24 & 8 & 0.39 \\
+ & Message-Driven-E-commerce & 22 & 12 & 0.40 \\
+ & E-commerce (in-house) & 218 & 148 & 0.45 \\
+\midrule
+\multirow{5}{*}{Trivy} 
+ & nodejs-microservices-rabbitmq & 0 & 0 & 0.09 \\
+ & nodejs\_microservice & 0 & 0 & 0.10 \\
+ & Microservices-in-Nodejs & 0 & 0 & 0.09 \\
+ & Message-Driven-E-commerce & 0 & 0 & 0.10 \\
+ & E-commerce (in-house) & 3 & 0 & 0.11 \\
+\midrule
+\multirow{5}{*}{Snyk} 
+ & nodejs-microservices-rabbitmq & 2 & 0 & 12.00 \\
+ & nodejs\_microservice & 3 & 0 & 11.00 \\
+ & Microservices-in-Nodejs & 9 & 0 & 12.00 \\
+ & Message-Driven-E-commerce & 6 & 0 & 11.00 \\
+ & E-commerce (in-house) & 20 & 0 & 13.00 \\
+\midrule
+\multirow{5}{*}{Semgrep} 
+ & nodejs-microservices-rabbitmq & 5 & 5 & 120.00 \\
+ & nodejs\_microservice & 30 & 0 & 118.00 \\
+ & Microservices-in-Nodejs & 14 & 1 & 121.00 \\
+ & Message-Driven-E-commerce & 5 & 5 & 119.00 \\
+ & E-commerce (in-house) & 35 & 0 & 124.00 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
+A main result from the assessment shows MicroSec-Scan reliably detects weaknesses in inter-service interactions, such as missing authorization across services, insecure middleware usage, and invalid or unverified internal service calls. These are typical issues in distributed, event-based microservice setups. However, it is important to distinguish between two evaluation dimensions: coverage capability, which refers to the range of vulnerability categories a tool can address, and detection performance, which refers to precision and recall within that scope. The vulnerability counts reported for Trivy, Snyk, and Semgrep serve to illustrate differences in coverage scope rather than detection accuracy, since these tools were not designed for inter-service analysis. To avoid conflating these dimensions, precision, recall, and F1-score are reported only for MicroSec-Scan, as it is the only evaluated tool whose scope includes inter-service vulnerabilities.
+
+Across all evaluated applications, neither Trivy nor Snyk detected any inter-service vulnerabilities. This result is expected, as both tools primarily focus on container images and third-party dependencies rather than code-level logic. On the flip side, Semgrep detected a limited number of ISV, as shown in Table \ref{tab:results_by_tool}. However, Semgrep does not capture higher-level architectural relationships between services, unlike how the MicroSec-Scan tool operates.
+
+For the in-house e-commerce system, MicroSec-Scan identified 148 inter-service vulnerabilities out of 218 total findings. The nodejs\_microservice application output 32 ISV, while nodejs-microservices-rabbitmq output 19 vulnerabilities. In comparison, Semgrep detected only 5 ISV findings.
+
+These findings suggest that although Semgrep detects standalone code patterns tied to service-to-service security, it cannot track how data moves across services or where boundaries exist. Instead, the MicroSec-Scan tool examines interactions between services and their messages in a structured way. Therefore this leads to broader identification of ISV overlooked by current solutions.
+
+
+\subsection{MicroSec-Scan Performance}
+
+\new{Table~\ref{tab:presence_matrix} gives the per-category ground truth: for each inter-service category, whether it is present in a repository and whether MicroSec-Scan detected it. Because the tool produced no false positives, every detected category is a true positive, so recall is simply the number of detected categories divided by the number present. This same absence of false positives is why precision is 1.00, as discussed below.}
+
+
+\begin{table*}[!t]
+\centering
+\caption{\new{Per-repository ground truth at the inter-service category level. D = present and detected; M = present but missed; X = not present. Recall = D/(D+M); no false positives occurred. The five columns are the evaluated applications; five Kafka- and registry-related categories absent from all repositories are omitted.}}
+\label{tab:presence_matrix}
+\safefixtablestyle
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{} l c c c c c @{}}
+\toprule
+Inter-service category & E-com. & RabbitMQ & Node-MS & Msg-Driven & Micro-Node \\
+\midrule
+Missing service authentication & D & D & D & D & D \\
+Missing message validation & D & D & D & M & D \\
+Excessive service trust & D & D & M & M & M \\
+Missing mutual TLS & D & M & M & M & D \\
+Shared broker credentials & D & M & M & M & X \\
+Missing circuit breaker & D & D & D & M & D \\
+Missing request signing & D & D & D & X & D \\
+Missing queue authorization & D & D & D & D & X \\
+Missing message encryption & D & D & D & D & M \\
+Exposed internal port & D & D & D & M & M \\
+Unencrypted service mesh & M & M & M & M & D \\
+Insecure egress HTTP & D & D & D & X & D \\
+Insecure egress RabbitMQ & D & X & X & M & X \\
+Plaintext broker & D & D & M & D & X \\
+\midrule
+Categories present (out of 19) & 14 & 13 & 13 & 12 & 10 \\
+Detected (true positives) & 13 & 10 & 8 & 4 & 7 \\
+Recall & 0.93 & 0.77 & 0.62 & 0.33 & 0.70 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table}[!t]
+\centering
+\caption{Detection accuracy of MicroSec-Scan for inter-service vulnerabilities.}
+\label{tab:microsec_accuracy}
+\safefixtablestyle
+\begin{tabular}{@{} l c c c @{}}
+\toprule
+\textbf{Application} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} \\
+\midrule
+nodejs-microservices-rabbitmq & 1.00 & 0.77 & 0.87 \\
+nodejs\_microservice & 1.00 & \new{0.62} & \new{0.76} \\
+Microservices in Node.js & 1.00 & 0.70 & \new{0.82} \\
+Message-Driven E-commerce Architecture & 1.00 & 0.33 & 0.50 \\
+E-commerce (in-house) & 1.00 & 0.93 & 0.96 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:microsec_accuracy} reports precision, recall, and F1-score, computed only for MicroSec-Scan. Precision is 1.00 across all repositories, meaning no false positives were observed. \new{This follows from the detection mechanism itself: MicroSec-Scan uses AST-based static analysis with a strict, deterministic rule registry, so a rule fires only when an exact structural condition is present in the syntax tree, for example a Kafka constructor with no SSL property or an \texttt{amqp.connect()} call using an unencrypted URI. The tool does not rely on heuristic or statistical guessing, so every reported finding maps to a concrete code construct rather than an inferred pattern; each finding was also verified by hand against the ground truth. A false positive would require the matched syntactic structure to be safe in context, which the rule conditions are designed to exclude.} Precision cannot be meaningfully computed for Trivy and Snyk, since they were not designed for this vulnerability class and reported zero inter-service findings.
+
+
+
+Although MicroSec-Scan demonstrates perfect precision, recall varies between applications, ranging from 0.33 to 0.93. This variation is primarily caused by dynamic service interactions that are not fully visible at the source-code level. In modern microservice deployments, communication endpoints, authorization headers, routing keys, and service identities are often defined through environment variables, service discovery mechanisms, or messaging frameworks at runtime. These dynamically resolved interactions do not always appear explicitly in the static codebase.
+
+Because MicroSec-Scan relies on static analysis and AST parsing, vulnerabilities tied to runtime-generated communication paths may remain undetected, leading to reduced recall in certain systems. Despite this limitation, the tool still achieves strong F1-scores across most applications, demonstrating an effective balance between detection accuracy and coverage. These results confirm that MicroSec-Scan provides reliable and precise detection of inter-service vulnerabilities, while highlighting the inherent challenges of statically analyzing highly dynamic microservice architectures.
+
+\begin{table}[!t]
+\centering
+\caption{Average runtime and memory consumption across evaluated applications.}
+\label{tab:resource_consumption}
+\safefixtablestyle
+\begin{tabular}{@{} l c c @{}}
+\toprule
+\textbf{Tool} & \textbf{Runtime (s)} & \textbf{Memory Usage (MB)} \\
+\midrule
+MicroSec-Scan & 0.38--0.45 & 180--183 \\
+Trivy & 0.09--0.11 & 90--94 \\
+Snyk & 11--13 & 65--69 \\
+Semgrep & 118--124 & 1390--1412 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+Table \ref{tab:resource_consumption} shows that MicroSec-Scan finishes analyzing every tested app in less than half a second, keeping memory use steady. Despite Trivy running faster with smaller memory footprint, it only checks containers and dependencies for flaws. In contrast, Semgrep takes much longer and uses more resources, making it less ideal for constant integration workflows.
+This makes MicroSec-Scan ideal and a viable pick for quick CI/CD integration. These tools were tested on a MacBook Air M4 machine.
+
+
+%hegab start
+
+\subsection{\new{Evaluation on Polyglot Reference Benchmarks}}
+\label{sec:polyglot_eval}
+
+\new{The evaluation in the preceding subsections uses microservice systems
+implemented entirely in Node.js. Because established reference benchmarks are
+polyglot by construction, a separate question is whether MicroSec-Scan applies
+to them at all. It does, and this subsection reports what it finds. The
+distinction that makes this possible is that every inter-service rule in
+Table~\ref{tab:rule_examples} is \emph{caller-side}: a rule binds its
+variables from the abstract syntax tree of the service that originates the
+call, so the implementation language of the callee never enters the analysis.
+A Node.js service that calls a Go service is analyzable exactly as one that
+calls another Node.js service. MicroSec-Scan therefore applies to the Node.js
+services \emph{within} a polyglot system, rather than requiring that every
+service in the system be written in Node.js.}
+
+\new{Three widely used reference systems were selected: Sock Shop, Online
+Boutique, and Train Ticket. Each was cloned at its current head and every
+service implemented in Node.js was scanned, identified by the presence of a
+\path{package.json} manifest. Four such services exist across the three
+systems, confirming that Node.js is a first-class implementation language in
+all of them. Table~\ref{tab:polyglot_results} reports the outcome.}
+
+\begin{table}[!t]
+\centering
+\caption{\new{MicroSec-Scan applied to three polyglot reference benchmarks,
+at whole-repository granularity (upper block) and at the granularity of the
+individual Node.js services they contain (lower block). V = total findings,
+ISV\textsubscript{i} = inter-service findings counted as instances,
+ISV\textsubscript{c} = distinct inter-service categories. Runtimes are
+wall-clock in the evaluation container and are not comparable to the macOS
+figures in Table~\ref{tab:resource_consumption}.}}
+\label{tab:polyglot_results}
+\safefixtablestyle
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{} l l r r r r @{}}
+\toprule
+\textbf{Subject} & \textbf{Transport} &
+\textbf{V} & \textbf{ISV\textsubscript{i}} & \textbf{ISV\textsubscript{c}} &
+\textbf{Time (s)} \\
+\midrule
+\multicolumn{6}{@{}l}{\textit{Whole repository}}\\
+Sock Shop (deploy repo)   & ---                     &  46 &   8 & 1 & 0.49 \\
+Online Boutique           & gRPC                    &   0 &   0 & 0 & 0.62 \\
+Train Ticket              & mixed                   & 374 & 134 & 1 & 5.63 \\
+\midrule
+\multicolumn{6}{@{}l}{\textit{Individual Node.js services}}\\
+Sock Shop front-end       & HTTP (\texttt{request}) &  51 &   1 & 1 & 4.41 \\
+OB currencyservice        & gRPC                    &   0 &   0 & 0 & 0.50 \\
+OB paymentservice         & gRPC                    &   0 &   0 & 0 & 0.50 \\
+TT ts-ticket-office-service & none (DB only)        &   6 &   0 & 0 & 0.65 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\new{The two granularities are reported separately because the Sock Shop
+deployment repository does not vendor the \texttt{front-end} source, which is
+maintained in its own repository, and because whole-repository scanning
+additionally reaches the Docker Compose definitions that service-level
+scanning does not. The instance counts in the upper block must be read with
+care: the 8 and 134 inter-service instances recorded for Sock Shop and Train
+Ticket originate entirely from a single Compose-level rule,
+\path{EXPOSED_INTERNAL_PORT}, which is why the corresponding category counts
+are 1. No code-level inter-service rule fired on any of the three benchmarks,
+at either granularity.}
+
+\new{The Sock Shop front-end, an Express service that fronts the Go and Java
+back-end services, produced 51 findings: 27 insecure HTTP usages, 13
+root-container findings, 4 unprotected routes, 2 hardcoded secrets, 1 exposed
+internal port, and one each of missing helmet, missing rate limiting, missing
+body size limit, and missing authentication. The Train Ticket Node.js service
+produced 6 local findings. The two Online Boutique services produced none.}
+
+\new{Only one inter-service finding was reported across all four services,
+against 148 on the in-house system of
+Table~\ref{tab:results_by_tool}. This gap is informative rather than
+incidental, and it has four distinct causes, three of which are genuine
+limitations of the current implementation and one of which is correct
+behavior.}
+
+\new{\emph{Unsupported transport.} Both Online Boutique services communicate
+exclusively over gRPC. Neither registers an Express, Fastify, or NestJS
+application, so no framework adapter matches and the egress analyzer is never
+reached, yielding zero findings. This is the concrete cost of the gRPC gap
+already identified as future work, and it is a detection blind spot rather
+than an absence of vulnerabilities.}
+
+\new{\emph{Unsupported HTTP client.} The egress analyzer recognizes
+\texttt{axios}, \texttt{fetch}, and the Node.js \texttt{http}/\texttt{https}
+request APIs. The Sock Shop front-end issues its inter-service calls through
+the \texttt{request} library, which is outside that set, so its outbound calls
+to the catalogue, cart, order, and user services are not modelled as egress
+edges. The rules that would otherwise fire on those edges are
+\path{EGRESS_INSECURE_HTTP}, \path{MISSING_SERVICE_AUTH}, and
+\path{MISSING_CIRCUIT_BREAKER}. The 27 insecure HTTP findings that were
+reported come from the general source-level rule, which observes the
+\texttt{http://} URLs without attributing them to a service boundary.}
+
+\new{\emph{Interprocedural indirection.} Even with the client library
+supported, the Sock Shop front-end would remain partly opaque, because its
+route handlers do not call the HTTP client directly. They call a project-local
+helper, \path{helpers.simpleHttpRequest(url, res, next)}, which wraps
+\path{request.get} in a separate module. The destination URL therefore reaches
+the client through a function parameter, and binding it at the call site
+requires interprocedural, cross-module data-flow analysis rather than the
+intraprocedural AST matching the current rules perform. This indirection is
+idiomatic in production Node.js code and is, on this evidence, a more
+significant limitation than language coverage.}
+
+\new{\emph{Correct absence.} The Train Ticket Node.js service is a leaf
+service: it communicates only with MySQL and MongoDB and issues no
+service-to-service calls at all. Its zero inter-service findings is a true
+negative, not a missed detection, and no inter-service rule should fire on it.}
+
+\new{Table~\ref{tab:polyglot_baselines} repeats the comparison against the
+baselines on the same three subjects. Following the protocol used for the
+main evaluation, dependency vulnerabilities are excluded from V, which
+reduces Trivy to zero application-level findings on all three systems
+despite its 223 and 651 dependency advisories on Online Boutique and Train
+Ticket. Semgrep was run offline against the open-source rule corpus rather
+than through \texttt{semgrep ci}, because the hosted registry was
+unreachable from the evaluation environment; the JavaScript and TypeScript
+rulesets used comprise 198 rules.}
+
+\begin{table}[!t]
+\centering
+\caption{\new{Baseline comparison on the polyglot benchmarks. V excludes
+dependency findings, per the protocol used in
+Table~\ref{tab:results_by_tool}.}}
+\label{tab:polyglot_baselines}
+\safefixtablestyle
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{} l l r r r @{}}
+\toprule
+\textbf{Benchmark} & \textbf{Tool} & \textbf{V} & \textbf{ISV} & \textbf{Time (s)} \\
+\midrule
+\multirow{4}{*}{Sock Shop}
+ & MicroSec-Scan & 46 & 8 & 0.49 \\
+ & Trivy         &  0 & 0 & 0.13 \\
+ & Snyk$^{\dagger}$ &  0 & 0 & 11.0 \\
+ & Semgrep       &  0 & 0 & 106.15 \\
+\midrule
+\multirow{4}{*}{Online Boutique}
+ & MicroSec-Scan &  0 & 0 & 0.62 \\
+ & Trivy         &  0 & 0 & 2.30 \\
+ & Snyk$^{\dagger}$ &  0 & 0 & 12.0 \\
+ & Semgrep       &  9 & 1 & 106.23 \\
+\midrule
+\multirow{4}{*}{Train Ticket}
+ & MicroSec-Scan & 374 & 134 & 5.63 \\
+ & Trivy         &   0 &   0 & 12.60 \\
+ & Snyk$^{\dagger}$ &   0 &   0 & 15.0 \\
+ & Semgrep       & 589 &   0 & 244.78 \\
+\bottomrule
+\multicolumn{5}{@{}l}{\footnotesize $^{\dagger}$Snyk was not executed on these
+three subjects. Findings are entered as}\\
+\multicolumn{5}{@{}l}{\footnotesize zero on the basis that it reported no
+inter-service findings on any of the five}\\
+\multicolumn{5}{@{}l}{\footnotesize Node.js subjects, and runtimes are
+estimates extrapolated from its 11--13\,s}\\
+\multicolumn{5}{@{}l}{\footnotesize range there, scaled by repository size.
+Neither is a measurement.}\\
+\end{tabular}
+\end{table}
+
+\new{One result in Table~\ref{tab:polyglot_baselines} runs against the
+pattern reported for the Node.js subjects, and it should be stated plainly.
+On Online Boutique, Semgrep reports one inter-service finding and
+MicroSec-Scan reports none: the rule
+\path{grpc-nodejs-insecure-connection} matches
+\path{grpc.credentials.createInsecure()} at
+\path{src/currencyservice/client.js:21}, the same unencrypted inter-service
+transport recorded as present in the ground truth. This is the first
+subject on which a baseline detects an inter-service vulnerability that
+MicroSec-Scan does not, and the cause is direct: Semgrep ships a gRPC rule
+and MicroSec-Scan does not model gRPC at all. The mechanism claim made
+earlier is unaffected --- the Semgrep rule is a single-file pattern match
+on a constructor argument and reconstructs no cross-service path --- but
+the coverage claim is. Pattern breadth and architectural reasoning are
+independent axes, and on a transport MicroSec-Scan does not implement, rule
+breadth alone wins. Semgrep's 589 findings on Train Ticket, by contrast,
+are client-side and local (383 \texttt{alert} uses, 125 jQuery and DOM
+sinks, 4 SQL injections) with no inter-service finding among them.}
+
+\new{Two conclusions follow. First, the objection that MicroSec-Scan cannot be
+applied to standard polyglot benchmarks does not hold: it runs on the Node.js
+services of all three systems and reports actionable local findings on two of
+them. Second, and more importantly, the low inter-service yield locates the
+real boundary of the approach more precisely than the Node.js-only evaluation
+did. Recall on inter-service vulnerabilities is limited not primarily by the
+implementation language of neighbouring services, but by the breadth of the
+recognized client and transport surface and by the absence of interprocedural
+analysis. Both are addressable within the existing architecture --- the client
+set and transport handlers are registry entries, and the framework adapters
+already sit behind a common interface --- and both are stated as immediate
+future work rather than as inherent properties of design-time analysis.}
+
+
+\subsection{SafeFix-K8s Results}
+
+\new{The SafeFix-K8s evaluation is designed to validate three 
+claims. First, that running 13 detection tools in parallel 
+provides broader misconfiguration coverage than any single 
+scanner, with deduplication collapsing redundant findings into 
+a clean canonical set. Second, that the layered repair strategy 
+reliably resolves the most dangerous findings, specifically all 
+CRITICAL and HIGH severity misconfigurations. Third, that the 
+7-gate validation framework prevents regressions and correctly 
+identifies workloads that require elevated privileges by design 
+rather than misclassifying them as fixable misconfigurations.}
+
+The SafeFix-K8s tool is evaluated using a set of 28 files containing intentionally misconfigured YAML files, sourced from Kubernetes Goat~\cite{madhuakula_kubernetes_goat}, along with files from earlier studies~\cite{shamim2024technoeducational,malul2024genkubesec,ye2025llmsecconfig,dellimmagine2023kubehound}. Because these come from varied backgrounds, they reflect real-world problems like insufficient container protection, excessive permissions, flawed role-based access controls, file system exposures, incorrect resource settings - also known vulnerabilities in software supply chains - as documented in current Kubernetes security research~\cite{rahman2023k8s,dellimmagine2023kubehound,shamim2024technoeducational}.
+
+Across the 28 manifests, integrated scanners generated 1,689 initial results; the SafeFix-K8s tool eliminates repeated entries while translating outputs into a unified structure. As a result, only 528 distinct problems remain. Data in Table~\ref{tab:deduplication} illustrates this drop - also highlighting how formatting consistency improves practical use. Furthermore, shared findings back prior claims: single tools often overlook misconfigurations, justifying combined scanner approaches~\cite{sivaraman2023mlk8s,dellimmagine2023kubehound}.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Deduplication Statistics}
+\label{tab:deduplication}
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{lrrr}
+\hline
+\textbf{Metric} & \textbf{Before Norm.} & \textbf{After Norm.} & \textbf{Reduction (\%)} \\
+\hline
+Total Raw Findings & 1,689 & 528 & 68.7 \\
+Avg Findings/File & 67.6 & 21.1 & 68.8 \\
+Avg Tools per Finding & 3.2 & 1.0 & -- \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+
+
+
+
+After normalization, the next step is to analyze the severity distribution of the 528 issues. Table~\ref{tab:detection_severity} reports the number of findings per severity level and the average per file. High and medium findings form most of the dataset, which is typical in misconfiguration-heavy Kubernetes YAML.
+
+\begin{table}[]
+\centering
+\caption{Detection Results by Severity Level}
+\label{tab:detection_severity}
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{lrrr}
+\hline
+\textbf{Severity} & \textbf{Findings} & \textbf{\%} & \textbf{Avg/File} \\
+\hline
+CRITICAL & 41 & 7.8 & 1.6 \\
+HIGH & 175 & 33.1 & 7.0 \\
+MEDIUM & 252 & 47.7 & 10.1 \\
+LOW & 60 & 11.4 & 2.4 \\
+\hline
+\textbf{TOTAL} & \textbf{528} & \textbf{100} & \textbf{21.1} \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+The most common types of security concerns as shown in Table~\ref{tab:top_categories}, the leading 20 are ranked by how often they occur. Problems tied to hardened containers, default identities, or stable workloads tend to have major consequences. These findings match earlier results indicating misconfigurations in Kubernetes usually involve multiple linked flaws instead of a single standalone mistake~\cite{rahman2023k8s}.
+
+
+
+\begin{table}[htbp]
+\centering
+\caption{Top 20 Security Categories by Prevalence}
+\label{tab:top_categories}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular}{clrll}
+\hline
+\textbf{Rank} & \textbf{Category} & \textbf{Total} & \textbf{Severity} & \textbf{Description} \\
+\hline
+1 & Auth/DefaultServiceAccount & 66 & MEDIUM & Using default SA \\
+2 & Auth/DefaultNamespace & 60 & LOW & Default namespace \\
+3 & Security/MissingSeccompProfile & 35 & HIGH & No seccomp profile \\
+4 & Probes/MissingReadinessLiveness & 34 & MEDIUM & Missing probes \\
+5 & Auth/AutomountServiceAccountToken & 34 & MEDIUM & Token auto-mount \\
+6 & Security/AllowPrivilegeEscalation & 33 & CRITICAL & Priv escalation \\
+7 & Security/CapabilitiesNotDropped & 33 & HIGH & Caps not dropped \\
+8 & Security/ReadOnlyRootFSFalse & 33 & HIGH & Writable root FS \\
+9 & Auth/RunAsRoot & 33 & HIGH & Running as root \\
+10 & Security/MissingAppArmorProfile & 33 & MEDIUM & No AppArmor \\
+11 & Resources/MissingRequests & 31 & MEDIUM & No requests \\
+12 & Image/TagNotPinned & 31 & MEDIUM & Unpinned tag \\
+13 & Policy/PodSecurityViolation & 30 & HIGH & PSS violation \\
+14 & Resources/MissingLimits & 23 & MEDIUM & No limits \\
+15 & Image/UntrustedRegistry & 11 & HIGH & Untrusted registry \\
+16 & Security/PrivilegedContainer & 8 & CRITICAL & Privileged mode \\
+17 & Security/HostPathMount & 4 & CRITICAL & hostPath mount \\
+18 & Security/HostPID & 4 & CRITICAL & Host PID shared \\
+19 & Security/HostIPC & 4 & CRITICAL & Host IPC shared \\
+20 & Secrets/Hardcoded & 2 & HIGH & Hardcoded secrets \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+\new{To understand the contribution of each integrated tool, the scanners were grouped into categories to measure their contribution and overlap. Table~\ref{tab:tool_performance} summarizes this view. The overlap factor indicates how many tools, on average, reported the same issue. High redundancy increases confidence but also makes normalization necessary to avoid duplicate-heavy reports.}
+
+
+\begin{table}[htbp]
+\centering
+\caption{Detection Coverage by Tool Category}
+\label{tab:tool_performance}
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{lp{4cm}rr}
+\hline
+\textbf{Category} & \textbf{Tools} & \textbf{Findings} & \textbf{Overlap} \\
+\hline
+Security Scanners & Checkov, KubeLinter, Kubeaudit, Trivy & 312 & 2.8x \\
+Compliance Validators & Polaris, Conftest, Kubescore & 156 & 3.1x \\
+Schema Validators & Kubeconform, Pluto & 42 & 1.2x \\
+Specialized Scanners & RBACPolice, Gitleaks, YAMLLint & 18 & 1.1x \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+
+
+
+
+\begin{table}[!t]
+\centering
+\caption{Validation gates grouped by category (60+ rules total).}
+\label{tab:validator_taxonomy}
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\linewidth}{@{} l p{1.5cm} X @{}}
+\toprule
+\textbf{Rule category} & \textbf{\# Rules} & \textbf{Examples of enforced constraints} \\
+\midrule
+Privilege boundaries & 12 & \texttt{privileged=false}, \texttt{allowPrivilegeEscalation=false}, host namespace usage flagged \\
+Identity and least-privilege & 8 & \texttt{runAsNonRoot=true}, non-zero \texttt{runAsUser}, default service account policy checks \\
+Linux security modules & 8 & \texttt{seccompProfile=RuntimeDefault}, AppArmor annotation format and compatibility checks \\
+Filesystem restrictions & 6 & \texttt{readOnlyRootFilesystem=true}, hostPath disallowed under baseline, writable paths require volumes \\
+Resources and limits & 8 & CPU/memory requests and limits required, non-extreme bounds \\
+Probes and reliability & 6 & readiness/liveness presence, conservative probe structure \\
+Supply chain hygiene & 6 & image tag policy, registry allow/deny logic, digest preference when available \\
+Namespace and isolation & 4 & default namespace warnings, metadata and label consistency \\
+Secrets hygiene & 2 & block hardcoded secrets patterns and unsafe Secret usage \\
+Schema and structural & 6 & kubeconform/pluto checks, required selectors/labels, API version validity \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Finding Resolution Verification by Category}
+\label{tab:resolution_verification}
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{lrrr}
+\hline
+\textbf{Category} & \textbf{Original} & \textbf{Post-Repair} & \textbf{Resolved (\%)} \\
+\hline
+AllowPrivilegeEscalation & 33 & 0 & 100 \\
+PrivilegedContainer & 8 & 0 & 100 \\
+RunAsRoot & 33 & 0 & 100 \\
+CapabilitiesNotDropped & 33 & 0 & 100 \\
+ReadOnlyRootFSFalse & 33 & 0 & 100 \\
+MissingSeccompProfile & 35 & 0 & 100 \\
+MissingProbes & 34 & 0 & 100 \\
+MissingRequests & 31 & 0 & 100 \\
+MissingLimits & 23 & 0 & 100 \\
+AutomountSAToken & 34 & 16 & 52.9 \\
+DefaultServiceAccount & 66 & 66 & 0 \\
+TagNotPinned & 31 & 27 & 12.9 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+Once the repairs are generated, the SafeFix-K8s tool examines every corrected manifest by applying a detailed list of structure and safety criteria. Instead of simple checks, it runs over 60 validations targeting areas like access limits, identity settings, Linux protection layers, file system constraints, resource usage rules, health probes, software origin practices, separation between namespaces, secret handling, and correct format layout. A full breakdown of these checkpoints appears in Table~\ref{tab:validator_taxonomy}. Every fixed configuration gets one of three labels: PASS, NEEDS\_REVIEW, or FAIL. In the test collection, results show 20 files passed, 3 required inspection, while 5 failed verification. \new{These failures are not tool limitations. They reflect workloads that legitimately require elevated privileges by design, as discussed in the failure analysis below.}
+\begin{table}[]
+\centering
+\caption{Repair Success Rates by Severity}
+\label{tab:repair_by_severity}
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{lrrrr}
+\hline
+\textbf{Severity} & \textbf{Total} & \textbf{Fixed} & \textbf{Failed} & \textbf{Rate (\%)} \\
+\hline
+CRITICAL & 41 & 41 & 0 & 100.0 \\
+HIGH & 175 & 175 & 0 & 100.0 \\
+MEDIUM & 252 & 143 & 109 & 56.7 \\
+LOW & 60 & 26 & 34 & 43.3 \\
+\hline
+\textbf{TOTAL} & \textbf{528} & \textbf{385} & \textbf{143} & \textbf{72.9} \\
+\hline
+\end{tabular}
+\end{table}
+
+The generated fixes at the finding level were reported. A finding is counted as fixed if post-repair validation no longer reports the same canonical category on the affected resource and the patched manifest remains schema-valid. Table~\ref{tab:repair_by_severity} reports repair success by severity. The SafeFix-K8s tool remediated 385 out of 528 findings, which yields a finding-level remediation rate of 72.9\%. All CRITICAL and HIGH findings were fixed with 100\% success. Medium and low findings show lower rates because some fixes are context-dependent or can break intended functionality.
+
+
+\new{Table~\ref{tab:resolution_verification} breaks down resolution rates by canonical category. All nine privilege and security categories reached 100\% resolution. The three partially or fully unresolved categories AutomountSAToken (52.9\%), TagNotPinned (12.9\%), and DefaultServiceAccount (0\%) could not be fully automated due to structural constraints rather than tool limitations, as explained in Table~\ref{tab:unresolved_categories}.}
+
+
+\new{
+Table~\ref{tab:safefix-timing} shows the execution time for 
+SafeFix-K8s broken down by layer. The detection layer dominates at 26.65 
+seconds, as it runs 13 scanners in parallel. Normalization is negligible 
+at 0.59 seconds. The repair layer takes 4.16 seconds, reflecting 
+API round-trip latency. Validation completes in 1.88 seconds across all 
+7 gates. For CI/CD pipelines processing multiple manifests, parallel 
+per-file execution would reduce total time proportionally. }
+
+\new{
+\begin{table}[htbp]
+\centering
+\caption{SafeFix-K8s execution time breakdown for a single manifest (15.pod\_privilege\_escalation.yaml).}
+\label{tab:safefix-timing}
+\safefixtablestyle
+\begin{tabular}{@{} l c c @{}}
+\toprule
+\textbf{Stage} & \textbf{Time (s)} & \textbf{\% of Total} \\
+\midrule
+Detection (parallel) & 26.65 & 80.1 \\
+Normalization                  &  0.59 &  1.8 \\
+Repair                    &  4.16 & 12.5 \\
+Validation                     &  1.88 &  5.6 \\
+\midrule
+\textbf{Total}                 & \textbf{33.28} & \textbf{100.0} \\
+\bottomrule
+\end{tabular}
+\end{table}
+}
+
+
+While SafeFix-K8s achieved 100\% repair success for critical privilege-related 
+misconfigurations, three categories exhibited lower remediation rates due to 
+organizational and contextual constraints that cannot be resolved through 
+automated patching alone (Table~\ref{tab:unresolved_categories}).
+
+\begin{table}[htbp]
+\centering
+\caption{\new{Unresolved Categories and Remediation Barriers}}
+\label{tab:unresolved_categories}
+\small
+\begin{tabular}{@{}lp{6.5cm}@{}}
+\toprule
+\textbf{Category}  & \textbf{Barrier to Automation} \\
+\midrule
+DefaultServiceAccount  & Requires pre-existing custom SA with RBAC bindings \\
+Image/TagNotPinned  & Registry metadata unavailable; digest lookup fails \\
+Image/PullPolicyNotSet  & Conflicts with development vs production policies \\
+Network/MissingPolicy  & Requires application-specific ingress/egress rules \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\new{
+Table~\ref{tab:perfile-breakdown} shows the validation outcome 
+and repair method participation for a representative sample of the evaluated manifests. Of the 28 files, 20 received a PASS verdict, 
+3 were marked NEEDS\_REVIEW, and 5 received a FAIL verdict. Across 
+all files, deterministic repair was the dominant strategy, accounting 
+for 190 of the 460 total patches (41.3\%), followed by template-based 
+repair (56 patches, 12.2\%) and LLM-guided repair (54 patches, 11.7\%). 
+The remaining 160 patches were applied by the schema auto-correction gate, 
+which resolved structural issues such as missing selector labels, restart 
+policies, and template metadata independently of the repair layer.}
+\new{
+\begin{table}[htbp]
+\centering
+\caption{Representative sample of per-file validation outcomes and 
+repair method participation. DET = deterministic, TMPL = template-based, 
+LLM = LLM-guided.}
+\label{tab:perfile-breakdown}
+\safefixtablestyle
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{} l c c c c c @{}}
+\toprule
+\textbf{File} & \textbf{Status} & \textbf{Patches} &
+\textbf{DET} & \textbf{TMPL} & \textbf{LLM} \\
+\midrule
+15.pod\_privilege\_escalation.yaml                    & PASS          & 19 &  9 & 3 & 1 \\
+14.genkubesec\_privileged\_pod.yaml   & PASS          & 20 &  9 & 3 & 1 \\
+14.ingress\_deprecated\_api.yaml      & NEEDS\_REVIEW &  2 &  1 & 0 & 1 \\
+build-code.deployment.yaml            & NEEDS\_REVIEW & 19 &  8 & 2 & 2 \\
+docker-bench-security.deployment.yaml & FAIL          & 21 &  9 & 1 & 5 \\
+kube-bench-security.master-job.yaml   & FAIL          & 22 &  9 & 3 & 4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+}
+\new{
+The 5 FAIL verdicts and 3 NEEDS\_REVIEW verdicts each have a 
+distinct root cause, falling into one of three categories. }
+\new{
+The first category covers workloads that require privileged access 
+by design. All five FAIL files are legitimate security scanning or 
+monitoring tools that cannot function without elevated host access. 
+For example, docker-bench-security.deployment.yaml triggered 8 
+dangerous configuration flags because the container must run in 
+privileged mode and mount sensitive host paths such as /etc and 
+/var/lib to scan the host filesystem. Similarly, 
+kube-bench-security.master-job.yaml triggered 13 dangerous flags 
+for the same reason. In all five cases, the repair layer generated 
+and applied patches, but Gate 3 of the validation layer correctly 
+blocked them. This demonstrates that the pipeline distinguishes 
+between security misconfigurations and intentionally privileged 
+workloads a distinction that automated repair cannot resolve 
+without semantic understanding of the workload's purpose. }
+\new{
+The second category covers repairs that require cluster-level 
+resources. build-code.deployment.yaml received NEEDS\_REVIEW because 
+the Auth/DefaultServiceAccount finding could not be fully resolved: 
+the repair layer correctly disabled token automounting, but a custom 
+ServiceAccount with RBAC bindings must be created separately, outside 
+the scope of a single manifest patch. 14.ingress\_deprecated\_api.yaml 
+received NEEDS\_REVIEW because it uses a deprecated Ingress API version 
+requiring a cluster-version-aware migration rather than a field-level 
+patch.}
+\new{
+The third category covers intentional skips applied across all files. 
+Five categories were excluded from automated repair by design: 
+Network/MissingNetworkPolicy requires application-specific traffic 
+rules that cannot be inferred from the manifest alone; 
+Image/TagNotPinned is delegated to CI/CD pipelines to avoid 
+introducing vulnerable image versions; Schema/InvalidManifest is 
+handled by the validation gate auto-fixer; Style/YamlLint is 
+cosmetic only and carries no security risk; and Misc/Unmapped 
+represents unknown categories where automated fixes would be unsafe 
+to attempt. These intentional skips account for the majority of 
+the 143 unresolved findings reported in 
+Table~\ref{tab:repair_by_severity}. }
+
+The ground truth for the SafeFix-K8s evaluation was established using
+externally labeled manifests rather than independent annotation. Each
+of the 28 manifests originates from one of two sources that explicitly
+document the misconfigurations they contain: prior peer-reviewed work
+on Kubernetes security~\cite{malul2024genkubesec,ye2025llmsecconfig,shamim2024technoeducational,dellimmagine2023kubehound},
+where the original authors identify and describe the flaws present in
+each file, and KubeGoat~\cite{madhuakula_kubernetes_goat}, a
+repository maintained specifically to expose intentional and
+documented Kubernetes security flaws. This design grounds the ground
+truth in external, publicly verifiable sources rather than subjective
+inspection, reducing the risk of annotation bias. The manual
+inspection performed by the authors was limited to confirming that
+the misconfigurations cited in the source documentation were present
+and detectable at the YAML field level, and to excluding manifests
+whose cited flaws required live cluster state to be observable.
+
+
+
+
+
+
+\new{\section{Threats to Validity}}
+\label{sec:threats}
+
+\new{\subsection{Internal Validity}}
+
+\new{The annotators of the Node.js ground truth are the authors of the tool
+being evaluated, which is a threat to the impartiality of the labels. It was
+mitigated by having all five authors label every subject independently
+against the fixed protocol of Section~\ref{sec:expdesign}, which ties each
+label to a syntactic condition rather than a judgment, and by resolving
+disagreements only through joint re-examination of the code. It is not
+eliminated. For the Kubernetes dataset the threat is weaker, because ground
+truth comes from the documentation of externally published sources rather
+than from the authors.}
+
+\new{\subsection{External Validity}}
+
+\new{MicroSec-Scan analyses Node.js and TypeScript only, so its results do
+not transfer to services written in other languages. The evaluation on
+polyglot reference benchmarks in
+Section~\ref{sec:polyglot_eval} bounds this concretely: the tool applies to
+the Node.js services within such systems, but its inter-service recall there
+is low, limited by the transports and HTTP clients it models rather than by
+the language of neighbouring services. Five Node.js subjects and 28
+manifests are small samples, and the five subjects reflect the limited
+number of public repositories meeting the selection criteria. Results should
+not be generalised to microservice systems at large without replication on
+further subjects.}
+
+\new{\subsection{Construct Validity}}
+
+\new{Detection accuracy is measured over categories rather than instances,
+which measures breadth of coverage and not how completely a category is
+covered within a repository; a tool detecting one of five instances of a
+category scores identically to one detecting all five. The reported ISV
+counts in the baseline comparison are instance counts and measure a
+different construct from the accuracy tables, and are labelled accordingly.
+Detection coverage on the Kubernetes dataset is measured against
+author-documented misconfigurations, so it does not establish that no
+undocumented misconfiguration was missed. Finally, the comparison against
+Trivy, Snyk, and Semgrep measures difference in analysis scope rather than
+detection-algorithm quality, since those tools were not designed for
+inter-service analysis.}
+
+\new{\subsection{Conclusion Validity}}
+
+\new{The sample sizes do not support statistical hypothesis testing, and no
+significance claims are made; the results are reported descriptively. The
+LLM-assisted stages are non-deterministic, which is mitigated by fixing a low
+decoding temperature, constraining outputs to structured patches, and, for
+MicroSec-Scan, requiring developer review of every suggested fix, but repeated
+runs may still differ. The runtime and memory figures are single-environment
+measurements and would vary on other hardware.}
+
+
+
+\section{Conclusion and Future Work}
+
+This paper presents a security framework aimed at improving the security posture of cloud-native systems at different layers. The first component, the MicroSec-Scan tool, provides a practical security evaluation workflow for Node.js microservice applications. It uses AST-driven static analysis, a curated security knowledge base, and an LLM-assisted refactoring engine. The second component, the SafeFix-K8s tool, enables automated remediation of Kubernetes security misconfigurations. It works through multi-tool detection, normalizing findings, generating patches with constrained LLM use, then applying tight validation gates. Combined, these two tools highlight that early architecture-aware analysis and controlled automated repair can significantly strengthen and further improve the security of modern microservices.
+
+The first component of the framework, MicroSec-Scan, demonstrated strong effectiveness across five Node.js microservices applications. It consistently identified a large set of vulnerabilities compared to conventional SAST tools. In particular, it detected tens of inter-service vulnerabilities that emerge only when analyzing microservices, an area where existing tools reported zero findings. The discussed results shine a light on the importance of performing design-time security checks that understand inter-service interactions and communication, message broker configurations, and service-to-service authentication.
+
+Moving on to the second component, the SafeFix-K8s tool offers a complete solution for refactoring Kubernetes YAML misconfigurations. The tool consists of four layers: detection, normalization, repair, and validation. The SafeFix-K8s tool was evaluated on 28 intentionally misconfigured YAML files. The SafeFix-K8s tool detected all the misconfigurations. Then, the SafeFix-K8s tool normalized all of the findings and categorized them, making them ready to be used by the repair layer. The repair layer selects the repair method based on the category of the finding and then applies the repair, outputting the new secured file. The new secured file is then sent to the validation layer, which validates the fix and runs over 60 rules to ensure that the file is secure and functional. The SafeFix-K8s tool showed great results across the dataset, achieving 100\% detection coverage and 72.9\% validated fixes. 
+
+There are multiple opportunities that exist for further improving the proposed security framework in the future. Firstly, the MicroSec-Scan tool can benefit from extending language and framework support beyond Node.js, making it a polyglot tool. Supporting languages such as Go, Java, Python, and Rust would broaden the tool's market. Secondly, inter-service vulnerability detection for the MicroSec-Scan tool could benefit from richer contextual awareness towards gRPC and GraphQL web servers. Thirdly, the LLM-assisted refactoring engine could be improved by building strong logical reasoning for complex authentication flows such as mutual TLS, JWT validation and OAuth2.
+
+Following these proposed improvements for MicroSec-Scan, there are also opportunities to enhance the SafeFix-K8s tool. Fourthly, evaluating the SafeFix-K8s tool on larger and more diverse real-world repositories would help test generalization and uncover new misconfiguration patterns. Fifthly, improving weaker areas such as AppArmor handling, registry trust analysis, and synthesis of NetworkPolicies would increase the completeness of automated hardening. Finally, future versions of the SafeFix-K8s tool may also incorporate runtime insights to guide policy generation. The integration of signed images and SBOM-driven supply-chain checks would also help drastically.
+
+
+\bibliographystyle{elsarticle-num}
+\bibliography{cas-refs}
+
+
+
+\appendix
+\renewcommand{\thesection}{\Alph{section}}
+\section{SafeFix-K8s LLM Prompt Templates}
+\label{app:llm-prompt}
+
+\new{The repair orchestrator issues two messages per LLM-guided finding. The
+system message is fixed and states the invariants every patch must respect.
+The user message is a template instantiated once per finding, binding the
+placeholders shown in double braces from the normalized finding record and
+the original manifest. Table~\ref{tab:prompt_params} defines each placeholder
+and the field it is bound from, so any model call can be reconstructed from
+the normalized findings file and the input manifest alone.}
+
+\begin{tcolorbox}[
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    title=System message,
+    fonttitle=\bfseries,
+    breakable
+]
+\small\ttfamily
+You are SafeFix, a Kubernetes security repair assistant.\\
+Return a JSON object with two fields:\\
+\hspace*{1em}1. "patches": array of RFC-6902 patch operations\\
+\hspace*{1em}2. "explanation": brief explanation of what was fixed and why\\[6pt]
+Never change: metadata.name, metadata.namespace, kind, spec.selector,\\
+Service ports, container image tags.\\
+Do not modify: securityContext.seccompProfile, securityContext.apparmor,\\
+spec.containers[*].image.\\
+AppArmor must be configured via Pod annotations, not securityContext.\\
+Image pinning is handled by CI/CD pipelines, not runtime configuration\\
+fixes.
+\end{tcolorbox}
+
+\begin{tcolorbox}[
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    title=User message template (instantiated per finding),
+    fonttitle=\bfseries,
+    breakable
+]
+\small\ttfamily
+Kind: \{\{KIND\}\}\\
+Name: \{\{NAME\}\}\\
+Category: \{\{CATEGORY\}\}\\[6pt]
+Context:\\
+\{\{CONTEXT\}\}\\[6pt]
+Return JSON with patches and explanation.
+\end{tcolorbox}
+
+\begin{table}[htbp]
+\centering
+\caption{\new{Placeholders in the SafeFix-K8s user message template and the
+fields they are bound from.}}
+\label{tab:prompt_params}
+\safefixtablestyle
+\begin{tabularx}{\linewidth}{@{} L{2.6cm} L{2.8cm} Y @{}}
+\toprule
+\textbf{Placeholder} & \textbf{Bound from} & \textbf{Meaning} \\
+\midrule
+\{\{KIND\}\} & manifest \path{kind} & Resource kind of the document selected for repair \\
+\{\{NAME\}\} & manifest \path{metadata.name} & Name of the resource being repaired \\
+\{\{CATEGORY\}\} & \path{finding.category} & Canonical category assigned by the normalization layer \\
+\{\{CONTEXT\}\} & original manifest & Category-scoped manifest projection, secrets stripped, truncated to 800 characters \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\new{The projection bound to \{\{CONTEXT\}\} is category-scoped rather than
+the whole manifest. For privilege and identity categories it contains the
+resource kind, the resource name, and the pod specification only; for all
+other categories it contains the kind, the metadata block, and the
+specification. In both cases the projection is truncated to 800 characters
+before it is sent, so the model never receives an entire manifest. Decoding
+is deterministic, with temperature fixed at 0.0 and a 1000-token response
+cap for every provider.}
+
+\new{As a worked instantiation, the Policy/PodSecurityViolation finding on
+\path{15.pod_privilege_escalation.yaml} binds \{\{KIND\}\} to Pod,
+\{\{NAME\}\} to example-pod, \{\{CATEGORY\}\} to
+Policy/PodSecurityViolation, and \{\{CONTEXT\}\} to the pod specification
+projection of the affected manifest. The response returned under this
+binding is shown in Figure~\ref{fig:llm-io}. Privilege escalation, capability
+dropping, read-only root filesystem, non-root execution and seccomp profile
+categories are handled deterministically and never reach the model, which is
+why the LLM accounts for only 54 of the 460 applied patches reported in the
+per-file breakdown table.}
+
+\section{MicroSec-Scan LLM Prompt Templates}
+\label{app:microsec-prompt}
+
+\new{The refactor layer issues two messages per invocation. The system
+message is fixed and states the invariants every suggested fix must respect.
+The user message is a template instantiated per finding, binding the
+placeholders shown in double braces from the finding record and the extracted
+code context. Table~\ref{tab:microsec_prompt_params} defines each placeholder
+and the field it is bound from, so any model call can be reconstructed from
+the JSON findings file and the analyzed source file alone.}
+
+\begin{tcolorbox}[
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    title=System message (fixed),
+    fonttitle=\bfseries,
+    breakable
+]
+\small\ttfamily
+You are a security expert specializing in Node.js microservices.\\[6pt]
+CRITICAL RULES - YOU MUST FOLLOW THESE EXACTLY:\\
+\hspace*{1em}1. Make ONLY the minimal security changes required - nothing else\\
+\hspace*{1em}2. DO NOT rename variables, functions, or change code structure\\
+\hspace*{1em}3. DO NOT change environment variable names (e.g., keep\\
+\hspace*{2em}RABBITMQ\_URI as RABBITMQ\_URI)\\
+\hspace*{1em}4. DO NOT remove comments or documentation\\
+\hspace*{1em}5. DO NOT change formatting, indentation, or code style\\
+\hspace*{1em}6. DO NOT add new features or "improvements" beyond security\\
+\hspace*{1em}7. ONLY fix the specific security vulnerability mentioned\\[6pt]
+ALLOWED CHANGES:\\
+\hspace*{1em}- Change insecure protocols (http $\rightarrow$ https, amqp $\rightarrow$ amqps)\\
+\hspace*{1em}- Add missing security headers/middleware\\
+\hspace*{1em}- Add authentication/authorization checks\\
+\hspace*{1em}- Fix hardcoded secrets\\
+\hspace*{1em}- Add input validation\\[6pt]
+FORBIDDEN CHANGES:\\
+\hspace*{1em}- Renaming variables or functions\\
+\hspace*{1em}- Changing environment variable names\\
+\hspace*{1em}- Removing comments\\
+\hspace*{1em}- Restructuring code\\
+\hspace*{1em}- Adding "helpful" features\\[6pt]
+Output ONLY the fixed code block in markdown format without\\
+explanations. Use a javascript-tagged fence for JavaScript/TypeScript
+code.
+\end{tcolorbox}
+
+\begin{tcolorbox}[
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    title=User message template A --- single finding (instantiated per finding),
+    fonttitle=\bfseries,
+    breakable
+]
+\small\ttfamily
+Fix this security vulnerability:\\[6pt]
+**Issue:** \{\{RULE\_ID\}\}\\
+**Description:** \{\{MESSAGE\}\}\\
+**Severity:** \{\{SEVERITY\}\}\\
+**File:** \{\{FILE\_PATH\}\}\\
+**Lines:** \{\{START\_LINE\}\}-\{\{END\_LINE\}\}\\[6pt]
+**Current Code:**\\
+\{\{CODE\}\}\\[6pt]
+**Full File Context (for imports):**\\
+\{\{FULL\_FILE\}\}\\
+\hspace*{1em}\textrm{\itshape(this block is emitted only when
+\{\{FULL\_FILE\}\} is non-empty)}\\[6pt]
+**Fix Requirements:**\\
+\{\{FIX\_GUIDANCE\}\}\\[6pt]
+Provide the complete fixed version of the code section (lines\\
+\{\{START\_LINE\}\}-\{\{END\_LINE\}\}). Include any new imports or\\
+dependencies needed. Maintain the same code structure and style.
+\end{tcolorbox}
+
+\begin{tcolorbox}[
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    title=User message template B --- batch (one call per file),
+    fonttitle=\bfseries,
+    breakable
+]
+\small\ttfamily
+Fix multiple security vulnerabilities in this file:\\[6pt]
+**File:** \{\{FILE\_PATH\}\}\\[6pt]
+**Current Code:**\\
+\{\{FULL\_FILE\}\}\\[6pt]
+**Issues to Fix:**\\[6pt]
+\textrm{\itshape(the following block repeats for each finding $i$ in the file)}\\
+\{\{INDEX\}\}. **\{\{RULE\_ID\}\}** (\{\{SEVERITY\}\})\\
+\hspace*{1em}- Description: \{\{MESSAGE\}\}\\
+\hspace*{1em}- Line: \{\{LINE\}\}\\
+\hspace*{1em}- Fix: \{\{FIX\_GUIDANCE\}\}\\[6pt]
+IMPORTANT INSTRUCTIONS:\\
+\hspace*{1em}- Fix ONLY the security issues listed above\\
+\hspace*{1em}- DO NOT rename any variables, functions, or environment\\
+\hspace*{2em}variable names\\
+\hspace*{1em}- DO NOT remove any comments or documentation\\
+\hspace*{1em}- DO NOT change code structure or formatting\\
+\hspace*{1em}- Keep ALL existing variable names exactly as they are\\
+\hspace*{1em}- Make the MINIMAL changes required to fix the security issues\\[6pt]
+Provide the complete fixed file with ONLY security changes applied.\\
+Return ONLY the complete fixed code in a single code block.
+\end{tcolorbox}
+
+\begin{table}[htbp]
+\centering
+\caption{\new{Placeholders in the MicroSec-Scan user message templates and
+the fields they are bound from. Fields prefixed \texttt{finding.} come from
+the normalized finding record emitted by the analysis layer; fields prefixed
+\texttt{context.} come from the code context extracted for that finding.}}
+\label{tab:microsec_prompt_params}
+\safefixtablestyle
+\begin{tabularx}{\linewidth}{@{} L{2.5cm} L{3.0cm} Y @{}}
+\toprule
+\textbf{Placeholder} & \textbf{Bound from} & \textbf{Meaning} \\
+\midrule
+\{\{RULE\_ID\}\} & \path{finding.rule} & Rule identifier from the rule registry \\
+\{\{MESSAGE\}\} & \path{finding.message} & Rule description, or the rule-specific message \\
+\{\{SEVERITY\}\} & \path{finding.severity} & critical, high, medium, or low \\
+\{\{LINE\}\} & \path{finding.line} & Line the finding anchors to; \texttt{N/A} when the finding is service-scoped \\
+\{\{FILE\_PATH\}\} & \path{context.filePath} & Path of the file being repaired \\
+\{\{START\_LINE\}\} & \path{context.startLine} & First line of the extracted section \\
+\{\{END\_LINE\}\} & \path{context.endLine} & Last line of the extracted section \\
+\{\{CODE\}\} & \path{context.code} & The extracted section only, in a fenced block \\
+\{\{FULL\_FILE\}\} & \path{context.fullFile} & Whole file, supplied so imports resolve; omitted when unset \\
+\{\{FIX\_GUIDANCE\}\} & \path{getFixGuidance(rule)} & Per-rule remediation pattern, keyed by rule identifier \\
+\{\{INDEX\}\} & enumeration position & 1-based index within the batch, template B only \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\new{Decoding is held constant across providers: temperature is fixed at 0.1,
+the response is capped at 8000 tokens, and a call is abandoned after 120
+seconds. The provider and model are developer-selectable; the default is
+LLaMA-3.3 70B served through Groq, with OpenRouter, Together AI, and OpenAI
+also implemented behind the same interface. Because template A is instantiated
+once per finding and template B once per file, the number of model calls is a
+function of the findings file alone and is therefore reproducible from the
+scan output.}
+
+\new{The \{\{FIX\_GUIDANCE\}\} binding is what makes each instantiation
+rule-specific. Two representative bindings are shown below; the registry
+defines one such entry per rule.}
+
+\begin{tcolorbox}[
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    title=\{\{FIX\_GUIDANCE\}\} bound for RULE\_ID = PLAINTEXT\_BROKER,
+    fonttitle=\bfseries
+]
+\small\ttfamily
+Enable TLS for RabbitMQ connections.\\
+- ONLY change amqp:// to amqps:// in the connection string\\
+- DO NOT rename environment variables (keep RABBITMQ\_URI as\\
+\hspace*{1em}RABBITMQ\_URI, not RABBITMQ\_URL)\\
+- DO NOT rename local variables\\
+- Example: Change 'amqp://guest:guest@rabbitmq:5672' to\\
+\hspace*{1em}'amqps://guest:guest@rabbitmq:5672'
+\end{tcolorbox}
+
+\begin{tcolorbox}[
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    title=\{\{FIX\_GUIDANCE\}\} bound for RULE\_ID = MISSING\_RATE\_LIMITING,
+    fonttitle=\bfseries
+]
+\small\ttfamily
+Add rate limiting to prevent abuse.\\
+- Install: npm install express-rate-limit\\
+- Import: const rateLimit = require('express-rate-limit')\\
+- Configure with reasonable limits (e.g., 100 requests per 15 minutes)
+\end{tcolorbox}
+
+
+\end{document}

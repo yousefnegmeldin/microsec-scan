@@ -20,8 +20,14 @@ replication package is public and citable at the time of review:
   MicroSec-Scan and for each baseline.
 - Exact commands and pinned tool versions for reproducing every table.
 
-*[Insert Zenodo DOI here once minted, and cite it in Section I and in the
-evaluation section.]*
+The package is cited in the paper as \cite{microsecscan_repo}:
+
+    https://github.com/yousefnegmeldin/microservices-security-scanner
+
+*(Optional hardening: linking the repository to Zenodo and tagging a release
+mints a permanent DOI, which gives reviewers an immutable snapshot rather
+than a branch that can move during review. The GitHub URL alone satisfies
+the comment; the DOI is a strict improvement if time permits.)*
 
 ### Comment 2 — Prompt templates are not really templates
 
