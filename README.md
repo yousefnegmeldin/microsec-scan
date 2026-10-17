@@ -1,4 +1,4 @@
-# MicroSec-Scan
+# MicroSec-Scan and SafeFix-K8s
 
 A static security scanner for Node.js microservices. It parses every service into an AST and checks how the services talk to each other: calls between services with no auth header, RabbitMQ or Kafka over plaintext, the same broker credentials reused across services in `docker-compose.yml`, outbound calls with no circuit breaker. It also runs the usual per-service checks (helmet, rate limiting, CORS, unprotected routes, hardcoded secrets) for Express, NestJS and Fastify.
 
