@@ -6,6 +6,19 @@ Dependency and container scanners like Trivy and Snyk don't look at this layer, 
 
 There's also an optional `fix` command that sends findings to an LLM and writes patches for you to review.
 
+## What's in this repo
+
+This repo holds two tools. MicroSec-Scan covers the application code of your microservices, and [SafeFix-K8s](#safefix-k8s) covers the Kubernetes manifests they deploy with.
+
+| | MicroSec-Scan | SafeFix-K8s |
+| --- | --- | --- |
+| Looks at | Node.js microservice code and `docker-compose.yml` | Kubernetes manifests |
+| Built with | Node.js 18+ | Python 3.8+ and Docker |
+| Where | Repo root (`bin/`, `src/`) | [`SafeFix-K8s/`](./SafeFix-K8s) |
+| Docs | This README | [`SafeFix-K8s/README.md`](./SafeFix-K8s/README.md) |
+
+The two don't depend on each other. Install and run whichever you need.
+
 ## Install
 
 It isn't on npm yet, so install from source (Node 18+):
@@ -157,9 +170,31 @@ JS and TS files are parsed with `@babel/parser`, and most checks look at specifi
 - It's static analysis, so connections that are only resolved at runtime (a URL built from env vars, service discovery, a wrapper the scanner doesn't recognise) can be missed. That was the main cause of missed findings in our evaluation.
 - Some rules can only see the code. If you set queue ACLs on the RabbitMQ server itself, for example, the scanner can't see that.
 
+## SafeFix-K8s
+
+[`SafeFix-K8s/`](./SafeFix-K8s) is a separate tool with its own language, dependencies and install steps. It takes a directory of Kubernetes manifests and runs four stages:
+
+1. **Detection** runs 10 to 13 scanners (Checkov, Trivy, Kubescape, Polaris, KubeLinter and others) through Docker, depending on the `lean` or `extended` mode.
+2. **Normalization** merges their output into 50+ standard categories and filters out false positives.
+3. **Repair** applies deterministic fixes and templates first, then falls back to LLM-generated patches (OpenAI, Groq, Gemini or OpenRouter) for what's left.
+4. **Validation** checks every fixed manifest against a 7-gate validation framework.
+
+You need Python 3.8+ and Docker. From the repo root:
+
+```bash
+cd SafeFix-K8s
+pip install -r requirements.txt
+cp .env.example .env     # then add a key for each LLM provider you plan to use
+python pipeline.py --input ./k8s-manifests --output ./results
+```
+
+Fixed manifests are written to `results/repair/` as `SECURED_*.yaml`, each with a matching `EXPLANATION_*.yaml.md` that says what changed and why.
+
+More detail is in [`SafeFix-K8s/README.md`](./SafeFix-K8s/README.md), the [usage guide](./SafeFix-K8s/USAGE_GUIDE.md) and the [methodology](./SafeFix-K8s/METHODOLOGY.md).
+
 ## Research
 
-MicroSec-Scan covers the application side of our paper *MicroSec-Scan and SafeFix-K8s for Automated Analysis and Repair in Microservices and Kubernetes* (Negmeldin, Hegab, Singergy, Zamzam, Zaki). SafeFix-K8s, which covers the Kubernetes side, is a separate tool.
+MicroSec-Scan and SafeFix-K8s are the two tools in our paper *MicroSec-Scan and SafeFix-K8s for Automated Analysis and Repair in Microservices and Kubernetes* (Negmeldin, Hegab, Singergy, Zamzam, Zaki). MicroSec-Scan covers the application side, and SafeFix-K8s, in [`SafeFix-K8s/`](./SafeFix-K8s), covers the Kubernetes side. The results below are for MicroSec-Scan.
 
 We evaluated it on five Node.js microservice apps, four open-source and one of our own. It found inter-service issues in all five, where Trivy and Snyk reported none. Measured per vulnerability category against labels we wrote by hand, precision was 1.00 and recall ranged from 0.33 to 0.93 (average F1 0.77). Each scan took under half a second on a MacBook Air M4.
 
