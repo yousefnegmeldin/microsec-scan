@@ -24,8 +24,8 @@ The two don't depend on each other. Install and run whichever you need.
 It isn't on npm yet, so install from source (Node 18+):
 
 ```bash
-git clone https://github.com/yousefnegmeldin/microservices-security-scanner.git
-cd microservices-security-scanner
+git clone https://github.com/yousefnegmeldin/microsec-scan.git
+cd microsec-scan
 npm install
 npm link    # puts microsec-scan on your PATH
 ```
